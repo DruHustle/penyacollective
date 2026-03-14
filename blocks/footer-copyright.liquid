@@ -50,6 +50,8 @@
           src="{{ penya_logo_file | file_url }}"
           class="penya-logo--footer"
           alt="{{ penya_shop_name }}"
+          width="200"
+          height="80"
           loading="lazy"
         >
       {% elsif penya_logo_asset != '' %}
@@ -57,6 +59,8 @@
           src="{{ penya_logo_asset | asset_url }}"
           class="penya-logo--footer"
           alt="{{ penya_shop_name }}"
+          width="200"
+          height="80"
           loading="lazy"
         >
       {% else %}

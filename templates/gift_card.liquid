@@ -153,6 +153,7 @@
             src="{{ penya_logo_file | file_url }}"
             alt="{{ penya_shop_name }}"
             width="320"
+            height="128"
             loading="eager"
           >
         {% elsif penya_logo_asset != '' %}
@@ -161,6 +162,7 @@
             src="{{ penya_logo_asset | asset_url }}"
             alt="{{ penya_shop_name }}"
             width="320"
+            height="128"
             loading="eager"
           >
         {% else %}
@@ -183,6 +185,7 @@
             src="{{ penya_logo_file | file_url }}"
             alt="{{ penya_shop_name }}"
             width="324"
+            height="130"
             loading="eager"
           >
         {%- elsif penya_logo_asset != '' -%}
@@ -191,6 +194,7 @@
             src="{{ penya_logo_asset | asset_url }}"
             alt="{{ penya_shop_name }}"
             width="324"
+            height="130"
             loading="eager"
           >
         {%- elsif settings.logo != blank -%}
