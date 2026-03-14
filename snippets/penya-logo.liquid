@@ -1,0 +1,30 @@
+{%- doc -%}
+  Penya logo mark (inline SVG).
+
+  @param {string} [class] - Additional classes for sizing/styling
+  @param {string} [label] - Accessible label
+  @param {string} [style] - Inline styles (CSS variables)
+{%- enddoc -%}
+
+{% assign logo_class = class | default: '' %}
+{% assign logo_label = label | default: 'Penya' %}
+{% assign logo_style = style | default: '' %}
+
+<svg
+  class="penya-logo {{ logo_class }}"
+  viewBox="0 0 512 512"
+  role="img"
+  aria-label="{{ logo_label | escape }}"
+  style="{{ logo_style }}"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+>
+  <g stroke="currentColor" stroke-width="18" stroke-linejoin="round" stroke-linecap="round">
+    <polygon points="96,160 256,40 416,160 472,200 256,472 40,200" />
+    <line x1="40" y1="200" x2="472" y2="200" />
+    <line x1="96" y1="160" x2="256" y2="200" />
+    <line x1="416" y1="160" x2="256" y2="200" />
+    <line x1="40" y1="200" x2="256" y2="472" />
+    <line x1="472" y1="200" x2="256" y2="472" />
+  </g>
+</svg>

@@ -1,0 +1,798 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_penya": {
+      "type": "hero",
+      "blocks": {
+        "hero_title": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>PENYA COLLECTIVE</h1>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "hero_tagline": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Rooted in Heritage. Designed to Shine.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "hero_button": {
+          "type": "button",
+          "settings": {
+            "label": "Shop the Collection",
+            "link": "shopify://collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          }
+        }
+      },
+      "block_order": [
+        "hero_title",
+        "hero_tagline",
+        "hero_button"
+      ],
+      "settings": {
+        "media_type_1": "image",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-end",
+        "gap": 20,
+        "section_width": "full-width",
+        "section_height": "custom",
+        "section_height_custom": 95,
+        "color_scheme": "scheme-1",
+        "toggle_overlay": true,
+        "overlay_color": "#0b0b0bcc",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "brand_marquee": {
+      "type": "marquee",
+      "blocks": {
+        "marquee_text_1": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Rooted in Heritage</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1.25rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_div_1": {
+          "type": "_divider",
+          "settings": {
+            "divider_type": "dot",
+            "width": "fit-content",
+            "color": "var(--color-primary)",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_text_2": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Designed to Shine</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1.25rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_div_2": {
+          "type": "_divider",
+          "settings": {
+            "divider_type": "dot",
+            "width": "fit-content",
+            "color": "var(--color-primary)",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_text_3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Zimbabwean Artistry</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1.25rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_div_3": {
+          "type": "_divider",
+          "settings": {
+            "divider_type": "dot",
+            "width": "fit-content",
+            "color": "var(--color-primary)",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_text_4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Premium Craftsmanship</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1.25rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_div_4": {
+          "type": "_divider",
+          "settings": {
+            "divider_type": "dot",
+            "width": "fit-content",
+            "color": "var(--color-primary)",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_text_5": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Radiant Luxury</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-heading--family)",
+            "font_size": "1.25rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "marquee_div_5": {
+          "type": "_divider",
+          "settings": {
+            "divider_type": "dot",
+            "width": "fit-content",
+            "color": "var(--color-primary)",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": [
+        "marquee_text_1",
+        "marquee_div_1",
+        "marquee_text_2",
+        "marquee_div_2",
+        "marquee_text_3",
+        "marquee_div_3",
+        "marquee_text_4",
+        "marquee_div_4",
+        "marquee_text_5",
+        "marquee_div_5"
+      ],
+      "settings": {
+        "movement_direction": "reverse",
+        "color_scheme": "scheme-1",
+        "padding-block-start": 24,
+        "padding-block-end": 24,
+        "gap_between_elements": 48
+      }
+    },
+    "mission_statement": {
+      "type": "section",
+      "blocks": {
+        "mission_eyebrow": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The Mission</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "color": "var(--color-primary)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "mission_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Penya Collective celebrates the modern glow of African heritage through premium craftsmanship.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "h3",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "mission_button": {
+          "type": "button",
+          "settings": {
+            "label": "The Story",
+            "link": "shopify://pages/about",
+            "open_in_new_tab": false,
+            "style_class": "button-secondary",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          }
+        }
+      },
+      "block_order": [
+        "mission_eyebrow",
+        "mission_text",
+        "mission_button"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "brand_pillars": {
+      "type": "section",
+      "blocks": {
+        "pillar_heritage": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Heritage</p><h3>Rooted in Zimbabwe</h3><p>Our name, Penya, derives from the Shona word <em>kupenya</em> — to shine, to glow, to be polished. Every piece honours the craft traditions of Harare and carries that light forward.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "pillar_craft": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Craftsmanship</p><h3>Made with Intention</h3><p>Collaborating with Zimbabwean artisans and skilled tailors, we produce garments in small runs — each one hand-finished to a standard that is uncompromising and unmistakably ours.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "pillar_sustainability": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Sustainability</p><h3>A Considered Practice</h3><p>We prioritise premium, long-lasting materials, fair wages, and low-impact production. Luxury, to us, means building something worth keeping — for years, not seasons.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": [
+        "pillar_heritage",
+        "pillar_craft",
+        "pillar_sustainability"
+      ],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-start",
+        "gap": 40,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "featured_collections": {
+      "type": "collection-list",
+      "blocks": {
+        "collections_eyebrow": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Featured Categories</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "color": "var(--color-primary)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "collections_heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Collections</h2>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": [
+        "collections_eyebrow",
+        "collections_heading"
+      ],
+      "settings": {
+        "collection_list": [
+          "men",
+          "women",
+          "accessories"
+        ],
+        "layout_type": "grid",
+        "carousel_on_mobile": false,
+        "columns": 3,
+        "mobile_columns": "1",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 24,
+        "bento_gap": 48,
+        "rows_gap": 24,
+        "max_collections": 3,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 16,
+        "color_scheme": "scheme-2",
+        "padding-block-start": 20,
+        "padding-block-end": 80
+      }
+    },
+    "journal_preview": {
+      "type": "featured-blog-posts",
+      "blocks": {
+        "static-blog-title": {
+          "type": "_featured-blog-posts-title",
+          "settings": {
+            "text": "<p>Journal</p><h2>Behind the Scenes</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "static-blog-post-card": {
+          "type": "_featured-blog-posts-card",
+          "settings": {
+            "alignment": "left",
+            "gap": 12,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": [
+        "static-blog-title",
+        "static-blog-post-card"
+      ],
+      "settings": {
+        "blog": "journal",
+        "layout_type": "editorial",
+        "carousel_on_mobile": true,
+        "post_limit": 3,
+        "columns": 3,
+        "mobile_columns": "1",
+        "mobile_card_size": "60cqw",
+        "columns_gap": 24,
+        "rows_gap": 24,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "page-width",
+        "gap": 20,
+        "color_scheme": "scheme-2",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "newsletter_signup": {
+      "type": "section",
+      "blocks": {
+        "newsletter_heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Join the Collective</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "newsletter_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Be the first to experience the glow.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "newsletter_form": {
+          "type": "email-signup",
+          "settings": {
+            "width": "custom",
+            "custom_width": 60,
+            "width_mobile": "custom",
+            "custom_width_mobile": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0,
+            "heading": "",
+            "heading_preset": "h3",
+            "border_style": "underline",
+            "border_width": 1,
+            "border_radius": 0,
+            "input_type_preset": "paragraph",
+            "style_class": "button-unstyled",
+            "display_type": "arrow",
+            "label": "Join",
+            "integrated_button": true,
+            "button_type_preset": "paragraph"
+          }
+        }
+      },
+      "block_order": [
+        "newsletter_heading",
+        "newsletter_text",
+        "newsletter_form"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "instagram_feed": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"penya-instagram\">\n  <div class=\"penya-instagram__header\">\n    <p class=\"penya-eyebrow\" style=\"font-family: var(--font-subheading--family); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.5rem;\">@penyacollective</p>\n    <h2 style=\"font-family: var(--font-heading--family); margin-bottom: 0.75rem;\">Follow Our Journey</h2>\n    <p style=\"font-family: var(--font-body--family); color: var(--color-foreground); opacity: 0.7; max-width: 480px;\">Radiant moments, behind the scenes, and the art of dressing with intention.</p>\n  </div>\n  <div class=\"penya-instagram__grid\" style=\"display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; margin-top: 2rem;\">\n    <a class=\"penya-instagram__tile\" href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" aria-label=\"Penya Collective on Instagram\" style=\"display: block; aspect-ratio: 1; overflow: hidden;\"><img src=\"{{ 'penya-instagram-runway.jpg' | asset_url }}\" alt=\"Penya Collective\" style=\"width: 100%; height: 100%; object-fit: cover; display: block;\"></a>\n    <a class=\"penya-instagram__tile\" href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" aria-label=\"Penya Collective on Instagram\" style=\"display: block; aspect-ratio: 1; overflow: hidden;\"><img src=\"{{ 'penya-instagram-suit.jpg' | asset_url }}\" alt=\"Penya Collective\" style=\"width: 100%; height: 100%; object-fit: cover; display: block;\"></a>\n    <a class=\"penya-instagram__tile\" href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" aria-label=\"Penya Collective on Instagram\" style=\"display: block; aspect-ratio: 1; overflow: hidden;\"><img src=\"{{ 'penya-instagram-stairs.jpg' | asset_url }}\" alt=\"Penya Collective\" style=\"width: 100%; height: 100%; object-fit: cover; display: block;\"></a>\n    <a class=\"penya-instagram__tile\" href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" aria-label=\"Penya Collective on Instagram\" style=\"display: block; aspect-ratio: 1; overflow: hidden;\"><img src=\"{{ 'penya-instagram-street.jpg' | asset_url }}\" alt=\"Penya Collective\" style=\"width: 100%; height: 100%; object-fit: cover; display: block;\"></a>\n    <a class=\"penya-instagram__tile\" href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" aria-label=\"Penya Collective on Instagram\" style=\"display: block; aspect-ratio: 1; overflow: hidden;\"><img src=\"{{ 'penya-instagram-patchwork.jpg' | asset_url }}\" alt=\"Penya Collective\" style=\"width: 100%; height: 100%; object-fit: cover; display: block;\"></a>\n    <a class=\"penya-instagram__tile\" href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" aria-label=\"Penya Collective on Instagram\" style=\"display: block; aspect-ratio: 1; overflow: hidden;\"><img src=\"{{ 'penya-instagram-legs.jpg' | asset_url }}\" alt=\"Penya Collective\" style=\"width: 100%; height: 100%; object-fit: cover; display: block;\"></a>\n  </div>\n  <div style=\"text-align: center; margin-top: 2rem;\">\n    <a href=\"https://www.instagram.com/penyacollective\" target=\"_blank\" rel=\"noopener\" style=\"display: inline-block; font-family: var(--font-subheading--family); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-foreground); border-bottom: 1px solid currentColor; padding-bottom: 2px; text-decoration: none;\">Follow on Instagram</a>\n  </div>\n</div>",
+        "color_scheme": "scheme-2",
+        "section_width": "page-width",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "hero_penya",
+    "brand_marquee",
+    "mission_statement",
+    "brand_pillars",
+    "featured_collections",
+    "journal_preview",
+    "newsletter_signup",
+    "instagram_feed"
+  ]
+}

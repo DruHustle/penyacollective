@@ -1,0 +1,296 @@
+
+
+{% liquid
+  assign block_settings = block.settings
+  assign use_inverse_logo = false
+  assign penya_shop_name = shop.name
+  if penya_shop_name == 'My Store'
+    assign penya_shop_name = 'Penya Collective'
+  endif
+
+  assign penya_logo_ratio = 1
+  assign penya_logo_image = blank
+  assign penya_logo_file = blank
+  assign penya_logo_asset = ''
+  assign penya_logo_candidates = 'penya logo.png|penya logo.jpg|penya logo.jpeg|penya logo.webp|penya-logo.png|penya-logo.jpg|penya-logo.jpeg|penya-logo.webp' | split: '|'
+  for candidate in penya_logo_candidates
+    assign candidate = candidate | strip
+    if penya_logo_image == blank and images[candidate] != blank
+      assign penya_logo_image = images[candidate]
+      assign penya_logo_asset = candidate
+      assign penya_logo_ratio = penya_logo_image.aspect_ratio | default: penya_logo_ratio
+      break
+    endif
+    if penya_logo_file == blank and files[candidate] != blank
+      assign penya_logo_file = files[candidate]
+      assign penya_logo_asset = candidate
+      assign penya_logo_ratio = 1
+      break
+    endif
+  endfor
+  if penya_logo_asset == '' and penya_logo_candidates.size > 0
+    assign penya_logo_asset = penya_logo_candidates[0]
+  endif
+
+  assign header_logo_image = settings.logo
+  assign logo_ratio = penya_logo_ratio
+  if header_logo_image != blank
+    assign logo_ratio = header_logo_image.aspect_ratio
+  elsif penya_logo_image != blank
+    assign header_logo_image = penya_logo_image
+    assign logo_ratio = penya_logo_ratio
+  endif
+
+  if section.settings.enable_transparent_header_home and template.name == 'index' and section.settings.home_color_scheme == 'inverse'
+    assign use_inverse_logo = true
+  elsif section.settings.enable_transparent_header_product and template.name == 'product' and section.settings.product_color_scheme == 'inverse'
+    assign use_inverse_logo = true
+  elsif section.settings.enable_transparent_header_collection and template.name == 'collection' and section.settings.collection_color_scheme == 'inverse'
+    assign use_inverse_logo = true
+  endif
+
+  if use_inverse_logo
+    if settings.logo_inverse != blank
+      assign inverse_logo = settings.logo_inverse
+    else
+      assign inverse_logo = settings.logo
+    endif
+  endif
+%}
+
+{% comment %}
+  Output all logo variants, use CSS to hide/show the appropriate one
+  based on the .header[transparent] selector
+{% endcomment %}
+<a
+  {% if template.name == 'index' and block_settings.hide_logo_on_home_page %}
+    data-hidden-on-home-page
+  {% endif %}
+  href="{{ routes.root_url }}"
+  class="size-style spacing-style header-logo"
+  style="
+    {% render 'size-style', settings: block_settings %}
+    {% render 'spacing-style', settings: block_settings %}
+    --font-family: var(--font-body--family);
+    --font-style: var(--font-body--style);
+    --font-weight: 600;
+  "
+  {{ block.shopify_attributes }}
+>
+  {% liquid
+    assign inverse_logo_image = inverse_logo
+    assign inverse_logo_ratio = logo_ratio
+    if inverse_logo_image != blank
+      assign inverse_logo_ratio = inverse_logo_image.aspect_ratio
+    elsif penya_logo_image != blank
+      assign inverse_logo_image = penya_logo_image
+      assign inverse_logo_ratio = penya_logo_ratio
+    endif
+
+    assign logo_width = settings.logo_height | times: logo_ratio | ceil
+    assign logo_width_mobile = settings.logo_height_mobile | times: logo_ratio | ceil
+    assign inverse_logo_width = settings.logo_height | times: inverse_logo_ratio | ceil
+    assign inverse_logo_width_mobile = settings.logo_height_mobile | times: inverse_logo_ratio | ceil
+    assign logo_style = '--header-logo-image-width: ' | append: logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+    assign inverse_logo_style = '--header-logo-image-width: ' | append: inverse_logo_width | append: 'px;' | append: '--header-logo-image-width-mobile: ' | append: inverse_logo_width_mobile | append: 'px; --header-logo-image-height: ' | append: settings.logo_height | append: 'px; --header-logo-image-height-mobile: ' | append: settings.logo_height_mobile | append: 'px;'
+  %}
+
+  <span
+    class="header-logo__image-container header-logo__image-container--original"
+    data-testid="header-logo"
+  >
+    {% if header_logo_image != blank %}
+      {% render 'image',
+        image: header_logo_image,
+        class: 'header-logo__image',
+        height: settings.logo_height,
+        text_fallback: penya_shop_name,
+        style: logo_style
+      %}
+    {% elsif penya_logo_file != blank %}
+      <img
+        src="{{ penya_logo_file | file_url }}"
+        class="header-logo__image"
+        alt="{{ penya_shop_name }}"
+        style="{{ logo_style }}"
+        loading="eager"
+      >
+    {% elsif penya_logo_asset != '' %}
+      <img
+        src="{{ penya_logo_asset | asset_url }}"
+        class="header-logo__image"
+        alt="{{ penya_shop_name }}"
+        style="{{ logo_style }}"
+        loading="eager"
+      >
+    {% else %}
+      <span class="visually-hidden">{{ penya_shop_name }}</span>
+      {% render 'penya-logo', class: 'header-logo__image penya-logo--header', label: penya_shop_name, style: logo_style %}
+    {% endif %}
+  </span>
+
+  {% if use_inverse_logo %}
+    <span
+      class="header-logo__image-container header-logo__image-container--inverse"
+      data-testid="header-logo-inverse"
+    >
+      {% if inverse_logo_image != blank %}
+        {% render 'image',
+          image: inverse_logo_image,
+          class: 'header-logo__image',
+          height: settings.logo_height,
+          text_fallback: penya_shop_name,
+          style: inverse_logo_style
+        %}
+      {% elsif penya_logo_file != blank %}
+        <img
+          src="{{ penya_logo_file | file_url }}"
+          class="header-logo__image"
+          alt="{{ penya_shop_name }}"
+          style="{{ inverse_logo_style }}"
+          loading="eager"
+        >
+      {% elsif penya_logo_asset != '' %}
+        <img
+          src="{{ penya_logo_asset | asset_url }}"
+          class="header-logo__image"
+          alt="{{ penya_shop_name }}"
+          style="{{ inverse_logo_style }}"
+          loading="eager"
+        >
+      {% else %}
+        <span class="visually-hidden">{{ penya_shop_name }}</span>
+        {% render 'penya-logo', class: 'header-logo__image penya-logo--header', label: penya_shop_name, style: inverse_logo_style %}
+      {% endif %}
+    </span>
+  {% endif %}
+</a>
+
+{% stylesheet %}
+  .header-logo {
+    display: flex;
+    height: 100%;
+    font-size: var(--font-size--md);
+    font-family: var(--font-family);
+    font-weight: var(--font-weight);
+    font-style: var(--font-style);
+    color: var(--color-foreground);
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+
+    /* Make sure the logo visually hugs the left edge of the column when it is the first item in the left column */
+    margin-inline: calc(-1 * var(--padding-inline-start));
+
+    &[data-hidden-on-home-page] {
+      display: none;
+
+      #header-component:is(
+          [sticky='always']:not([data-scroll-direction='none']),
+          [sticky='scroll-up'][data-scroll-direction='up']
+        )
+        & {
+        display: flex;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      padding: 0;
+    }
+
+    @media screen and (min-width: 750px) {
+      flex-shrink: 0;
+    }
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .header-logo__image {
+    object-fit: contain;
+    height: var(--header-logo-image-height-mobile);
+    width: var(--header-logo-image-width-mobile);
+
+    @media screen and (min-width: 750px) {
+      height: var(--header-logo-image-height);
+      width: var(--header-logo-image-width);
+    }
+  }
+
+  .header-logo:has(.header-logo__image-container--inverse) .header-logo__image-container--original {
+    display: var(--header-logo-display, block);
+  }
+
+  .header-logo__image-container--inverse {
+    display: var(--header-logo-inverse-display, none);
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.logo",
+  "tag": null,
+  "class": "header-logo",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:content.edit_logo_in_theme_settings"
+    },
+    {
+      "type": "header",
+      "content": "t:content.visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_logo_on_home_page",
+      "label": "t:settings.hide_logo_on_home_page",
+      "info": "t:info.hide_logo_on_home_page_help"
+    },
+    {
+      "type": "header",
+      "content": "t:content.padding_desktop"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ]
+}
+{% endschema %}

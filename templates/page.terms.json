@@ -1,0 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "policy": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<div class=\"rte\">\n  <h1>{{ closest.page.title }}</h1>\n  {{ shop.terms_of_service.body }}\n</div>",
+        "color_scheme": "scheme-2",
+        "section_width": "page-width",
+        "padding-block-start": 60,
+        "padding-block-end": 60
+      }
+    }
+  },
+  "order": [
+    "policy"
+  ]
+}

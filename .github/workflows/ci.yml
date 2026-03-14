@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  theme-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Shopify Theme Check
+        uses: shopify/theme-check-action@v2
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: theme-check
+    if: ${{ secrets.E2E_BASE_URL != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install Dependencies
+        run: npm ci
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright Tests
+        env:
+          E2E_BASE_URL: ${{ secrets.E2E_BASE_URL }}
+        run: npx playwright test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: e2e
+    if: ${{ github.ref == 'refs/heads/main' && secrets.SHOPIFY_STORE_DOMAIN != '' && secrets.SHOPIFY_CLI_THEME_TOKEN != '' && secrets.SHOPIFY_THEME_ID != '' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+      - name: Push Theme To Live
+        env:
+          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+          SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+        run: shopify theme push --store "$SHOPIFY_STORE_DOMAIN" --theme "$SHOPIFY_THEME_ID" --path . --allow-live

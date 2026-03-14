@@ -1,0 +1,199 @@
+
+
+{%- assign block_settings = block.settings -%}
+{% liquid
+  assign fallback_image = blank
+  assign fallback_file = blank
+  assign fallback_src = ''
+  assign fallback_width = 1500
+  assign fallback_height = 2000
+  assign fallback_alt = 'Penya Journal'
+
+  if article.image == blank
+    case article.handle
+      when 'design-fashion-zimbabwe'
+        assign fallback_candidates = 'penya-blog-design.jpg|penya-blog-design.avif|penya-blog-1.avif' | split: '|'
+        assign fallback_alt = 'Design and fashion in Zimbabwe'
+      when 'sustainability-hemp-fabrics'
+        assign fallback_candidates = 'penya-blog-hemp.jpg|penya-blog-hemp.avif' | split: '|'
+        assign fallback_alt = 'Sustainability and hemp fabrics'
+      when 'moto-moto-festival-germany'
+        assign fallback_candidates = 'penya-blog-moto.jpg|penya-blog-moto.avif' | split: '|'
+        assign fallback_alt = 'Moto Moto festival in Germany'
+    endcase
+
+    if fallback_candidates != blank
+      for candidate in fallback_candidates
+        assign candidate = candidate | strip
+        if fallback_image == blank and images[candidate] != blank
+          assign fallback_image = images[candidate]
+          assign fallback_width = fallback_image.width | default: fallback_width
+          assign fallback_height = fallback_image.height | default: fallback_height
+          break
+        endif
+        if fallback_file == blank and files[candidate] != blank
+          assign fallback_file = files[candidate]
+          assign fallback_width = fallback_file.width | default: fallback_width
+          assign fallback_height = fallback_file.height | default: fallback_height
+          break
+        endif
+      endfor
+      if fallback_image == blank and fallback_file == blank
+        assign fallback_src = fallback_candidates[0] | default: ''
+      endif
+    endif
+  endif
+
+  assign blog_image_class = 'border-style blog-post-card__image blog-post-card__image--large'
+  if article.handle == 'moto-moto-festival-germany'
+    assign blog_image_class = blog_image_class | append: ' penya-image-top'
+  endif
+%}
+
+<div
+  class="blog-post-card"
+  style="--text-align: {{ block_settings.alignment }}"
+>
+  {% if article.image %}
+    {% content_for 'block', id: 'image', type: '_blog-post-image', article: article %}
+  {% elsif fallback_image != blank %}
+    <div class="blog-post-card__image-container">
+      <a href="{{ article.url }}">
+        {{
+          fallback_image
+          | image_url: width: 1500
+          | image_tag:
+            width: fallback_width,
+            height: fallback_height,
+            alt: fallback_alt,
+            class: blog_image_class,
+            loading: 'eager',
+            fetchpriority: 'high'
+        }}
+      </a>
+    </div>
+  {% elsif fallback_file != blank %}
+    <div class="blog-post-card__image-container">
+      <a href="{{ article.url }}">
+        <img
+          src="{{ fallback_file | file_url }}"
+          width="{{ fallback_width }}"
+          height="{{ fallback_height }}"
+          alt="{{ fallback_alt }}"
+          class="{{ blog_image_class }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </a>
+    </div>
+  {% elsif fallback_src != '' %}
+    <div class="blog-post-card__image-container">
+      <a href="{{ article.url }}">
+        <img
+          src="{{ fallback_src | asset_url }}"
+          width="{{ fallback_width }}"
+          height="{{ fallback_height }}"
+          alt="{{ fallback_alt }}"
+          class="{{ blog_image_class }}"
+          loading="eager"
+          fetchpriority="high"
+        >
+      </a>
+    </div>
+  {% endif %}
+
+  <div class="blog-post-card__content">
+    <a
+      href="{{ article.url }}"
+      data-testid="blog-post-link"
+    >
+      {%- content_for 'block', id: 'heading', type: '_heading', text: article.title -%}
+    </a>
+
+    {% content_for 'block',
+      id: 'blog-post-details',
+      type: '_blog-post-info-text',
+      alignment: block_settings.alignment,
+      article: article
+    %}
+
+    {% content_for 'block', id: 'content', type: '_blog-post-description', article: article, show_read_more: true %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .blog-post-card {
+    display: flex;
+    flex-direction: column;
+    text-align: var(--text-align);
+    column-gap: var(--columns-gap);
+  }
+
+  .blog-post-item--horizontal:has(.blog-post-card__image-container) .blog-post-card {
+    & > *:first-child {
+      flex-basis: 70%;
+    }
+
+    & > *:last-child {
+      flex-basis: 30%;
+    }
+  }
+
+  .blog-post-card__content {
+    padding-block-start: 0.4rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .blog-post-item .blog-post-card__image-container,
+  .blog-post-item .blog-post-card__content {
+    width: 100%;
+  }
+
+  /**
+   * Horizontal layout (image left, content right)
+   * Applied to hero posts based on total article count
+   * Only applies the split layout when an image is actually present
+   */
+  .blog-post-item--horizontal .blog-post-card {
+    flex-direction: row;
+
+    @media screen and (max-width: 749px) {
+      flex-direction: column;
+    }
+  }
+
+  .blog-post-card__content a {
+    display: block;
+    text-wrap: pretty;
+    text-decoration: none;
+    padding-block-start: 0.75rem;
+  }
+
+  .blog-post-card__content a:hover,
+  .blog-post-card__content a:hover [style*='--color: var(--color-primary)'] {
+    color: var(--color-primary-hover);
+  }
+
+  .blog-post-card__content a:hover [style*='--color: var(--color-foreground-heading)'] {
+    color: rgb(var(--color-foreground-heading-rgb) / var(--opacity-subdued-text));
+  }
+
+  .blog-post-card__content a:hover [style*='--color: var(--color-foreground)'] {
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.blog_post",
+  "settings": [
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "t:settings.alignment",
+      "default": "left"
+    }
+  ]
+}
+{% endschema %}

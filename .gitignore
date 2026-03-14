@@ -1,0 +1,11 @@
+node_modules/
+.playwright/
+.tools/
+npm-debug.log*
+.DS_Store
+.env
+.env.*
+.shopify/
+.vscode/
+test-results/
+playwright-report/

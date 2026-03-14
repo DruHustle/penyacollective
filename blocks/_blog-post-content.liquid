@@ -1,0 +1,63 @@
+
+{% assign fallback_content = '' %}
+{% case article.handle %}
+  {% when 'design-fashion-zimbabwe' %}
+    {% capture fallback_content %}
+      <p>Zimbabwean fashion is a study in contrast: refined tailoring set against vibrant patterning, heritage craft framed by a global lens. From Harare ateliers to emerging runways, designers are defining a visual language that is both rooted and future-facing.</p>
+      <h3>Craft As Culture</h3>
+      <p>Local craftsmanship sits at the heart of the industry. Beading, woven textiles, and hand-finished details are not accents here; they are the foundation. The result is clothing that carries story, skill, and purpose in every seam.</p>
+      <h3>Modern Silhouettes, Ancestral Codes</h3>
+      <p>Today’s designers are blending sharp, architectural silhouettes with motifs that speak to lineage. Tailored coats, sculptural knitwear, and fluid separates are finished with patterns that nod to place, memory, and identity.</p>
+      <h3>Radiance Beyond Borders</h3>
+      <p>The momentum is growing, powered by a generation that sees no divide between heritage and innovation. The goal is clear: to shine globally while remaining unmistakably Zimbabwean.</p>
+    {% endcapture %}
+  {% when 'sustainability-hemp-fabrics' %}
+    {% capture fallback_content %}
+      <p>Hemp is one of the most promising materials for modern luxury. It is resilient, breathable, and naturally low impact. At Penya, we are exploring how hemp can be refined into cloth that feels elevated, soft, and timeless.</p>
+      <h3>Why Hemp</h3>
+      <p>Hemp grows quickly, needs far less water than conventional cotton, and enriches the soil. That makes it a powerful foundation for responsible fashion, especially in climates where resource efficiency matters.</p>
+      <h3>Finishing For Luxury</h3>
+      <p>We focus on finishing processes that elevate the hand feel: careful washes, refined weaves, and thoughtful blends that add drape and durability without compromising the material’s character.</p>
+      <h3>Designed To Endure</h3>
+      <p>Sustainability is not only about materials. It is also about longevity. Hemp’s strength makes it ideal for pieces that are made to be worn, remembered, and kept.</p>
+    {% endcapture %}
+  {% when 'moto-moto-festival-germany' %}
+    {% capture fallback_content %}
+      <p>Moto Moto is a vibrant cultural festival in Germany that celebrates African creativity across fashion, design, and music. This year, Zimbabwe’s fashion scene took center stage, revealing a bold, luminous vision to a new audience.</p>
+      <h3>Zimbabwe On The Global Stage</h3>
+      <p>From runway moments to curated installations, the showcase highlighted artisans and labels that are redefining what contemporary African luxury looks and feels like.</p>
+      <h3>Heritage Meets Innovation</h3>
+      <p>Collections fused heritage patterns with modern silhouettes, proving that tradition and innovation are not opposites but collaborators.</p>
+      <h3>The Collective Spirit</h3>
+      <p>The festival’s impact went beyond the garments. It fostered new connections, creative partnerships, and a deeper appreciation for Zimbabwe’s design language on the international stage.</p>
+    {% endcapture %}
+{% endcase %}
+
+<div class="blog-post-content rte">
+  <rte-formatter>
+    {% if article.content != blank %}
+      {{ article.content }}
+    {% elsif fallback_content != blank %}
+      {{ fallback_content }}
+    {% endif %}
+  </rte-formatter>
+</div>
+
+{% stylesheet %}
+  .blog-post-content {
+    max-width: var(--normal-content-width);
+    margin: 0 auto;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:names.content",
+  "settings": [],
+  "presets": [
+    {
+      "name": "t:names.content"
+    }
+  ]
+}
+{% endschema %}
