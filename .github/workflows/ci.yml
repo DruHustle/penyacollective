@@ -22,19 +22,24 @@ jobs:
       - uses: actions/checkout@v4
       - name: Strip comments and validate all template JSON files
         run: |
-          failed=0
-          for f in templates/*.json config/settings_data.json; do
-            [ -f "$f" ] || continue
-            # Strip /* */ comment headers that Shopify injects
-            stripped=$(sed 's|/\*.*\*/||' "$f")
-            if ! echo "$stripped" | python3 -c "import sys,json; json.load(sys.stdin)" 2>/dev/null; then
-              echo "❌ Invalid JSON: $f"
-              failed=1
-            else
-              echo "✅ $f"
-            fi
-          done
-          exit $failed
+          python3 - <<'PYEOF'
+          import re, json, sys, glob
+
+          files = glob.glob('templates/*.json') + ['config/settings_data.json']
+          failed = False
+          for path in sorted(files):
+            try:
+              with open(path) as f:
+                raw = f.read()
+              clean = re.sub(r'/\*.*?\*/', '', raw, flags=re.DOTALL)
+              json.loads(clean)
+              print(f'✅ {path}')
+            except Exception as e:
+              print(f'❌ Invalid JSON: {path} — {e}')
+              failed = True
+
+          sys.exit(1 if failed else 0)
+          PYEOF
 
   # ─── 3. E2E tests against preview theme ──────────────────────────────────
   e2e:
