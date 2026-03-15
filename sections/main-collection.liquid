@@ -51,17 +51,9 @@
     {% paginate collection.products by products_per_page %}
       {% capture children %}
         {% if collection.products_count == 0 %}
-          {% for i in (1..6) %}
-            <li
-              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-              data-page="1"
-              ref="cards[]"
-            >
-              {% # theme-check-disable %}
-              {% content_for 'block', type: '_product-card', id: 'product-card', closest.product: null, penya_placeholder_index: forloop.index0 %}
-              {% # theme-check-enable %}
-            </li>
-          {% endfor %}
+          <li class="product-grid__item product-grid__empty">
+            <p>New pieces coming soon.</p>
+          </li>
         {% else %}
           {% for product in collection.products %}
             <li
@@ -91,6 +83,14 @@
 </results-list>
 
 {% stylesheet %}
+  .product-grid__empty {
+    list-style: none;
+    grid-column: 1 / -1;
+    padding: 4rem 0;
+    text-align: center;
+    opacity: 0.5;
+  }
+
   .main-collection-grid {
     grid-column: var(--grid-column--mobile);
 

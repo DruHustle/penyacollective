@@ -39,6 +39,30 @@ async function shopify(path, method = 'GET', body) {
   return res.json();
 }
 
+async function ensureCollection(handle, title, imageFilename, bodyHtml) {
+  const existing = await shopify(`/custom_collections.json?handle=${encodeURIComponent(handle)}`);
+  if (existing.custom_collections && existing.custom_collections.length > 0) {
+    const current = existing.custom_collections[0];
+    const updated = await shopify(`/custom_collections/${current.id}.json`, 'PUT', {
+      custom_collection: {
+        id: current.id,
+        image: { attachment: imageAttachment(imageFilename), filename: imageFilename },
+      },
+    });
+    return updated.custom_collection;
+  }
+  const created = await shopify('/custom_collections.json', 'POST', {
+    custom_collection: {
+      title,
+      handle,
+      body_html: bodyHtml,
+      published: true,
+      image: { attachment: imageAttachment(imageFilename), filename: imageFilename },
+    },
+  });
+  return created.custom_collection;
+}
+
 async function ensureBlog(handle, title) {
   const existing = await shopify(`/blogs.json?handle=${encodeURIComponent(handle)}`);
   if (existing.blogs && existing.blogs.length > 0) {
@@ -152,8 +176,34 @@ const pages = [
   },
 ];
 
+const collections = [
+  {
+    handle: 'men',
+    title: 'Men',
+    imageFilename: 'collection-men.jpg',
+    bodyHtml: 'Elevated essentials for the modern man. Rooted in heritage, designed for today.',
+  },
+  {
+    handle: 'women',
+    title: 'Women',
+    imageFilename: 'collection-women.avif',
+    bodyHtml: 'Radiant, considered pieces for women who dress with intention.',
+  },
+  {
+    handle: 'accessories',
+    title: 'Accessories',
+    imageFilename: 'collection-accessories.jpg',
+    bodyHtml: 'Finishing touches crafted with the same care as every Penya garment.',
+  },
+];
+
 async function main() {
   const blog = await ensureBlog('journal', 'Journal');
+
+  for (const collection of collections) {
+    const result = await ensureCollection(collection.handle, collection.title, collection.imageFilename, collection.bodyHtml);
+    console.log(`Collection ready: ${result.title} → /collections/${result.handle}`);
+  }
 
   for (const page of pages) {
     const result = await ensurePage(page.handle, page.title, page.templateSuffix, page.bodyHtml);

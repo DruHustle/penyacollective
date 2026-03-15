@@ -49,8 +49,9 @@
   endif
 
   assign image_class = 'blog-post-featured-image__image border-style'
-  if article_handle == 'moto-moto-festival-germany'
-    assign image_class = image_class | append: ' penya-image-top'
+  assign image_position_style = ''
+  if article_handle == 'moto-moto-festival-germany' or article_handle == 'penya-collective-rooted-in-heritage'
+    assign image_position_style = 'object-position: center top;'
   endif
 
   assign ratio_source = image
@@ -86,7 +87,7 @@
         widths: '240, 352, 832, 1200, 1600, 1920, 2560, 3840',
         height: image.height,
         class: image_class,
-        style: image_border_style,
+        style: image_border_style | append: image_position_style,
         sizes: 'auto, (min-width: 750px) 100vw, 100vw',
         loading: 'eager',
         fetchpriority: 'high',

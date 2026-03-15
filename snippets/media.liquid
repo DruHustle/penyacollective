@@ -20,8 +20,9 @@
     assign show_video = true
   endif
 
+  assign fallback_asset = ''
   if show_image and block_settings.image == blank and section_id == 'about_hero'
-    assign fallback_image = images['blog-penya-collective.jpg']
+    assign fallback_asset = 'about-hero.jpg'
   endif
 %}
 
@@ -50,12 +51,15 @@
           class: 'media-block__media border-style',
           unset_image_tag: unset_image_tag
         %}
-      {% elsif fallback_image != blank %}
-        {% render 'image',
-          image: fallback_image,
-          class: 'media-block__media border-style',
-          unset_image_tag: unset_image_tag
-        %}
+      {% elsif fallback_asset != '' %}
+        <img
+          src="{{ fallback_asset | asset_url }}"
+          class="media-block__media border-style"
+          alt="Our Story"
+          width="2000"
+          height="2500"
+          loading="eager"
+        >
       {% else %}
         <div class="media-block__media border-style">
           {{ 'detailed-apparel-1' | placeholder_svg_tag: 'hero__media' }}
