@@ -21,10 +21,13 @@
   if penya_shop_name == 'My Store'
     assign penya_shop_name = 'Penya Collective'
   endif
+
+  assign penya_default_description = 'Premium fashion rooted in Zimbabwean heritage. Shop curated collections by Penya Collective and designers across Zimbabwe and beyond.'
+
   assign og_title = page_title | default: penya_shop_name
   assign og_url = canonical_url | default: request.origin
   assign og_type = 'website'
-  assign og_description = page_description | default: shop.description | default: penya_shop_name
+  assign og_description = page_description | default: shop.description | default: penya_default_description
 
   if request.page_type == 'product'
     assign og_type = 'product'
@@ -32,6 +35,14 @@
     assign og_type = 'article'
   elsif request.page_type == 'password'
     assign og_url = request.origin
+  endif
+
+  assign og_image = page_image
+  assign og_image_url = ''
+  if og_image != blank
+    assign og_image_url = og_image | image_url: width: 1200
+  elsif settings.logo != blank
+    assign og_image_url = settings.logo | image_url: width: 1200
   endif
 %}
 
@@ -56,23 +67,25 @@
   content="{{ og_description | escape }}"
 >
 
-{%- if page_image -%}
+{%- if og_image_url != '' -%}
   <meta
     property="og:image"
-    content="http:{{ page_image | image_url }}"
+    content="https:{{ og_image_url }}"
   >
   <meta
     property="og:image:secure_url"
-    content="https:{{ page_image | image_url }}"
+    content="https:{{ og_image_url }}"
   >
-  <meta
-    property="og:image:width"
-    content="{{ page_image.width }}"
-  >
-  <meta
-    property="og:image:height"
-    content="{{ page_image.height }}"
-  >
+  {%- if og_image != blank -%}
+    <meta
+      property="og:image:width"
+      content="{{ og_image.width }}"
+    >
+    <meta
+      property="og:image:height"
+      content="{{ og_image.height }}"
+    >
+  {%- endif -%}
 {%- endif -%}
 
 {%- if request.page_type == 'product' -%}
@@ -104,6 +117,12 @@
   name="twitter:description"
   content="{{ og_description | escape }}"
 >
+{%- if og_image_url != '' -%}
+  <meta
+    name="twitter:image"
+    content="https:{{ og_image_url }}"
+  >
+{%- endif -%}
 
 <title>
   {{ page_title }}
@@ -117,9 +136,135 @@
   href="{{ canonical_url }}"
 >
 
-{% if page_description %}
-  <meta
-    name="description"
-    content="{{ page_description | escape }}"
-  >
-{% endif %}
+<meta
+  name="description"
+  content="{{ og_description | escape }}"
+>
+
+{%- comment -%} JSON-LD Structured Data {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "{{ request.origin }}/#organization",
+          "name": "{{ penya_shop_name }}",
+          "url": "{{ request.origin }}",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "{{ request.origin }}/cdn/shop/files/logo-penya.png"
+          },
+          "description": "{{ penya_default_description }}",
+          "sameAs": [
+            "{{ settings.social_instagram_link }}",
+            "{{ settings.social_twitter_link }}",
+            "{{ settings.social_facebook_link }}"
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "{{ request.origin }}/#website",
+          "url": "{{ request.origin }}",
+          "name": "{{ penya_shop_name }}",
+          "publisher": { "@id": "{{ request.origin }}/#organization" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "{{ request.origin }}/search?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{%- if request.page_type == 'product' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "{{ product.title | escape }}",
+      "description": "{{ product.description | strip_html | truncate: 300 | escape }}",
+      "url": "{{ canonical_url }}",
+      "image": [
+        {%- for image in product.images limit: 5 -%}
+          "https:{{ image | image_url: width: 1200 }}"{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      "brand": {
+        "@type": "Brand",
+        "name": "{{ product.vendor | default: penya_shop_name }}"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "{{ cart.currency.iso_code }}",
+        "lowPrice": "{{ product.price_min | money_without_currency }}",
+        "highPrice": "{{ product.price_max | money_without_currency }}",
+        "offerCount": "{{ product.variants.size }}",
+        "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- if request.page_type == 'article' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "{{ article.title | escape }}",
+      "description": "{{ article.excerpt | default: article.content | strip_html | truncate: 200 | escape }}",
+      "url": "{{ canonical_url }}",
+      "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+      "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ article.author }}"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "{{ penya_shop_name }}",
+        "@id": "{{ request.origin }}/#organization"
+      }
+      {%- if article.image -%}
+      ,"image": {
+        "@type": "ImageObject",
+        "url": "https:{{ article.image | image_url: width: 1200 }}",
+        "width": "{{ article.image.width }}",
+        "height": "{{ article.image.height }}"
+      }
+      {%- endif -%}
+    }
+  </script>
+{%- endif -%}
+
+{%- if request.page_type == 'collection' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "{{ collection.title | escape }}",
+      "description": "{{ collection.description | strip_html | truncate: 200 | escape }}",
+      "url": "{{ canonical_url }}",
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "{{ request.origin }}"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "{{ collection.title | escape }}",
+            "item": "{{ canonical_url }}"
+          }
+        ]
+      }
+    }
+  </script>
+{%- endif -%}
