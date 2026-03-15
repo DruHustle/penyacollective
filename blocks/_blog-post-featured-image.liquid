@@ -17,11 +17,13 @@
   if image == blank
     case article_handle
       when 'design-fashion-zimbabwe'
-        assign fallback_candidates = 'penya-blog-design.jpg|penya-blog-design.avif|penya-blog-1.avif' | split: '|'
+        assign fallback_candidates = 'penya-blog-design.jpg|penya-blog-design.avif|blog-1.avif' | split: '|'
       when 'sustainability-hemp-fabrics'
         assign fallback_candidates = 'penya-blog-hemp.jpg|penya-blog-hemp.avif' | split: '|'
       when 'moto-moto-festival-germany'
         assign fallback_candidates = 'penya-blog-moto.jpg|penya-blog-moto.avif' | split: '|'
+      when 'ivhu-tribe-partner-spotlight'
+        assign fallback_candidates = 'penya-blog-moto.jpg|penya-blog-design.jpg' | split: '|'
     endcase
 
     if fallback_candidates != blank
@@ -143,6 +145,10 @@
     height: 100%;
     object-fit: cover;
     object-position: center center;
+  }
+
+  .blog-post-featured-image__image.penya-image-top {
+    object-position: center top;
   }
 
   @media screen and (max-width: 749px) {

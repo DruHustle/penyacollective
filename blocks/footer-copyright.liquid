@@ -9,7 +9,7 @@
   assign penya_logo_image = blank
   assign penya_logo_file = blank
   assign penya_logo_asset = ''
-  assign penya_logo_candidates = 'penya logo.png|penya logo.jpg|penya logo.jpeg|penya logo.webp|penya-logo.png|penya-logo.jpg|penya-logo.jpeg|penya-logo.webp' | split: '|'
+  assign penya_logo_candidates = 'logo-penya.png|logo-penya.jpg|logo-penya.jpeg|logo-penya.webp|penya logo.png|penya logo.jpg|penya-logo.png|penya-logo.jpg' | split: '|'
   for candidate in penya_logo_candidates
     assign candidate = candidate | strip
     if penya_logo_image == blank and images[candidate] != blank

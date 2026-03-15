@@ -188,7 +188,7 @@
       # Extract index from block ID (e.g., "product-card-3" -> "3")
       assign block_parts = block.id | split: '-'
       assign placeholder_index = penya_placeholder_index | default: block_parts.last | default: 0
-      assign sample_images = 'penya-instagram-runway.jpg|penya-instagram-suit.jpg|penya-instagram-patchwork.jpg|penya-instagram-street.jpg' | split: '|'
+      assign sample_images = 'instagram-runway.jpg|instagram-suit.jpg|instagram-patchwork.jpg|instagram-street.jpg' | split: '|'
       assign sample_index = placeholder_index | modulo: sample_images.size
       assign sample_key = sample_images[sample_index]
       assign sample_image = images[sample_key]

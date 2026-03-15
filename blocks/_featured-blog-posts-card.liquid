@@ -104,7 +104,7 @@
   </a>
 
   <div class="featured-blog-posts-card__inner">
-    {% if onboarding or article.image %}
+    {% if onboarding or article != blank %}
       {{ image }}
     {% endif %}
 
