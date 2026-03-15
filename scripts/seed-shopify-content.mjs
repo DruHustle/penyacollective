@@ -107,20 +107,47 @@ const articles = [
   },
 ];
 
+const pages = [
+  {
+    handle: 'about',
+    title: 'The Story of Penya Collective',
+    templateSuffix: 'about',
+    bodyHtml: 'Born in the heart of Harare, Penya Collective is a premium fashion house dedicated to the art of radiance.',
+  },
+  {
+    handle: 'sustainability',
+    title: 'Sustainability',
+    templateSuffix: 'sustainability',
+    bodyHtml: 'At Penya Collective, luxury is rooted in integrity.',
+  },
+  {
+    handle: 'contact',
+    title: 'Contact',
+    templateSuffix: 'contact',
+    bodyHtml: 'Get in touch with the Penya Collective team.',
+  },
+  {
+    handle: 'shipping',
+    title: 'Shipping & Returns',
+    templateSuffix: 'shipping',
+    bodyHtml: 'Information on shipping, delivery, and returns.',
+  },
+];
+
 async function main() {
   const blog = await ensureBlog('journal', 'Journal');
-  await ensurePage(
-    'about',
-    'The Story of Penya Collective',
-    'about',
-    'Born in the heart of Harare, Penya Collective is a premium fashion house dedicated to the art of radiance.'
-  );
 
-  for (const article of articles) {
-    await ensureArticle(blog.id, article);
+  for (const page of pages) {
+    const result = await ensurePage(page.handle, page.title, page.templateSuffix, page.bodyHtml);
+    console.log(`Page ready: ${result.title} → /pages/${result.handle}`);
   }
 
-  console.log('Seeded Journal articles and About page.');
+  for (const article of articles) {
+    const result = await ensureArticle(blog.id, article);
+    console.log(`Article ready: ${result.title} → /blogs/journal/${result.handle}`);
+  }
+
+  console.log('\nDone. All content seeded.');
 }
 
 main().catch((err) => {
