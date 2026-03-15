@@ -1,3 +1,12 @@
+{%- comment -%} LCP preload — tells the browser to fetch the above-the-fold image immediately {%- endcomment -%}
+{%- if request.page_type == 'index' -%}
+  <link rel="preload" as="image" href="{{ 'hero-main.jpg' | asset_url }}" fetchpriority="high">
+{%- elsif request.page_type == 'product' and product.featured_image -%}
+  <link rel="preload" as="image" href="{{ product.featured_image | image_url: width: 1200 }}" fetchpriority="high">
+{%- elsif request.page_type == 'article' and article.image -%}
+  <link rel="preload" as="image" href="{{ article.image | image_url: width: 1200 }}" fetchpriority="high">
+{%- endif -%}
+
 <meta charset="utf-8">
 <meta
   http-equiv="X-UA-Compatible"

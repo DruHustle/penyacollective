@@ -6,60 +6,137 @@ on:
   pull_request:
 
 jobs:
+  # ─── 1. Liquid linting ────────────────────────────────────────────────────
   theme-check:
+    name: Shopify Theme Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Shopify Theme Check
-        uses: shopify/theme-check-action@v2
+      - uses: actions/checkout@v4
+      - uses: shopify/theme-check-action@v2
 
-  e2e:
+  # ─── 2. Template JSON validation ─────────────────────────────────────────
+  validate-json:
+    name: Validate Template JSON
     runs-on: ubuntu-latest
-    needs: theme-check
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - name: Strip comments and validate all template JSON files
+        run: |
+          python3 - <<'PYEOF'
+          import re, json, sys, glob
+
+          files = glob.glob('templates/*.json') + ['config/settings_data.json']
+          failed = False
+          for path in sorted(files):
+            try:
+              with open(path) as f:
+                raw = f.read()
+              clean = re.sub(r'/\*.*?\*/', '', raw, flags=re.DOTALL)
+              json.loads(clean)
+              print(f'✅ {path}')
+            except Exception as e:
+              print(f'❌ Invalid JSON: {path} — {e}')
+              failed = True
+
+          sys.exit(1 if failed else 0)
+          PYEOF
+
+  # ─── 3. E2E tests against preview theme ──────────────────────────────────
+  e2e:
+    name: Playwright E2E
+    runs-on: ubuntu-latest
+    needs: [theme-check, validate-json]
+    env:
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+      SHOPIFY_DEV_THEME_ID: ${{ secrets.SHOPIFY_DEV_THEME_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
-      - name: Install Dependencies
-        run: npm ci
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-      - name: Run Playwright Tests
-        env:
-          E2E_BASE_URL: ${{ secrets.E2E_BASE_URL }}
-        run: |
-          if [ -z "$E2E_BASE_URL" ]; then
-            echo "E2E_BASE_URL not set — skipping tests"
-            exit 0
-          fi
-          npx playwright test
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: [theme-check, e2e]
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Install Shopify CLI
-        run: npm install -g @shopify/cli@latest
-      - name: Push Theme To Live
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Check required secrets
+        run: |
+          missing=0
+          for var in SHOPIFY_CLI_THEME_TOKEN SHOPIFY_STORE_DOMAIN SHOPIFY_DEV_THEME_ID; do
+            if [ -z "${!var}" ]; then
+              echo "⚠️  Secret $var is not set — E2E tests will be skipped"
+              missing=1
+            fi
+          done
+          echo "SECRETS_OK=$([ $missing -eq 0 ] && echo true || echo false)" >> $GITHUB_ENV
+
+      - name: Push to dev/preview theme
+        if: env.SECRETS_OK == 'true'
+        run: |
+          npm install -g @shopify/cli@latest
+          shopify theme push \
+            --store "$SHOPIFY_STORE_DOMAIN" \
+            --theme "$SHOPIFY_DEV_THEME_ID" \
+            --path . \
+            --allow-live \
+            --no-color
         env:
           SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
-          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
-          SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+
+      - name: Run Playwright tests
+        if: env.SECRETS_OK == 'true'
+        env:
+          E2E_BASE_URL: "https://${{ secrets.SHOPIFY_STORE_DOMAIN }}?preview_theme_id=${{ secrets.SHOPIFY_DEV_THEME_ID }}"
+        run: npx playwright test
+
+      - name: Upload test report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
+
+  # ─── 4. Deploy to live (main branch only, all checks must pass) ───────────
+  deploy:
+    name: Deploy to Live
+    runs-on: ubuntu-latest
+    needs: [theme-check, validate-json, e2e]
+    if: github.ref == 'refs/heads/main'
+    env:
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+      SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check required deploy secrets
         run: |
-          if [ -z "$SHOPIFY_CLI_THEME_TOKEN" ] || [ -z "$SHOPIFY_STORE_DOMAIN" ] || [ -z "$SHOPIFY_THEME_ID" ]; then
-            echo "Shopify deploy secrets not configured — skipping deploy"
-            exit 0
-          fi
-          shopify theme push --store "$SHOPIFY_STORE_DOMAIN" --theme "$SHOPIFY_THEME_ID" --path . --allow-live
+          for var in SHOPIFY_CLI_THEME_TOKEN SHOPIFY_STORE_DOMAIN SHOPIFY_THEME_ID; do
+            if [ -z "${!var}" ]; then
+              echo "❌ Required secret $var is not set — cannot deploy"
+              exit 1
+            fi
+          done
+          echo "All deploy secrets present ✅"
+
+      - name: Install Shopify CLI
+        run: npm install -g @shopify/cli@latest
+
+      - name: Push to live theme
+        run: |
+          shopify theme push \
+            --store "$SHOPIFY_STORE_DOMAIN" \
+            --theme "$SHOPIFY_THEME_ID" \
+            --path . \
+            --allow-live \
+            --no-color

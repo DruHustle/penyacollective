@@ -15,6 +15,7 @@
   {% assign image_height = height | default: image.height %}
   {% assign image_height_2x = height | default: image_height | times: 2 %}
   {% assign image_height_3x = height | default: image_height | times: 3 %}
+  {% assign display_width = image.width | times: image_height | divided_by: image.height %}
 
   {% capture image_srcset -%}
     {{ image | image_url: height: image_height }} 1x, {{ image | image_url: height: image_height_2x }} 2x, {{ image | image_url: height: image_height_3x }} 3x
@@ -26,7 +27,7 @@
     {% assign style_value = style_value | append: 'object-position: inherit;' %}
   {% endif %}
 
-  {{ image | image_url: height: image_height | image_tag: class: class, srcset: image_srcset, style: style_value }}
+  {{ image | image_url: height: image_height | image_tag: class: class, srcset: image_srcset, style: style_value, width: display_width, height: image_height }}
 {% elsif text_fallback %}
   {{ text_fallback }}
 {% endif %}
