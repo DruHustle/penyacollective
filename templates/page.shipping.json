@@ -41,7 +41,7 @@
           "type": "text",
           "name": "t:names.content",
           "settings": {
-            "text": "<h3>Shipping</h3><p>We ship worldwide from Harare, Zimbabwe. Domestic deliveries typically arrive in 2-5 business days. International orders ship via DHL Express or FedEx and typically arrive in 4-10 business days depending on destination and customs processing.</p><h3>Local Pickup</h3><p>Local pickup is available in Harare by appointment. Choose Local Pickup at checkout and we will confirm the collection details by email.</p><h3>Returns</h3><p>Returns are accepted within 14 days of delivery for unworn items in original condition. To start a return, email <a href=\"mailto:concierge@penyacollective.com\">concierge@penyacollective.com</a> with your order number. Custom or final-sale items are non-returnable.</p>",
+            "text": "<h3>Shipping</h3><p>We ship worldwide from Harare, Zimbabwe. Domestic deliveries typically arrive in 2-5 business days. International orders ship via DHL Express or FedEx and typically arrive in 4-10 business days depending on destination and customs processing.</p><h3>Local Pickup</h3><p>Local pickup is available in Harare by appointment. Choose Local Pickup at checkout and we will confirm the collection details by email.</p><h3>Returns</h3><p>Returns are accepted within 14 days of delivery for unworn items in original condition. To start a return, email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> with your order number. Custom or final-sale items are non-returnable.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "left",
