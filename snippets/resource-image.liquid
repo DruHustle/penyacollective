@@ -106,7 +106,7 @@
           assign fallback_candidates = 'collection-women.avif|photo-1667366982563-dbeedf5281b9.avif' | split: '|'
           assign asset_fallback_alt = 'Women collection'
         when 'accessories'
-          assign fallback_candidates = 'collection-accessories.avif|photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
+          assign fallback_candidates = 'collection-accessories.jpg|collection-accessories.avif|photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
           assign asset_fallback_alt = 'Accessories collection'
       endcase
       if fallback_candidates == blank
@@ -141,12 +141,14 @@
         endif
       endif
     endif
-    if image_resource == blank and file_fallback == blank
-      assign image_resource = collection.image
-    endif
-    if image_resource == blank and file_fallback == blank
-      assign image_resource = collection.products.first.featured_image
-    endif
+    unless force_collection_images
+      if image_resource == blank and file_fallback == blank
+        assign image_resource = collection.image
+      endif
+      if image_resource == blank and file_fallback == blank
+        assign image_resource = collection.products.first.featured_image
+      endif
+    endunless
   else
     assign image_resource = image_source
   endif
