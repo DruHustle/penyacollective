@@ -11,12 +11,24 @@
 
   if article.image == blank
     case article.handle
-      when 'design-fashion-zimbabwe'
-        assign fallback_candidates = 'penya-blog-design.jpg|penya-blog-design.avif|blog-1.avif' | split: '|'
-        assign fallback_alt = 'Design and fashion in Zimbabwe'
+      when 'penya-collective-rooted-in-heritage'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
+        assign fallback_alt = 'Penya Collective — Rooted in Heritage'
       when 'sustainability-hemp-fabrics'
-        assign fallback_candidates = 'penya-blog-hemp.jpg|penya-blog-hemp.avif' | split: '|'
-        assign fallback_alt = 'Sustainability and hemp fabrics'
+        assign fallback_candidates = 'blog-hemp.jpg' | split: '|'
+        assign fallback_alt = 'Sustainability in Focus: Hemp Fabrics'
+      when 'ivhu-tribe-partner-spotlight'
+        assign fallback_candidates = 'blog-ivhu.jpg' | split: '|'
+        assign fallback_alt = 'Ivhu Tribe — Partner Spotlight'
+      when 'haus-of-stone-partner-spotlight'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
+        assign fallback_alt = 'Haus of Stone — Partner Spotlight'
+      when 'by-bakari-partner-spotlight'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
+        assign fallback_alt = 'By Bakari — Partner Spotlight'
+      when 'how-we-make-it-production-process'
+        assign fallback_candidates = 'blog-hemp.jpg' | split: '|'
+        assign fallback_alt = 'How We Make It — Production Process'
     endcase
 
     if fallback_candidates != blank
