@@ -35,7 +35,7 @@
             "eyebrow": {
               "type": "text",
               "settings": {
-                "text": "<p>Radiant Heritage</p>",
+                "text": "<p>Our Story</p>",
                 "width": "fit-content",
                 "max_width": "normal",
                 "alignment": "left",
@@ -107,7 +107,7 @@
             "button": {
               "type": "button",
               "settings": {
-                "label": "Contact Concierge",
+                "label": "Get in Touch",
                 "link": "shopify://pages/contact",
                 "open_in_new_tab": false,
                 "style_class": "button-secondary",

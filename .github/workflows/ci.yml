@@ -140,3 +140,25 @@ jobs:
             --path . \
             --allow-live \
             --no-color
+
+      - name: Notify on successful deploy
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.zoho.eu
+          server_port: 465
+          secure: true
+          username: ${{ secrets.DEPLOY_NOTIFY_EMAIL }}
+          password: ${{ secrets.DEPLOY_NOTIFY_EMAIL_PASSWORD }}
+          to: ${{ secrets.DEPLOY_NOTIFY_EMAIL }}
+          from: Penya Collective CI <${{ secrets.DEPLOY_NOTIFY_EMAIL }}>
+          subject: "✅ Penya Collective — Live theme deployed (${{ github.sha }})"
+          body: |
+            A new version of the Penya Collective theme was successfully deployed to the live store.
+
+            Commit: ${{ github.sha }}
+            Branch: ${{ github.ref_name }}
+            Triggered by: ${{ github.actor }}
+            Time: ${{ github.event.head_commit.timestamp }}
+
+            View store: https://${{ secrets.SHOPIFY_STORE_DOMAIN }}

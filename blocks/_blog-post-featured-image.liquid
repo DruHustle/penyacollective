@@ -16,14 +16,18 @@
 
   if image == blank
     case article_handle
-      when 'design-fashion-zimbabwe'
-        assign fallback_candidates = 'penya-blog-design.jpg|penya-blog-design.avif|blog-1.avif' | split: '|'
+      when 'penya-collective-rooted-in-heritage'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
       when 'sustainability-hemp-fabrics'
-        assign fallback_candidates = 'penya-blog-hemp.jpg|penya-blog-hemp.avif' | split: '|'
-      when 'moto-moto-festival-germany'
-        assign fallback_candidates = 'penya-blog-moto.jpg|penya-blog-moto.avif' | split: '|'
+        assign fallback_candidates = 'blog-hemp.jpg' | split: '|'
       when 'ivhu-tribe-partner-spotlight'
-        assign fallback_candidates = 'penya-blog-moto.jpg|penya-blog-design.jpg' | split: '|'
+        assign fallback_candidates = 'blog-ivhu.jpg' | split: '|'
+      when 'haus-of-stone-partner-spotlight'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
+      when 'by-bakari-partner-spotlight'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
+      when 'how-we-make-it-production-process'
+        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
     endcase
 
     if fallback_candidates != blank
@@ -50,7 +54,7 @@
 
   assign image_class = 'blog-post-featured-image__image border-style'
   assign image_position_style = ''
-  if article_handle == 'moto-moto-festival-germany' or article_handle == 'penya-collective-rooted-in-heritage'
+  if article_handle == 'penya-collective-rooted-in-heritage'
     assign image_position_style = 'object-position: center top;'
   endif
 

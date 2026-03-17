@@ -41,7 +41,7 @@
           "type": "text",
           "name": "t:names.content",
           "settings": {
-            "text": "<p>For bespoke orders, wholesale inquiries, or concierge service, email <a href=\"mailto:concierge@penyacollective.com\">concierge@penyacollective.com</a> or use the form below. We respond within 1-2 business days.</p>",
+            "text": "<p>For bespoke orders, wholesale inquiries, or general enquiries, email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> or use the form below. We respond within 1–2 business days.</p><p><strong>Penya Collective</strong><br>Steinhofweg 47<br>69118 Heidelberg, Germany<br>Tel: <a href=\"tel:+4915147416152\">+49 1514 7416152</a></p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",

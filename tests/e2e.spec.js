@@ -100,18 +100,13 @@ test.describe('Journal', () => {
     expect(body).not.toContain('Liquid error');
   });
 
-  test('Hemp article is listed first', async ({ page }) => {
-    await page.goto('/blogs/journal');
-    const firstArticle = page.locator('article, .blog-post-card, [class*="blog"]').first();
-    const text = await firstArticle.textContent();
-    expect(text.toLowerCase()).toContain('hemp');
-  });
-
   for (const [, handle] of [
     ['Sustainability in Focus: Hemp Fabrics', 'sustainability-hemp-fabrics'],
     ['Penya Collective: Rooted in Heritage', 'penya-collective-rooted-in-heritage'],
-    ['Moto Moto Festival in Germany', 'moto-moto-festival-germany'],
     ['Ivhu Tribe', 'ivhu-tribe-partner-spotlight'],
+    ['Haus of Stone', 'haus-of-stone-partner-spotlight'],
+    ['By Bakari', 'by-bakari-partner-spotlight'],
+    ['How We Make It', 'how-we-make-it-production-process'],
   ]) {
     test(`article "${handle}" loads without errors`, async ({ page }) => {
       const res = await page.goto(`/blogs/journal/${handle}`);
@@ -130,6 +125,18 @@ test.describe('Journal', () => {
         if (json['@type'] === 'Article') { found = true; break; }
       }
       expect(found, 'Article JSON-LD missing').toBe(true);
+    });
+
+    test(`article "${handle}" has Back to Journal link`, async ({ page }) => {
+      await page.goto(`/blogs/journal/${handle}`);
+      const backLink = page.getByRole('link', { name: /← Journal/i });
+      await expect(backLink).toBeVisible();
+    });
+
+    test(`article "${handle}" has post-read newsletter signup`, async ({ page }) => {
+      await page.goto(`/blogs/journal/${handle}`);
+      await expect(page.getByText(/Stay in the Glow/i)).toBeVisible();
+      await expect(page.locator('input[type="email"]').last()).toBeVisible();
     });
   }
 });

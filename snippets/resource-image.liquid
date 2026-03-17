@@ -56,8 +56,8 @@
 
   if content_type == 'articles'
     if force_article_images
-      assign fallback_groups = 'blog-1.avif,blog1.jpg,blog1.png,blog1.jpeg,blog1.webp,blog1.avif,penya-blog-design.jpg,penya-blog-design.avif,photo-1708170236215-b6edcad7f49a.avif|blog-hemp.jpg,blog2.jpg,blog2.png,blog2.jpeg,blog2.webp,blog2.avif,penya-blog-hemp.jpg,penya-blog-hemp.avif,photo-1625646741211-711bdd65c570.avif,collection-men.jpg|blog-moto-moto.jpg,blog3.jpg,blog3.png,blog3.jpeg,blog3.webp,blog3.avif,penya-blog-moto.jpg,penya-blog-moto.avif,photo-1667366982563-dbeedf5281b9.avif,collection-women.avif|collection-accessories.jpg,photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
-      assign fallback_alts = 'Design and fashion in Zimbabwe|Sustainability and hemp fabrics|Moto Moto festival in Germany' | split: '|'
+      assign fallback_groups = 'blog-penya-collective.jpg|blog-hemp.jpg|blog-ivhu.jpg|blog-penya-collective.jpg' | split: '|'
+      assign fallback_alts = 'Penya Collective Journal|Sustainability in Focus: Hemp Fabrics|Ivhu Tribe — Partner Spotlight|Penya Collective Journal' | split: '|'
       assign block_parts = parent_block_id | split: '-'
       assign content_index = block_parts.last | default: 0
       assign fallback_index = content_index | modulo: fallback_groups.size
@@ -106,7 +106,7 @@
           assign fallback_candidates = 'collection-women.avif|photo-1667366982563-dbeedf5281b9.avif' | split: '|'
           assign asset_fallback_alt = 'Women collection'
         when 'accessories'
-          assign fallback_candidates = 'collection-accessories.avif|photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
+          assign fallback_candidates = 'collection-accessories.jpg|collection-accessories.avif|photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
           assign asset_fallback_alt = 'Accessories collection'
       endcase
       if fallback_candidates == blank
@@ -141,12 +141,14 @@
         endif
       endif
     endif
-    if image_resource == blank and file_fallback == blank
-      assign image_resource = collection.image
-    endif
-    if image_resource == blank and file_fallback == blank
-      assign image_resource = collection.products.first.featured_image
-    endif
+    unless force_collection_images
+      if image_resource == blank and file_fallback == blank
+        assign image_resource = collection.image
+      endif
+      if image_resource == blank and file_fallback == blank
+        assign image_resource = collection.products.first.featured_image
+      endif
+    endunless
   else
     assign image_resource = image_source
   endif
@@ -207,7 +209,7 @@
 
   assign penya_image_class = 'image-block__image'
   assign penya_image_style = ''
-  if closest.article.handle == 'moto-moto-festival-germany' or closest.article.handle == 'penya-collective-rooted-in-heritage'
+  if closest.article.handle == 'penya-collective-rooted-in-heritage'
     assign penya_image_style = 'object-position: center top;'
   endif
 %}
