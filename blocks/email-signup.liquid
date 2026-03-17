@@ -13,6 +13,10 @@
   {% endif %}
   {% assign form_id = block.id | prepend: 'EmailSignup-' %}
   {%- form 'customer', class: 'email-signup__form spacing-style' %}
+    {% comment %}Klaviyo: hidden input carries list ID into JS without extra DOM queries{% endcomment %}
+    {% if block_settings.klaviyo_list_id != blank %}
+      <input type="hidden" class="klaviyo-list-id" value="{{ block_settings.klaviyo_list_id | escape }}">
+    {% endif %}
     <input
       name="contact[id]"
       type="hidden"
@@ -103,6 +107,44 @@
     {%- endif -%}
   {% endform %}
 </div>
+
+{% if block_settings.klaviyo_list_id != blank %}
+  <script>
+    (function () {
+      var emailInput = document.getElementById('EmailInput-{{ block.id }}');
+      if (!emailInput) return;
+      var form = emailInput.closest('form');
+      if (!form) return;
+      var listIdInput = form.querySelector('.klaviyo-list-id');
+      if (!listIdInput) return;
+
+      form.addEventListener('submit', function () {
+        var email = emailInput.value.trim();
+        var listId = listIdInput.value;
+        var companyId = {{ shop.metafields.klaviyo.company_id | json }};
+        if (!email || !listId || !companyId) return;
+
+        // Fire-and-forget — never blocks the Shopify form submission
+        fetch(
+          'https://a.klaviyo.com/client/subscriptions/?company_id=' + companyId,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'revision': '2023-12-15' },
+            body: JSON.stringify({
+              data: {
+                type: 'subscription',
+                attributes: {
+                  profile: { data: { type: 'profile', attributes: { email: email } } },
+                  list_id: listId
+                }
+              }
+            })
+          }
+        ).catch(function () {});
+      });
+    })();
+  </script>
+{% endif %}
 
 {% stylesheet %}
   .email-signup-block {
@@ -651,6 +693,16 @@
       "default": "paragraph",
       "info": "t:info.edit_presets_in_theme_settings",
       "visible_if": "{{ block.settings.display_type == \"text\" }}"
+    },
+    {
+      "type": "header",
+      "content": "Klaviyo"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "List ID",
+      "info": "Find this in Klaviyo › Lists & Segments › select your list › Settings. Leave blank to use Shopify's default customer sync."
     },
     {
       "type": "header",
