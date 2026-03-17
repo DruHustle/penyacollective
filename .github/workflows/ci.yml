@@ -50,9 +50,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [theme-check, validate-json]
     env:
-      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN || vars.SHOPIFY_CLI_THEME_TOKEN }}
-      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN || vars.SHOPIFY_STORE_DOMAIN }}
-      SHOPIFY_DEV_THEME_ID: ${{ secrets.SHOPIFY_DEV_THEME_ID || vars.SHOPIFY_DEV_THEME_ID }}
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+      SHOPIFY_DEV_THEME_ID: ${{ secrets.SHOPIFY_DEV_THEME_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -110,9 +110,9 @@ jobs:
     needs: [theme-check, validate-json, e2e]
     if: github.ref == 'refs/heads/main'
     env:
-      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN || vars.SHOPIFY_CLI_THEME_TOKEN }}
-      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN || vars.SHOPIFY_STORE_DOMAIN }}
-      SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID || vars.SHOPIFY_THEME_ID }}
+      SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
+      SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+      SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
     steps:
       - uses: actions/checkout@v4
 
