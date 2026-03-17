@@ -17,9 +17,6 @@
       when 'sustainability-hemp-fabrics'
         assign fallback_candidates = 'penya-blog-hemp.jpg|penya-blog-hemp.avif' | split: '|'
         assign fallback_alt = 'Sustainability and hemp fabrics'
-      when 'moto-moto-festival-germany'
-        assign fallback_candidates = 'penya-blog-moto.jpg|penya-blog-moto.avif' | split: '|'
-        assign fallback_alt = 'Moto Moto festival in Germany'
     endcase
 
     if fallback_candidates != blank
@@ -45,9 +42,6 @@
   endif
 
   assign blog_image_class = 'border-style blog-post-card__image blog-post-card__image--large'
-  if article.handle == 'moto-moto-festival-germany'
-    assign blog_image_class = blog_image_class | append: ' penya-image-top'
-  endif
 %}
 
 <div

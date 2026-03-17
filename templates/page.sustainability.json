@@ -9,18 +9,126 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-page",
+    "sustainability_hero": {
+      "type": "section",
       "blocks": {
-        "title": {
+        "hero_eyebrow": {
           "type": "text",
-          "name": "t:names.title",
           "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
+            "text": "<p>Our Commitment</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "custom",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "line_height": "normal",
+            "letter_spacing": "loose",
+            "case": "uppercase",
+            "wrap": "pretty",
+            "color": "var(--color-primary)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "hero_heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h1>Luxury with Integrity</h1>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
             "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "hero_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Radiance should not come at a cost to people or planet. Here is how we practise what we believe.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": [
+        "hero_eyebrow",
+        "hero_heading",
+        "hero_text"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "sustainability_pillars_row1": {
+      "type": "section",
+      "blocks": {
+        "pillar_batch": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>01 — Small-Batch Production</h4><p>We produce in intentionally limited quantities. Every piece receives the attention it deserves — reducing excess, minimising waste, and ensuring each garment holds its value for years.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
             "font": "var(--font-body--family)",
             "font_size": "",
             "line_height": "normal",
@@ -37,13 +145,36 @@
             "padding-inline-end": 0
           }
         },
-        "content": {
+        "pillar_materials": {
           "type": "text",
-          "name": "t:names.content",
           "settings": {
-            "text": "<p>At Penya Collective, luxury is rooted in integrity. Radiance should not come at a cost to people or planet. Below is how we practise what we believe.</p><h3>Small-Batch Production</h3><p>We produce in intentionally limited quantities. This reduces excess stock, minimises waste, and ensures every piece receives the attention it deserves from the hands that make it.</p><h3>Materials with Meaning</h3><p>We prioritise premium, long-lasting natural fibres — including hemp, organic cotton, and responsibly sourced blends. These materials are chosen not just for their feel, but for their lower environmental footprint and durability over time.</p><h3>Fair Wages &amp; Artisan Partnership</h3><p>We collaborate directly with skilled Zimbabwean artisans and makers, ensuring fair compensation and transparent working conditions. Our supply chain is built on relationship, not extraction.</p><h3>Timeless Over Trend</h3><p>Fast fashion relies on obsolescence. We design for permanence — silhouettes and craftsmanship that remain relevant across seasons. The most sustainable garment is the one you keep wearing.</p><h3>Continual Improvement</h3><p>We are transparent about where we are still growing. We are actively working to improve supply chain documentation, expand our use of certified materials, and reduce our shipping footprint. We welcome accountability from our community.</p>",
+            "text": "<h4>02 — Materials with Meaning</h4><p>We prioritise premium natural fibres — hemp, organic cotton, and responsibly sourced blends. Hemp requires less water than conventional cotton, enriches the soil, and produces a stronger, more breathable fabric that softens with wear.</p>",
             "width": "100%",
-            "max_width": "narrow",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "pillar_wages": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>03 — Fair Wages &amp; Artisan Partnership</h4><p>We work directly with skilled artisan partners in Zimbabwe — fair compensation, safe working conditions, and continuity of craft. Our supply chain is built on long-term relationship, not transactional extraction.</p>",
+            "width": "100%",
+            "max_width": "normal",
             "alignment": "left",
             "type_preset": "rte",
             "font": "var(--font-body--family)",
@@ -64,19 +195,250 @@
         }
       },
       "block_order": [
-        "title",
-        "content"
+        "pillar_batch",
+        "pillar_materials",
+        "pillar_wages"
+      ],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-start",
+        "gap": 48,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "sustainability_pillars_row2": {
+      "type": "section",
+      "blocks": {
+        "pillar_logistics": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>04 — Conscious Logistics</h4><p>EU fulfilment from our Heidelberg warehouse consolidates inventory and reduces last-mile distances. We use recyclable and minimal packaging across all shipments — no tissue paper for the sake of it.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "pillar_timeless": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>05 — Timeless Over Trend</h4><p>Fast fashion relies on obsolescence. We design for permanence — silhouettes and craftsmanship that remain relevant across seasons. The most sustainable garment is the one you keep wearing.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "pillar_forward": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>06 — Always Improving</h4><p>We are transparent about where we are still growing. We are actively working to improve supply chain documentation, expand certified sustainable materials, and publish our first full impact report.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        }
+      },
+      "block_order": [
+        "pillar_logistics",
+        "pillar_timeless",
+        "pillar_forward"
+      ],
+      "settings": {
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "flex-start",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "flex-start",
+        "gap": 48,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-1",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
+      }
+    },
+    "sustainability_cta": {
+      "type": "section",
+      "blocks": {
+        "cta_heading": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Every purchase is a vote.</h2>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "center",
+            "type_preset": "h2",
+            "font": "var(--font-heading--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "cta_text": {
+          "type": "text",
+          "settings": {
+            "text": "<p>For the kind of fashion the world needs — intentional, lasting, and rooted in respect for the people who make it.</p>",
+            "width": "100%",
+            "max_width": "narrow",
+            "alignment": "center",
+            "type_preset": "paragraph",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "cta_button": {
+          "type": "button",
+          "settings": {
+            "label": "Read the Journal",
+            "link": "shopify://blogs/journal",
+            "open_in_new_tab": false,
+            "style_class": "button-secondary",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          }
+        }
+      },
+      "block_order": [
+        "cta_heading",
+        "cta_text",
+        "cta_button"
       ],
       "settings": {
         "content_direction": "column",
-        "gap": 32,
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 20,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
         "color_scheme": "scheme-2",
-        "padding-block-start": 60,
-        "padding-block-end": 40
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 80,
+        "padding-block-end": 80
       }
     }
   },
   "order": [
-    "main"
+    "sustainability_hero",
+    "sustainability_pillars_row1",
+    "sustainability_pillars_row2",
+    "sustainability_cta"
   ]
 }
