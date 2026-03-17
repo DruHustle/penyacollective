@@ -5,6 +5,9 @@ on:
     branches: ["main"]
   pull_request:
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # ─── 1. Liquid linting ────────────────────────────────────────────────────
   theme-check:
@@ -85,8 +88,6 @@ jobs:
             --path . \
             --allow-live \
             --no-color
-        env:
-          SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
 
       - name: Run Playwright tests
         if: env.SECRETS_OK == 'true'

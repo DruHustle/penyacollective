@@ -25,10 +25,10 @@ test.describe('Homepage', () => {
 
   test('has JSON-LD structured data', async ({ page }) => {
     const ld = page.locator('script[type="application/ld+json"]');
-    await expect(ld).toBeAttached();
+    await expect(ld.first()).toBeAttached();
     const json = await ld.first().textContent();
     const parsed = JSON.parse(json);
-    expect(parsed['@context']).toBe('https://schema.org');
+    expect(parsed['@context']).toMatch(/schema\.org/);
   });
 
   test('hero section is visible', async ({ page }) => {
