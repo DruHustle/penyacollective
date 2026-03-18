@@ -53,12 +53,20 @@
         <p class="fit-guide__table-note">{{ section.settings.table_note }}</p>
       {% endif %}
 
+      {%- comment -%} Detect which genders have rows so we only show relevant tabs {%- endcomment -%}
+      {%- assign has_men   = false -%}
+      {%- assign has_women = false -%}
+      {%- for block in row_blocks -%}
+        {%- if block.settings.gender == 'men'   -%}{%- assign has_men   = true -%}{%- endif -%}
+        {%- if block.settings.gender == 'women' -%}{%- assign has_women = true -%}{%- endif -%}
+      {%- endfor -%}
+
       {%- comment -%} Find My Size calculator {%- endcomment -%}
       <div class="fit-guide__calculator" id="fit-calculator-{{ section.id }}">
         <p class="fit-guide__calculator-label">Find your size instantly</p>
         <div class="fit-guide__calculator-inputs">
           <label class="fit-guide__calc-field">
-            <span>Chest</span>
+            <span class="fit-guide__chest-input-label">Chest</span>
             <input type="number" class="fit-guide__calc-input" data-measure="chest" min="60" max="160" placeholder="e.g. 90" aria-label="Chest measurement in centimetres">
             <span class="fit-guide__calc-unit">cm</span>
           </label>
@@ -78,6 +86,12 @@
       </div>
 
       <div class="fit-guide__table-controls">
+        {%- if has_men and has_women -%}
+          <div class="fit-guide__gender-tabs" role="tablist" aria-label="Sizing by gender">
+            <button type="button" class="fit-guide__gender-btn is-active" data-gender="men" role="tab" aria-selected="true">Men</button>
+            <button type="button" class="fit-guide__gender-btn" data-gender="women" role="tab" aria-selected="false">Women</button>
+          </div>
+        {%- endif -%}
         <div class="fit-guide__unit-toggle" role="group" aria-label="Unit system">
           <button type="button" class="fit-guide__unit-btn is-active" data-unit="cm">CM</button>
           <button type="button" class="fit-guide__unit-btn" data-unit="in">IN</button>
@@ -89,7 +103,7 @@
           <thead>
             <tr>
               <th scope="col">Size</th>
-              <th scope="col" data-col="chest">Chest <span class="fit-guide__unit-label">(cm)</span></th>
+              <th scope="col" data-col="chest"><span class="fit-guide__chest-label">Chest</span> <span class="fit-guide__unit-label">(cm)</span></th>
               <th scope="col" data-col="waist">Waist <span class="fit-guide__unit-label">(cm)</span></th>
               <th scope="col" data-col="hips">Hips <span class="fit-guide__unit-label">(cm)</span></th>
             </tr>
@@ -102,6 +116,7 @@
               {%- assign hips_parts  = block.settings.hips  | split: '–' -%}
               <tr
                 {{ block.shopify_attributes }}
+                data-gender="{{ block.settings.gender | default: 'men' }}"
                 data-chest-min="{{ chest_parts[0] | strip | plus: 0 }}"
                 data-chest-max="{{ chest_parts[1] | strip | plus: 0 }}"
                 data-waist-min="{{ waist_parts[0] | strip | plus: 0 }}"
@@ -366,10 +381,43 @@
     opacity: 0.65;
   }
 
+  /* ── Gender tabs ──────────────────────────────────────── */
+  .fit-guide__gender-tabs {
+    display: flex;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .fit-guide__gender-btn {
+    padding: 0.3rem 1.25rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-foreground);
+    opacity: 0.5;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+  }
+
+  .fit-guide__gender-btn.is-active {
+    background-color: var(--color-foreground-heading);
+    color: var(--color-background);
+    opacity: 1;
+  }
+
+  .fit-guide__table tbody tr[hidden] {
+    display: none;
+  }
+
   /* ── Unit toggle ───────────────────────────────────────── */
   .fit-guide__table-controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 0.75rem;
   }
 
@@ -441,6 +489,45 @@
 
 {% javascript %}
   (function () {
+    // ── Gender tabs ──────────────────────────────────────────
+    document.querySelectorAll('.fit-guide__gender-tabs').forEach(function (tabs) {
+      var tableSection = tabs.closest('.fit-guide__size-table');
+      var table = tableSection.querySelector('.fit-guide__table');
+      var chestLabel = table.querySelector('.fit-guide__chest-label');
+      var chestInputLabel = tableSection.querySelector('.fit-guide__chest-input-label');
+
+      function setGender(gender) {
+        // Update tab state
+        tabs.querySelectorAll('.fit-guide__gender-btn').forEach(function (btn) {
+          var active = btn.dataset.gender === gender;
+          btn.classList.toggle('is-active', active);
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        // Show/hide rows
+        table.querySelectorAll('tbody tr').forEach(function (row) {
+          row.hidden = row.dataset.gender !== gender;
+        });
+
+        // Chest → Bust for women
+        var label = gender === 'women' ? 'Bust' : 'Chest';
+        if (chestLabel) chestLabel.textContent = label;
+        if (chestInputLabel) chestInputLabel.textContent = label;
+
+        // Clear result and highlights on switch
+        table.querySelectorAll('tbody tr').forEach(function (r) { r.classList.remove('is-highlighted'); });
+        var result = tableSection.querySelector('.fit-guide__calc-result');
+        if (result) { result.hidden = true; result.textContent = ''; }
+      }
+
+      tabs.querySelectorAll('.fit-guide__gender-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () { setGender(btn.dataset.gender); });
+      });
+
+      // Initialise: hide women's rows (men tab is active by default)
+      setGender('men');
+    });
+
     // ── Unit toggle ──────────────────────────────────────────
     function convertRange(str, toInches) {
       const factor = toInches ? 0.3937 : 2.54;
@@ -524,7 +611,8 @@
           r.classList.remove('is-highlighted');
         });
 
-        const rows = Array.from(tableEl.querySelectorAll('tbody tr'));
+        // Only search rows visible in the active gender tab
+        const rows = Array.from(tableEl.querySelectorAll('tbody tr')).filter(function (r) { return !r.hidden; });
         let matched = null;
 
         for (const row of rows) {
@@ -590,6 +678,16 @@
       "type": "size_row",
       "name": "Size row",
       "settings": [
+        {
+          "type": "select",
+          "id": "gender",
+          "label": "Sizing for",
+          "options": [
+            { "value": "men",   "label": "Men" },
+            { "value": "women", "label": "Women" }
+          ],
+          "default": "men"
+        },
         {
           "type": "text",
           "id": "size_label",
