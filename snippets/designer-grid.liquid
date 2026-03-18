@@ -54,6 +54,8 @@
             src="{{ hero_asset | asset_url }}"
             alt="{{ designer_title | escape }}"
             loading="{{ image_loading }}"
+            width="900"
+            height="1200"
             {% if fetch_priority != '' %}fetchpriority="{{ fetch_priority }}"{% endif %}
           >
         </div>
