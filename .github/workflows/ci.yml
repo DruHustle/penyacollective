@@ -93,7 +93,8 @@ jobs:
         if: env.SECRETS_OK == 'true'
         timeout-minutes: 15
         env:
-          E2E_BASE_URL: "https://${{ secrets.SHOPIFY_STORE_DOMAIN }}?preview_theme_id=${{ secrets.SHOPIFY_DEV_THEME_ID }}"
+          E2E_BASE_URL: "https://${{ secrets.SHOPIFY_STORE_DOMAIN }}"
+          E2E_PREVIEW_THEME_ID: "${{ secrets.SHOPIFY_DEV_THEME_ID }}"
         run: npx playwright test
 
       - name: Upload test report on failure

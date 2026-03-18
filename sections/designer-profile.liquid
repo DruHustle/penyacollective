@@ -19,12 +19,14 @@
   assign hero_alt       = section.settings.hero_image_alt | default: page.title
 
   # Metafield fallbacks — written automatically by seed-shopify-content.mjs
-  assign hero_asset      = page.metafields.custom.hero_image_asset.value
-  assign meta_collection = page.metafields.custom.collection_handle.value
+  assign hero_asset           = page.metafields.custom.hero_image_asset.value
+  assign meta_collection_raw  = page.metafields.custom.collection_handle.value
+  assign meta_collection      = meta_collection_raw | handleize
+  assign meta_collection_data = collections[meta_collection]
 
   if collection_url == blank
-    if meta_collection != blank
-      assign collection_url = '/collections/' | append: meta_collection
+    if meta_collection != blank and meta_collection_data != blank
+      assign collection_url = meta_collection_data.url
     else
       assign collection_url = '/collections/all'
     endif

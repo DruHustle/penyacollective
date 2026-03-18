@@ -46,6 +46,9 @@ async function ensureCollection(handle, title, imageFilename, bodyHtml) {
     const updated = await shopify(`/custom_collections/${current.id}.json`, 'PUT', {
       custom_collection: {
         id: current.id,
+        title,
+        handle,
+        body_html: bodyHtml,
         image: { attachment: imageAttachment(imageFilename), filename: imageFilename },
       },
     });
@@ -77,7 +80,17 @@ async function ensureBlog(handle, title) {
 async function ensurePage(handle, title, templateSuffix, bodyHtml) {
   const existing = await shopify(`/pages.json?handle=${encodeURIComponent(handle)}`);
   if (existing.pages && existing.pages.length > 0) {
-    return existing.pages[0];
+    const current = existing.pages[0];
+    const updated = await shopify(`/pages/${current.id}.json`, 'PUT', {
+      page: {
+        id: current.id,
+        title,
+        handle,
+        template_suffix: templateSuffix,
+        body_html: bodyHtml,
+      },
+    });
+    return updated.page;
   }
   const created = await shopify('/pages.json', 'POST', {
     page: {
