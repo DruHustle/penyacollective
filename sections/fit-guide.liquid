@@ -52,23 +52,67 @@
       {% if section.settings.table_note != blank %}
         <p class="fit-guide__table-note">{{ section.settings.table_note }}</p>
       {% endif %}
+
+      {%- comment -%} Find My Size calculator {%- endcomment -%}
+      <div class="fit-guide__calculator" id="fit-calculator-{{ section.id }}">
+        <p class="fit-guide__calculator-label">Find your size instantly</p>
+        <div class="fit-guide__calculator-inputs">
+          <label class="fit-guide__calc-field">
+            <span>Chest</span>
+            <input type="number" class="fit-guide__calc-input" data-measure="chest" min="60" max="160" placeholder="e.g. 90" aria-label="Chest measurement in centimetres">
+            <span class="fit-guide__calc-unit">cm</span>
+          </label>
+          <label class="fit-guide__calc-field">
+            <span>Waist</span>
+            <input type="number" class="fit-guide__calc-input" data-measure="waist" min="50" max="140" placeholder="e.g. 74" aria-label="Waist measurement in centimetres">
+            <span class="fit-guide__calc-unit">cm</span>
+          </label>
+          <label class="fit-guide__calc-field">
+            <span>Hips</span>
+            <input type="number" class="fit-guide__calc-input" data-measure="hips" min="60" max="160" placeholder="e.g. 98" aria-label="Hip measurement in centimetres">
+            <span class="fit-guide__calc-unit">cm</span>
+          </label>
+          <button type="button" class="fit-guide__calc-btn button">Find My Size</button>
+        </div>
+        <p class="fit-guide__calc-result" aria-live="polite" hidden></p>
+      </div>
+
+      <div class="fit-guide__table-controls">
+        <div class="fit-guide__unit-toggle" role="group" aria-label="Unit system">
+          <button type="button" class="fit-guide__unit-btn is-active" data-unit="cm">CM</button>
+          <button type="button" class="fit-guide__unit-btn" data-unit="in">IN</button>
+        </div>
+      </div>
+
       <div class="fit-guide__table-scroll">
-        <table class="fit-guide__table">
+        <table class="fit-guide__table" id="fit-table-{{ section.id }}">
           <thead>
             <tr>
               <th scope="col">Size</th>
-              <th scope="col">Chest (cm)</th>
-              <th scope="col">Waist (cm)</th>
-              <th scope="col">Hips (cm)</th>
+              <th scope="col" data-col="chest">Chest <span class="fit-guide__unit-label">(cm)</span></th>
+              <th scope="col" data-col="waist">Waist <span class="fit-guide__unit-label">(cm)</span></th>
+              <th scope="col" data-col="hips">Hips <span class="fit-guide__unit-label">(cm)</span></th>
             </tr>
           </thead>
           <tbody>
             {% for block in row_blocks %}
-              <tr {{ block.shopify_attributes }}>
+              {%- comment -%} Parse ranges to power the calculator and unit toggle {%- endcomment -%}
+              {%- assign chest_parts = block.settings.chest | split: '–' -%}
+              {%- assign waist_parts = block.settings.waist | split: '–' -%}
+              {%- assign hips_parts  = block.settings.hips  | split: '–' -%}
+              <tr
+                {{ block.shopify_attributes }}
+                data-chest-min="{{ chest_parts[0] | strip | plus: 0 }}"
+                data-chest-max="{{ chest_parts[1] | strip | plus: 0 }}"
+                data-waist-min="{{ waist_parts[0] | strip | plus: 0 }}"
+                data-waist-max="{{ waist_parts[1] | strip | plus: 0 }}"
+                data-hips-min="{{ hips_parts[0] | strip | plus: 0 }}"
+                data-hips-max="{{ hips_parts[1] | strip | plus: 0 }}"
+              >
                 <td>{{ block.settings.size_label }}</td>
-                <td>{{ block.settings.chest }}</td>
-                <td>{{ block.settings.waist }}</td>
-                <td>{{ block.settings.hips }}</td>
+                <td data-cm="{{ block.settings.chest }}">{{ block.settings.chest }}</td>
+                <td data-cm="{{ block.settings.waist }}">{{ block.settings.waist }}</td>
+                <td data-cm="{{ block.settings.hips }}">{{ block.settings.hips }}</td>
               </tr>
             {% endfor %}
           </tbody>
@@ -232,6 +276,142 @@
     opacity: 0.8;
   }
 
+  /* ── Find My Size calculator ──────────────────────────── */
+  .fit-guide__calculator {
+    background-color: rgb(var(--color-foreground-rgb) / 0.04);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .fit-guide__calculator-label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+  }
+
+  .fit-guide__calculator-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+
+  .fit-guide__calc-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    opacity: 0.75;
+    position: relative;
+  }
+
+  .fit-guide__calc-input {
+    width: 100px;
+    padding: 0.55rem 2.2rem 0.55rem 0.75rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--color-foreground);
+    font-size: 0.95rem;
+    font-family: var(--font-body--family);
+    -moz-appearance: textfield;
+  }
+
+  .fit-guide__calc-input::-webkit-outer-spin-button,
+  .fit-guide__calc-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  .fit-guide__calc-input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
+  .fit-guide__calc-unit {
+    position: absolute;
+    right: 0.6rem;
+    bottom: 0.55rem;
+    font-size: 0.7rem;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .fit-guide__calc-btn {
+    height: 38px;
+    font-size: 0.8rem;
+    padding-inline: 1.25rem;
+    white-space: nowrap;
+  }
+
+  .fit-guide__calc-result {
+    margin-top: 0.875rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .fit-guide__calc-result.is-match {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .fit-guide__calc-result.is-no-match {
+    opacity: 0.65;
+  }
+
+  /* ── Unit toggle ───────────────────────────────────────── */
+  .fit-guide__table-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+  }
+
+  .fit-guide__unit-toggle {
+    display: flex;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .fit-guide__unit-btn {
+    padding: 0.3rem 0.75rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-foreground);
+    opacity: 0.5;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+  }
+
+  .fit-guide__unit-btn.is-active {
+    background-color: var(--color-primary);
+    color: var(--color-background);
+    opacity: 1;
+  }
+
+  /* ── Highlighted size row ─────────────────────────────── */
+  .fit-guide__table tbody tr.is-highlighted {
+    background-color: rgb(var(--color-primary-rgb, 0 0 0) / 0.08);
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
+
+  .fit-guide__table tbody tr.is-highlighted td:first-child {
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
   @media screen and (max-width: 749px) {
     .fit-guide {
       padding-block: 48px 64px;
@@ -248,8 +428,141 @@
       border: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
       border-radius: 4px;
     }
+
+    .fit-guide__calculator-inputs {
+      gap: 0.6rem;
+    }
+
+    .fit-guide__calc-input {
+      width: 80px;
+    }
   }
 {% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    // ── Unit toggle ──────────────────────────────────────────
+    function convertRange(str, toInches) {
+      const factor = toInches ? 0.3937 : 2.54;
+      return str.replace(/[\d.]+/g, function (n) {
+        return Math.round(parseFloat(n) * factor * 10) / 10;
+      });
+    }
+
+    document.querySelectorAll('.fit-guide__unit-toggle').forEach(function (toggle) {
+      const table = toggle.closest('.fit-guide__size-table').querySelector('.fit-guide__table');
+      const unitLabels = table.querySelectorAll('.fit-guide__unit-label');
+      const calcUnits = toggle.closest('.fit-guide__size-table').querySelectorAll('.fit-guide__calc-unit');
+
+      toggle.querySelectorAll('.fit-guide__unit-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const toInches = btn.dataset.unit === 'in';
+          toggle.querySelectorAll('.fit-guide__unit-btn').forEach(function (b) {
+            b.classList.toggle('is-active', b === btn);
+          });
+          unitLabels.forEach(function (lbl) {
+            lbl.textContent = toInches ? '(in)' : '(cm)';
+          });
+          calcUnits.forEach(function (u) {
+            u.textContent = toInches ? 'in' : 'cm';
+          });
+          table.querySelectorAll('tbody td[data-cm]').forEach(function (td) {
+            const cm = td.dataset.cm;
+            td.textContent = toInches ? convertRange(cm, true) : cm;
+          });
+          // Update calculator input placeholders and limits
+          const section = toggle.closest('.fit-guide__size-table');
+          section.querySelectorAll('.fit-guide__calc-input').forEach(function (input) {
+            if (toInches) {
+              input.dataset.unit = 'in';
+              input.min = Math.round(parseFloat(input.min) * 0.3937 * 10) / 10;
+              input.max = Math.round(parseFloat(input.max) * 0.3937 * 10) / 10;
+              input.placeholder = input.dataset.measure === 'chest' ? 'e.g. 35.4'
+                : input.dataset.measure === 'waist' ? 'e.g. 29.1'
+                : 'e.g. 38.6';
+            } else {
+              input.dataset.unit = 'cm';
+              input.placeholder = input.dataset.measure === 'chest' ? 'e.g. 90'
+                : input.dataset.measure === 'waist' ? 'e.g. 74'
+                : 'e.g. 98';
+            }
+          });
+        });
+      });
+    });
+
+    // ── Find My Size calculator ──────────────────────────────
+    document.querySelectorAll('.fit-guide__calculator').forEach(function (calc) {
+      const btn = calc.querySelector('.fit-guide__calc-btn');
+      const result = calc.querySelector('.fit-guide__calc-result');
+      const tableSection = calc.closest('.fit-guide__size-table');
+      const tableEl = tableSection && tableSection.querySelector('.fit-guide__table');
+
+      if (!btn || !tableEl) return;
+
+      btn.addEventListener('click', function () {
+        const chestInput = calc.querySelector('[data-measure="chest"]');
+        const waistInput = calc.querySelector('[data-measure="waist"]');
+        const hipsInput  = calc.querySelector('[data-measure="hips"]');
+
+        const isInches = chestInput.dataset.unit === 'in';
+        const factor = isInches ? 2.54 : 1;
+
+        const chest = parseFloat(chestInput.value) * factor;
+        const waist = parseFloat(waistInput.value) * factor;
+        const hips  = parseFloat(hipsInput.value) * factor;
+
+        if (!chest && !waist && !hips) {
+          result.textContent = 'Enter at least one measurement to find your size.';
+          result.className = 'fit-guide__calc-result is-no-match';
+          result.hidden = false;
+          return;
+        }
+
+        // Remove any existing highlight
+        tableEl.querySelectorAll('tbody tr').forEach(function (r) {
+          r.classList.remove('is-highlighted');
+        });
+
+        const rows = Array.from(tableEl.querySelectorAll('tbody tr'));
+        let matched = null;
+
+        for (const row of rows) {
+          const d = row.dataset;
+          const chestOk = !chest || (chest >= parseFloat(d.chestMin) && chest <= parseFloat(d.chestMax));
+          const waistOk = !waist || (waist >= parseFloat(d.waistMin) && waist <= parseFloat(d.waistMax));
+          const hipsOk  = !hips  || (hips  >= parseFloat(d.hipsMin)  && hips  <= parseFloat(d.hipsMax));
+          if (chestOk && waistOk && hipsOk) { matched = row; break; }
+        }
+
+        if (matched) {
+          matched.classList.add('is-highlighted');
+          matched.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          const sizeName = matched.cells[0].textContent.trim();
+          result.textContent = 'Your recommended size is ' + sizeName + '. The row is highlighted in the table below.';
+          result.className = 'fit-guide__calc-result is-match';
+        } else {
+          // No exact match — find closest by chest
+          if (chest) {
+            const closest = rows.reduce(function (best, row) {
+              const mid = (parseFloat(row.dataset.chestMin) + parseFloat(row.dataset.chestMax)) / 2;
+              const bestMid = (parseFloat(best.dataset.chestMin) + parseFloat(best.dataset.chestMax)) / 2;
+              return Math.abs(mid - chest) < Math.abs(bestMid - chest) ? row : best;
+            });
+            closest.classList.add('is-highlighted');
+            const sizeName = closest.cells[0].textContent.trim();
+            result.textContent = 'Your measurements fall outside our standard ranges. The closest size is ' + sizeName + '. Contact us at info@penya.africa for a bespoke fit.';
+          } else {
+            result.textContent = 'We could not find an exact match. Email us at info@penya.africa and we will advise you.';
+          }
+          result.className = 'fit-guide__calc-result is-no-match';
+        }
+
+        result.hidden = false;
+      });
+    });
+  })();
+{% endjavascript %}
 
 {% schema %}
 {

@@ -171,7 +171,7 @@ test.describe('Pages', () => {
     await expect(heroImg).toBeVisible();
   });
 
-  for (const handle of ['sustainability', 'contact', 'shipping']) {
+  for (const handle of ['sustainability', 'contact', 'shipping', 'terms', 'faq']) {
     test(`/pages/${handle} loads`, async ({ page }) => {
       const res = await goto(page, `/pages/${handle}`);
       expect(res.status()).toBe(200);
@@ -179,6 +179,28 @@ test.describe('Pages', () => {
       expect(body).not.toContain('Liquid error');
     });
   }
+
+  test('FAQ page has accordion items', async ({ page }) => {
+    await goto(page, '/pages/faq');
+    const items = page.locator('.faq__item');
+    const count = await items.count();
+    expect(count).toBeGreaterThanOrEqual(10);
+  });
+
+  test('FAQ accordion opens on click', async ({ page }) => {
+    await goto(page, '/pages/faq');
+    const firstItem = page.locator('.faq__item').first();
+    await expect(firstItem).not.toHaveAttribute('open');
+    await firstItem.locator('summary').click();
+    await expect(firstItem).toHaveAttribute('open', '');
+  });
+
+  test('Terms page has legal content', async ({ page }) => {
+    await goto(page, '/pages/terms');
+    const body = await page.textContent('body');
+    expect(body).toContain('Governing Law');
+    expect(body).toContain('Returns');
+  });
 });
 
 // ─── Designer profiles ─────────────────────────────────────────────────────

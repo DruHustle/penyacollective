@@ -1,0 +1,170 @@
+{%- comment -%}
+  Email validator snippet.
+  Enhances any contact or newsletter form on the page with:
+  - Real-time format validation on blur
+  - Inline error message below the field
+  - Blocks form submission if the email address looks invalid
+  - Checks for common typos in popular domains (gmai.com → gmail.com)
+
+  Include once in layout/theme.liquid before </body>:
+    {%- render 'email-validator' -%}
+{%- endcomment -%}
+
+<script>
+(function () {
+  // Common domain typo corrections
+  var domainFixes = {
+    'gmai.com': 'gmail.com',
+    'gmial.com': 'gmail.com',
+    'gamil.com': 'gmail.com',
+    'gmail.co': 'gmail.com',
+    'gmail.cm': 'gmail.com',
+    'gnail.com': 'gmail.com',
+    'hotmai.com': 'hotmail.com',
+    'hotmial.com': 'hotmail.com',
+    'hotmail.co': 'hotmail.com',
+    'hotmail.cm': 'hotmail.com',
+    'yahooo.com': 'yahoo.com',
+    'yaho.com': 'yahoo.com',
+    'outloo.com': 'outlook.com',
+    'outlok.com': 'outlook.com',
+    'iclod.com': 'icloud.com',
+    'iclould.com': 'icloud.com',
+  };
+
+  // RFC5321-compatible pattern: local@domain.tld with TLD ≥ 2 chars
+  var emailPattern = /^[^\s@]+@[^\s@]+\.[a-zA-Z]{2,}$/;
+
+  function getDomainSuggestion(email) {
+    var parts = email.split('@');
+    if (parts.length !== 2) return null;
+    var domain = parts[1].toLowerCase();
+    return domainFixes[domain] ? parts[0] + '@' + domainFixes[domain] : null;
+  }
+
+  function isValidEmail(email) {
+    return emailPattern.test(email.trim());
+  }
+
+  function getOrCreateError(input) {
+    var id = 'penya-email-error-' + Math.random().toString(36).slice(2);
+    var existing = input.parentNode.querySelector('.penya-email-error');
+    if (existing) return existing;
+    var el = document.createElement('span');
+    el.className = 'penya-email-error';
+    el.setAttribute('role', 'alert');
+    el.setAttribute('aria-live', 'polite');
+    el.id = id;
+    input.setAttribute('aria-describedby', id);
+    input.parentNode.insertBefore(el, input.nextSibling);
+    return el;
+  }
+
+  function clearError(input) {
+    var err = input.parentNode.querySelector('.penya-email-error');
+    if (err) err.textContent = '';
+    input.removeAttribute('aria-invalid');
+  }
+
+  function showError(input, message) {
+    var err = getOrCreateError(input);
+    err.textContent = message;
+    input.setAttribute('aria-invalid', 'true');
+    input.focus();
+  }
+
+  function validateInput(input) {
+    var val = input.value.trim();
+    if (!val) return true; // empty handled by required attribute
+
+    if (!isValidEmail(val)) {
+      showError(input, 'Please enter a valid email address (e.g. name@example.com).');
+      return false;
+    }
+
+    var suggestion = getDomainSuggestion(val);
+    if (suggestion) {
+      var err = getOrCreateError(input);
+      err.innerHTML = 'Did you mean <button type="button" class="penya-email-suggest">' + suggestion + '</button>?';
+      err.querySelector('.penya-email-suggest').addEventListener('click', function () {
+        input.value = suggestion;
+        clearError(input);
+      });
+      input.setAttribute('aria-invalid', 'true');
+      return false;
+    }
+
+    clearError(input);
+    return true;
+  }
+
+  function attachToInput(input) {
+    if (input.dataset.penyaValidated) return;
+    input.dataset.penyaValidated = '1';
+
+    input.addEventListener('blur', function () {
+      validateInput(input);
+    });
+
+    input.addEventListener('input', function () {
+      if (input.getAttribute('aria-invalid') === 'true') {
+        clearError(input);
+      }
+    });
+
+    var form = input.closest('form');
+    if (form && !form.dataset.penyaEmailGuarded) {
+      form.dataset.penyaEmailGuarded = '1';
+      form.addEventListener('submit', function (e) {
+        var emailInputs = form.querySelectorAll('input[type="email"], input[name*="email"]');
+        var allValid = true;
+        emailInputs.forEach(function (inp) {
+          if (!validateInput(inp)) allValid = false;
+        });
+        if (!allValid) e.preventDefault();
+      });
+    }
+  }
+
+  function init() {
+    document
+      .querySelectorAll('input[type="email"], input[name="contact[email]"], input[name="customer[email]"]')
+      .forEach(attachToInput);
+  }
+
+  // Run on load and again after any Shopify section renders
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+  document.addEventListener('shopify:section:load', init);
+})();
+</script>
+
+<style>
+  .penya-email-error {
+    display: block;
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    color: #c0392b;
+    line-height: 1.4;
+  }
+
+  .penya-email-suggest {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--color-primary);
+    font-size: inherit;
+    font-family: inherit;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  input[aria-invalid="true"] {
+    border-color: #c0392b !important;
+    outline-color: #c0392b !important;
+  }
+</style>

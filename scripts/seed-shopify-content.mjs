@@ -232,6 +232,18 @@ const pages = [
     bodyHtml: '',
   },
   {
+    handle: 'faq',
+    title: 'FAQs',
+    templateSuffix: 'faq',
+    bodyHtml: '',
+  },
+  {
+    handle: 'terms',
+    title: 'Terms, Conditions & Disclaimers',
+    templateSuffix: 'terms',
+    bodyHtml: '',
+  },
+  {
     handle: 'designer-ivhu-tribe',
     title: 'Ivhu Tribe',
     templateSuffix: 'designer',
