@@ -107,7 +107,7 @@
       style="{{ image_border_style }}"
       loading="eager"
       fetchpriority="high"
-      alt="Penya Journal"
+      alt="{{ closest.article.title | default: 'Penya Journal' | escape }}"
     >
   {% elsif fallback_src != '' %}
     <img
@@ -118,7 +118,7 @@
       style="{{ image_border_style }}"
       loading="eager"
       fetchpriority="high"
-      alt="Penya Journal"
+      alt="{{ closest.article.title | default: 'Penya Journal' | escape }}"
     >
   {% endif %}
 </div>

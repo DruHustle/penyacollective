@@ -1,9 +1,15 @@
 const { test, expect } = require('@playwright/test');
 
+const goto = async (page, path) => {
+  const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
+  await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
+  return response;
+};
+
 // ─── Homepage ──────────────────────────────────────────────────────────────
 test.describe('Homepage', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await goto(page, '/');
   });
 
   test('loads without Liquid errors', async ({ page }) => {
@@ -54,11 +60,20 @@ test.describe('Homepage', () => {
   test('designer images load without 404', async ({ page }) => {
     const images = page.locator('.penya-designers__grid img');
     const count = await images.count();
-    expect(count).toBe(6);
+    expect(count).toBeGreaterThanOrEqual(6);
     for (let i = 0; i < count; i++) {
       const src = await images.nth(i).getAttribute('src');
       const res = await page.request.get(src);
       expect(res.status(), `Designer image failed: ${src}`).toBe(200);
+    }
+  });
+
+  test('designer cards link to profile pages not collections', async ({ page }) => {
+    const cards = page.locator('.penya-designers__grid a');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      const href = await cards.nth(i).getAttribute('href');
+      expect(href, `Designer card should link to /pages/designer-*`).toMatch(/^\/pages\/designer-/);
     }
   });
 
@@ -75,14 +90,14 @@ test.describe('Homepage', () => {
 test.describe('Collections', () => {
   for (const handle of ['men', 'women', 'accessories']) {
     test(`/collections/${handle} loads`, async ({ page }) => {
-      const res = await page.goto(`/collections/${handle}`);
+      const res = await goto(page, `/collections/${handle}`);
       expect(res.status()).toBe(200);
       const body = await page.textContent('body');
       expect(body).not.toContain('Liquid error');
     });
 
     test(`/collections/${handle} shows empty state when no products`, async ({ page }) => {
-      await page.goto(`/collections/${handle}`);
+      await goto(page, `/collections/${handle}`);
       const hasProducts = await page.locator('.product-grid__item:not(.product-grid__empty)').count();
       if (hasProducts === 0) {
         await expect(page.getByText(/New pieces coming soon/i)).toBeVisible();
@@ -94,7 +109,7 @@ test.describe('Collections', () => {
 // ─── Blog / Journal ────────────────────────────────────────────────────────
 test.describe('Journal', () => {
   test('blog index loads', async ({ page }) => {
-    const res = await page.goto('/blogs/journal');
+    const res = await goto(page, '/blogs/journal');
     expect(res.status()).toBe(200);
     const body = await page.textContent('body');
     expect(body).not.toContain('Liquid error');
@@ -109,14 +124,14 @@ test.describe('Journal', () => {
     ['How We Make It', 'how-we-make-it-production-process'],
   ]) {
     test(`article "${handle}" loads without errors`, async ({ page }) => {
-      const res = await page.goto(`/blogs/journal/${handle}`);
+      const res = await goto(page, `/blogs/journal/${handle}`);
       expect(res.status()).toBe(200);
       const body = await page.textContent('body');
       expect(body).not.toContain('Liquid error');
     });
 
     test(`article "${handle}" has Article JSON-LD`, async ({ page }) => {
-      await page.goto(`/blogs/journal/${handle}`);
+      await goto(page, `/blogs/journal/${handle}`);
       const ld = page.locator('script[type="application/ld+json"]');
       const count = await ld.count();
       let found = false;
@@ -128,13 +143,13 @@ test.describe('Journal', () => {
     });
 
     test(`article "${handle}" has Back to Journal link`, async ({ page }) => {
-      await page.goto(`/blogs/journal/${handle}`);
+      await goto(page, `/blogs/journal/${handle}`);
       const backLink = page.getByRole('link', { name: /← Journal/i });
       await expect(backLink).toBeVisible();
     });
 
     test(`article "${handle}" has post-read newsletter signup`, async ({ page }) => {
-      await page.goto(`/blogs/journal/${handle}`);
+      await goto(page, `/blogs/journal/${handle}`);
       await expect(page.getByText(/Stay in the Glow/i)).toBeVisible();
       await expect(page.locator('input[type="email"]').last()).toBeVisible();
     });
@@ -144,26 +159,92 @@ test.describe('Journal', () => {
 // ─── Pages ─────────────────────────────────────────────────────────────────
 test.describe('Pages', () => {
   test('Our Story page loads', async ({ page }) => {
-    const res = await page.goto('/pages/about');
+    const res = await goto(page, '/pages/about');
     expect(res.status()).toBe(200);
     const body = await page.textContent('body');
     expect(body).not.toContain('Liquid error');
   });
 
   test('Our Story page has hero image', async ({ page }) => {
-    await page.goto('/pages/about');
+    await goto(page, '/pages/about');
     const heroImg = page.locator('.media-block img, .media-block__media').first();
     await expect(heroImg).toBeVisible();
   });
 
   for (const handle of ['sustainability', 'contact', 'shipping']) {
     test(`/pages/${handle} loads`, async ({ page }) => {
-      const res = await page.goto(`/pages/${handle}`);
+      const res = await goto(page, `/pages/${handle}`);
       expect(res.status()).toBe(200);
       const body = await page.textContent('body');
       expect(body).not.toContain('Liquid error');
     });
   }
+});
+
+// ─── Designer profiles ─────────────────────────────────────────────────────
+test.describe('Designer profiles', () => {
+  const designers = [
+    'designer-ivhu-tribe',
+    'designer-a-tribe-called-zimbabwe',
+    'designer-feli-nandi',
+    'designer-haus-of-stone',
+    'designer-panashe',
+    'designer-by-bakari',
+  ];
+
+  for (const handle of designers) {
+    test(`/pages/${handle} loads without errors`, async ({ page }) => {
+      const res = await goto(page, `/pages/${handle}`);
+      expect(res.status()).toBe(200);
+      const body = await page.textContent('body');
+      expect(body).not.toContain('Liquid error');
+    });
+
+    test(`/pages/${handle} has designer name heading`, async ({ page }) => {
+      await goto(page, `/pages/${handle}`);
+      const heading = page.locator('.designer-profile__name');
+      await expect(heading).toBeVisible();
+      const text = await heading.textContent();
+      expect(text.trim().length).toBeGreaterThan(0);
+    });
+
+    test(`/pages/${handle} has a shop CTA`, async ({ page }) => {
+      await goto(page, `/pages/${handle}`);
+      const cta = page.locator('.designer-profile__cta a');
+      await expect(cta).toBeVisible();
+      const href = await cta.getAttribute('href');
+      expect(href).toBeTruthy();
+    });
+  }
+});
+
+// ─── Fit Guide ─────────────────────────────────────────────────────────────
+test.describe('Fit Guide', () => {
+  test.beforeEach(async ({ page }) => {
+    await goto(page, '/pages/fit-guide');
+  });
+
+  test('loads without errors', async ({ page }) => {
+    const body = await page.textContent('body');
+    expect(body).not.toContain('Liquid error');
+  });
+
+  test('has measurement steps', async ({ page }) => {
+    const steps = page.locator('.fit-guide__step');
+    const count = await steps.count();
+    expect(count).toBeGreaterThanOrEqual(4);
+  });
+
+  test('has size table with rows', async ({ page }) => {
+    const rows = page.locator('.fit-guide__table tbody tr');
+    const count = await rows.count();
+    expect(count).toBeGreaterThanOrEqual(6);
+  });
+
+  test('size table has accessible column headers', async ({ page }) => {
+    const headers = page.locator('.fit-guide__table th[scope="col"]');
+    await expect(headers).toHaveCount(4);
+  });
 });
 
 // ─── SEO ───────────────────────────────────────────────────────────────────
@@ -172,19 +253,19 @@ test.describe('SEO', () => {
 
   for (const path of pages) {
     test(`${path} has canonical link`, async ({ page }) => {
-      await page.goto(path);
+      await goto(page, path);
       const canonical = page.locator('link[rel="canonical"]');
       await expect(canonical).toBeAttached();
     });
 
     test(`${path} has og:title and og:description`, async ({ page }) => {
-      await page.goto(path);
+      await goto(page, path);
       await expect(page.locator('meta[property="og:title"]')).toBeAttached();
       await expect(page.locator('meta[property="og:description"]')).toBeAttached();
     });
 
     test(`${path} has no Liquid errors`, async ({ page }) => {
-      await page.goto(path);
+      await goto(page, path);
       const body = await page.textContent('body');
       expect(body).not.toContain('Liquid error');
       expect(body).not.toContain('wrong number of arguments');

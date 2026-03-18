@@ -105,11 +105,27 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
+            },
+            "button_fitGuide": {
+              "type": "button",
+              "name": "Fit Guide",
+              "settings": {
+                "label": "Fit Guide",
+                "link": "/pages/fit-guide",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
             }
           },
           "block_order": [
             "text_iNnkfy",
-            "text_kM9J4y"
+            "text_kM9J4y",
+            "button_fitGuide"
           ]
         },
         "group_x4FxXe": {

@@ -1,0 +1,130 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "fit_guide_back_nav": {
+      "type": "section",
+      "blocks": {
+        "back_to_shop": {
+          "type": "button",
+          "settings": {
+            "label": "← Continue Shopping",
+            "link": "/collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button-unstyled",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          }
+        }
+      },
+      "block_order": ["back_to_shop"],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 32,
+        "padding-block-end": 0
+      }
+    },
+    "fit_guide_main": {
+      "type": "fit-guide",
+      "blocks": {
+        "step_chest": {
+          "type": "measurement_step",
+          "settings": {
+            "title": "Chest",
+            "description": "Wrap the tape around the fullest part of your chest, parallel to the ground. Breathe naturally — do not pull it tight."
+          }
+        },
+        "step_waist": {
+          "type": "measurement_step",
+          "settings": {
+            "title": "Waist",
+            "description": "Measure around your natural waistline — the narrowest point of your torso, usually an inch above your navel. Exhale gently and measure."
+          }
+        },
+        "step_hips": {
+          "type": "measurement_step",
+          "settings": {
+            "title": "Hips",
+            "description": "Stand with feet together and measure around the fullest part of your hips, roughly 20 cm below your natural waistline. Keep the tape level."
+          }
+        },
+        "step_height": {
+          "type": "measurement_step",
+          "settings": {
+            "title": "Height",
+            "description": "Stand straight in bare feet against a wall. Mark the top of your head and measure to the floor. Helps us suggest the right length for trousers, dresses, and full-length pieces."
+          }
+        },
+        "row_xs": {
+          "type": "size_row",
+          "settings": { "size_label": "XS", "chest": "80 – 84", "waist": "62 – 66", "hips": "88 – 92" }
+        },
+        "row_s": {
+          "type": "size_row",
+          "settings": { "size_label": "S", "chest": "84 – 88", "waist": "66 – 70", "hips": "92 – 96" }
+        },
+        "row_m": {
+          "type": "size_row",
+          "settings": { "size_label": "M", "chest": "88 – 94", "waist": "70 – 76", "hips": "96 – 102" }
+        },
+        "row_l": {
+          "type": "size_row",
+          "settings": { "size_label": "L", "chest": "94 – 100", "waist": "76 – 82", "hips": "102 – 108" }
+        },
+        "row_xl": {
+          "type": "size_row",
+          "settings": { "size_label": "XL", "chest": "100 – 108", "waist": "82 – 90", "hips": "108 – 116" }
+        },
+        "row_xxl": {
+          "type": "size_row",
+          "settings": { "size_label": "XXL", "chest": "108 – 116", "waist": "90 – 98", "hips": "116 – 124" }
+        }
+      },
+      "block_order": [
+        "step_chest", "step_waist", "step_hips", "step_height",
+        "row_xs", "row_s", "row_m", "row_l", "row_xl", "row_xxl"
+      ],
+      "settings": {
+        "eyebrow": "Your Fit, Your Way",
+        "heading": "Finding the right fit should feel effortless.",
+        "intro_text": "Penya pieces are designed with care for how clothes feel on a real body. Take two minutes with these four measurements and we will do the rest.",
+        "table_heading": "Size Reference",
+        "table_note": "All measurements in centimetres. If you are between sizes, we recommend sizing up for a relaxed fit or sizing down for a closer silhouette.",
+        "note_heading": "A note on fit",
+        "note_text": "Penya pieces are designed with intentional ease — we do not cut for a single body type. Some styles have a relaxed silhouette by design; others are more tailored. Each product page includes specific fit notes where relevant. If you are unsure, our team is always happy to advise."
+      }
+    }
+  },
+  "order": ["fit_guide_back_nav", "fit_guide_main"]
+}

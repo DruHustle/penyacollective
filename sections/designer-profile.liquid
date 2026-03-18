@@ -1,0 +1,202 @@
+
+{%- comment -%}
+  Designer profile section.
+
+  Hero image sources (priority order):
+  1. section.settings.hero_image  — uploaded via theme editor
+  2. page.metafields.custom.hero_image_asset — filename set automatically by seed script
+
+  Collection link sources (priority order):
+  1. section.settings.collection_url — set via theme editor
+  2. /collections/ + page.metafields.custom.collection_handle — set by seed script
+  3. /collections/all — absolute fallback so the CTA is always visible
+{%- endcomment-%}
+
+{% liquid
+  assign hero_image     = section.settings.hero_image
+  assign collection_url = section.settings.collection_url
+  assign eyebrow        = section.settings.eyebrow
+  assign hero_alt       = section.settings.hero_image_alt | default: page.title
+
+  # Metafield fallbacks — written automatically by seed-shopify-content.mjs
+  assign hero_asset           = page.metafields.custom.hero_image_asset.value
+  assign meta_collection_raw  = page.metafields.custom.collection_handle.value
+  assign meta_collection      = meta_collection_raw | handleize
+  assign meta_collection_data = collections[meta_collection]
+
+  if collection_url == blank
+    if meta_collection != blank and meta_collection_data != blank
+      assign collection_url = meta_collection_data.url
+    else
+      assign collection_url = '/collections/all'
+    endif
+  endif
+%}
+
+<div class="designer-profile">
+
+  {% if hero_image != blank %}
+    <div class="designer-profile__hero">
+      {{
+        hero_image
+        | image_url: width: 2400
+        | image_tag:
+          width: hero_image.width,
+          height: hero_image.height,
+          widths: '360, 600, 900, 1200, 1800, 2400',
+          sizes: '100vw',
+          class: 'designer-profile__hero-image',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: hero_alt
+      }}
+    </div>
+  {% elsif hero_asset != blank %}
+    <div class="designer-profile__hero">
+      <img
+        src="{{ hero_asset | asset_url }}"
+        class="designer-profile__hero-image"
+        alt="{{ hero_alt | escape }}"
+        loading="eager"
+        fetchpriority="high"
+        width="2400"
+        height="3000"
+      >
+    </div>
+  {% endif %}
+
+  <div class="designer-profile__body page-width">
+    <div class="designer-profile__content">
+
+      {% if eyebrow != blank %}
+        <p class="designer-profile__eyebrow">{{ eyebrow }}</p>
+      {% endif %}
+
+      <h1 class="designer-profile__name">{{ page.title }}</h1>
+
+      <div class="designer-profile__story rte">
+        {{ page.content }}
+      </div>
+
+      <div class="designer-profile__cta">
+        <a href="{{ collection_url }}" class="button">
+          Shop {{ page.title }}
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .designer-profile__hero {
+    width: 100%;
+    max-height: 85vh;
+    overflow: hidden;
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+
+  .designer-profile__hero-image {
+    width: 100%;
+    height: 100%;
+    max-height: 85vh;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .designer-profile__body {
+    padding-block: 64px 80px;
+  }
+
+  .designer-profile__content {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .designer-profile__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .designer-profile__name {
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    line-height: 1.05;
+    margin-bottom: 2.5rem;
+    color: var(--color-foreground-heading);
+  }
+
+  .designer-profile__story {
+    line-height: 1.8;
+    margin-bottom: 3rem;
+  }
+
+  .designer-profile__story h3 {
+    font-family: var(--font-heading--family);
+    font-size: 1.2rem;
+    margin-top: 2.25rem;
+    margin-bottom: 0.6rem;
+    color: var(--color-foreground-heading);
+  }
+
+  .designer-profile__story p {
+    margin-bottom: 1.25rem;
+  }
+
+  .designer-profile__cta {
+    padding-top: 2rem;
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  @media screen and (max-width: 749px) {
+    .designer-profile__body {
+      padding-block: 40px 60px;
+    }
+
+    .designer-profile__hero {
+      max-height: 60vh;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Designer Profile",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image",
+      "info": "Override the default image. If left blank, the image set by the seed script is used."
+    },
+    {
+      "type": "text",
+      "id": "hero_image_alt",
+      "label": "Hero image alt text",
+      "info": "Describes the image for screen readers and SEO. Defaults to the designer name if left blank."
+    },
+    {
+      "type": "url",
+      "id": "collection_url",
+      "label": "Collection link",
+      "info": "Override the default collection link. If left blank, the link set by the seed script is used."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Designer Story — Zimbabwe"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Designer Profile"
+    }
+  ]
+}
+{% endschema %}
