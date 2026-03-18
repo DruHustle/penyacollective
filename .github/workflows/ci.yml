@@ -53,6 +53,7 @@ jobs:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
       SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
       SHOPIFY_DEV_THEME_ID: ${{ secrets.SHOPIFY_DEV_THEME_ID }}
+      SHOPIFY_ADMIN_API_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -88,6 +89,10 @@ jobs:
             --path . \
             --allow-live \
             --no-color
+
+      - name: Seed content (ensures pages/articles exist before tests run)
+        if: env.SECRETS_OK == 'true' && env.SHOPIFY_ADMIN_API_TOKEN != ''
+        run: node scripts/seed-shopify-content.mjs
 
       - name: Run Playwright tests
         if: env.SECRETS_OK == 'true'
