@@ -1,0 +1,224 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "blocks": {
+        "cat_shipping": {
+          "type": "category",
+          "settings": {
+            "title": "Shipping & Delivery"
+          }
+        },
+        "faq_ship_worldwide": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you ship internationally?",
+            "answer": "<p>Yes — we ship worldwide. Wherever you are, we can get your Penya piece to you.</p>"
+          }
+        },
+        "faq_ship_cost": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How much does shipping cost?",
+            "answer": "<p>Shipping is <strong>free on all orders over €200</strong>. Orders below this threshold are charged at standard rates, which are displayed clearly at checkout before you pay.</p>"
+          }
+        },
+        "faq_ship_catalog": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does delivery take for catalog items?",
+            "answer": "<p>Items available in our catalog are typically dispatched within 1–2 business days. Delivery time from dispatch is approximately <strong>one week</strong>, depending on your location. You will receive a tracking link once your order has been sent.</p>"
+          }
+        },
+        "faq_ship_bespoke": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long do bespoke or custom orders take?",
+            "answer": "<p>Bespoke and custom pieces require longer lead times. The exact timeline depends on the complexity of the design, fabric sourcing, and our artisan partners' current schedules.</p><p>We will keep you fully updated throughout the process — from confirmation to fitting (where applicable) to dispatch. We will not ship until the piece meets our quality standards and you are aware of the timeline.</p><p>If you have a specific date in mind (a wedding, an event), let us know when you enquire so we can plan accordingly.</p>"
+          }
+        },
+        "faq_ship_track": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I track my order?",
+            "answer": "<p>Yes. Once your order is dispatched, you will receive a confirmation email with a tracking link. If you have not received this within 3 business days of your order, please check your spam folder or contact us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a>.</p>"
+          }
+        },
+        "faq_ship_duties": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Will I be charged customs or import duties?",
+            "answer": "<p>Customers within the European Union will not incur additional charges — our prices include VAT where applicable.</p><p>Customers outside the EU (including the United Kingdom, Switzerland, USA, and other countries) may be subject to local import duties and taxes upon delivery. These charges are set by your country's customs authority and are the responsibility of the recipient. We are unable to predict or cover these costs.</p>"
+          }
+        },
+        "cat_orders": {
+          "type": "category",
+          "settings": {
+            "title": "Orders & Payment"
+          }
+        },
+        "faq_payment": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What payment methods do you accept?",
+            "answer": "<p>We accept all major credit and debit cards (Visa, Mastercard, American Express), as well as other payment methods shown at checkout. All transactions are processed securely.</p>"
+          }
+        },
+        "faq_cancel": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I cancel or change my order?",
+            "answer": "<p>If you need to cancel or amend an order, please contact us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a> as soon as possible. We will do our best to help if the order has not yet been dispatched.</p><p>Once an order has been dispatched, it cannot be cancelled — but you may return it in line with our returns policy.</p><p>Bespoke orders cannot be cancelled once work has commenced, as materials and artisan time are committed at the point of confirmation.</p>"
+          }
+        },
+        "faq_confirm": {
+          "type": "faq_item",
+          "settings": {
+            "question": "I placed an order but have not received a confirmation email.",
+            "answer": "<p>Confirmation emails are sent immediately after a successful order. Please check your spam or junk folder. If you still cannot find it, email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a> with the name and email address used at checkout.</p>"
+          }
+        },
+        "cat_returns": {
+          "type": "category",
+          "settings": {
+            "title": "Returns & Refunds"
+          }
+        },
+        "faq_returns": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I return an item?",
+            "answer": "<p>Yes. We accept returns within <strong>14 days of delivery</strong> for items that are unworn, unaltered, and returned with their original tags attached.</p><p>To start a return, email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> with your order number and reason for return. Return shipping costs are the responsibility of the customer unless the item is faulty or incorrectly sent.</p><p>Refunds are processed within 10 business days of us receiving and inspecting the returned item.</p>"
+          }
+        },
+        "faq_bespoke_return": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Can I return a bespoke or custom order?",
+            "answer": "<p>Bespoke and custom-made pieces are <strong>non-refundable</strong>, as they are made specifically for you. The exception is a genuine manufacturing defect, in which case we will repair or replace the item at our cost.</p><p>A non-refundable deposit is required to begin any bespoke commission.</p>"
+          }
+        },
+        "faq_faulty": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What if my item arrives damaged or faulty?",
+            "answer": "<p>We are sorry if this happens. Please email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> within 48 hours of delivery with your order number and photographs of the damage. We will arrange a replacement or full refund as quickly as possible, including return shipping costs.</p>"
+          }
+        },
+        "cat_products": {
+          "type": "category",
+          "settings": {
+            "title": "Products & Sizing"
+          }
+        },
+        "faq_sizing": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I find my size?",
+            "answer": "<p>Visit our <a href=\"/pages/fit-guide\">Fit Guide</a> for full measurement instructions and a size reference table. If you are between sizes or unsure, email us — we are happy to advise based on your measurements and the specific piece you are considering.</p>"
+          }
+        },
+        "faq_limited": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Are your pieces limited edition?",
+            "answer": "<p>Yes. Penya Collective produces in small batches by design. This ensures every piece receives proper attention during construction and reduces waste. When a run sells out, it is typically not restocked in the same form.</p><p>If you have your eye on something, we recommend not waiting.</p>"
+          }
+        },
+        "faq_bespoke": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer bespoke or custom designs?",
+            "answer": "<p>Yes — bespoke commissions are something we take pride in. Whether you want a piece adapted from an existing design or something created entirely from scratch, we can work with you and our designer partners to bring it to life.</p><p>To enquire, email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> with a description of what you have in mind, your measurements, and any relevant dates or deadlines. We will come back to you with a proposal and timeline.</p>"
+          }
+        },
+        "faq_colours": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Will the colours look exactly as they do on screen?",
+            "answer": "<p>We work hard to photograph our pieces accurately. However, colours can appear slightly different depending on your screen settings, lighting, and the nature of the fabric itself.</p><p>Natural fibres in particular carry a texture and depth that photography can only approximate. If colour accuracy is critical for your purpose, feel free to contact us before ordering.</p>"
+          }
+        },
+        "faq_care": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How should I care for my Penya garment?",
+            "answer": "<p>Care instructions are included on the label inside each garment. As a general guide:</p><p>Natural fibres (linen, hemp, cotton) should be washed at low temperatures and air-dried where possible. Avoid tumble drying unless the label specifies it is safe to do so.</p><p>For structured or tailored pieces, dry cleaning is recommended to preserve the silhouette. Iron on the reverse where needed, using the temperature appropriate for the fabric.</p><p>Penya pieces are designed to last. Treating them with care means they will.</p>"
+          }
+        },
+        "cat_brand": {
+          "type": "category",
+          "settings": {
+            "title": "About Penya Collective"
+          }
+        },
+        "faq_what": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is Penya Collective?",
+            "answer": "<p>Penya Collective is a curated fashion platform championing designers across Africa and beyond. The name comes from the Shona word <em>kupenya</em> — to glow, to shine, to break through into the light.</p><p>We work with independent African designers who make exceptional work and deserve a global audience. Every piece in our catalog has a story behind it. We are here to make sure that story gets told — and worn.</p>"
+          }
+        },
+        "faq_designers": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Who are the designers in the collective?",
+            "answer": "<p>Our current collective includes Ivhu Tribe, A Tribe Called Zimbabwe, Feli Nandi Apparel, Haus of Stone, Panashe Designs, and By Bakari — each with a distinct voice, rooted in African craft and heritage.</p><p>Visit the <a href=\"/\">designer profiles</a> on our homepage to read their stories.</p>"
+          }
+        },
+        "faq_contact": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How do I get in touch?",
+            "answer": "<p>Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a>. We aim to reply within one business day. You can also use the form on our <a href=\"/pages/contact\">Contact page</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "cat_shipping",
+        "faq_ship_worldwide",
+        "faq_ship_cost",
+        "faq_ship_catalog",
+        "faq_ship_bespoke",
+        "faq_ship_track",
+        "faq_ship_duties",
+        "cat_orders",
+        "faq_payment",
+        "faq_cancel",
+        "faq_confirm",
+        "cat_returns",
+        "faq_returns",
+        "faq_bespoke_return",
+        "faq_faulty",
+        "cat_products",
+        "faq_sizing",
+        "faq_limited",
+        "faq_bespoke",
+        "faq_colours",
+        "faq_care",
+        "cat_brand",
+        "faq_what",
+        "faq_designers",
+        "faq_contact"
+      ],
+      "settings": {
+        "eyebrow": "Help & Information",
+        "heading": "Frequently Asked Questions",
+        "intro_text": "Everything you need to know about ordering, shipping, and caring for your Penya pieces.",
+        "contact_text": "<p>Still have a question? Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a> — we reply within one business day.</p>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -59,7 +59,7 @@
             "heading": {
               "type": "text",
               "settings": {
-                "text": "<h1>Radiant Heritage</h1>",
+                "text": "<h1>Every Glow Has a Story.</h1>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
@@ -83,7 +83,7 @@
             "tagline": {
               "type": "text",
               "settings": {
-                "text": "<p>Born in the heart of Harare, Penya Collective is a premium fashion house dedicated to the art of radiance.</p>",
+                "text": "<p>Born in Harare. Built to make every designer in Africa shine.</p>",
                 "width": "100%",
                 "max_width": "narrow",
                 "alignment": "left",
@@ -126,10 +126,6 @@
           ]
         }
       },
-      "block_order": [
-        "media",
-        "content"
-      ],
       "settings": {
         "media_position": "left",
         "media_width": "medium",
@@ -147,7 +143,7 @@
         "concept": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Concept</h3><p>Born in the heart of Harare, Penya Collective is a premium fashion house dedicated to the art of radiance. Our name is rooted in the Shona word kupenya-meaning to shine, to glow, or to be polished. We believe that true luxury is not just about what you wear; it is about the light you carry when you are connected to your heritage.</p>",
+            "text": "<h3>The Name</h3><p>Our name comes from the Shona word <em>kupenya</em> — to shine, to glow, to be polished. But Penya was never built around a single glow. It was built to amplify many. We are a collective: a curated stage for designers across Africa and its diaspora, each with a distinct voice, a rooted story, and something the world needs to see.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -171,7 +167,7 @@
         "vision": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Vision</h3><p>Zimbabwe is a land of profound craftsmanship and vibrant stories. At Penya, we take these ancestral narratives and weave them into the fabric of modern luxury. From the sharp lines of our tailoring to the intricate patterns of our knitwear, every piece is designed to make the wearer shine on the global stage.</p>",
+            "text": "<h3>The Mission</h3><p>Africa has always produced extraordinary designers. What it has not always had is the infrastructure to make them fully visible. That is the gap Penya exists to close. We do not dictate an aesthetic — we build a platform. We provide the stage, the curation, and the reach. The designers bring everything else.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -195,7 +191,7 @@
         "collective": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Collective</h3><p>We are more than a brand; we are a Collective. We collaborate with local artisans and visionaries to ensure that every garment reflects a standard of excellence that is uniquely Zimbabwean yet globally relevant. When you wear Penya, you are not just wearing a label-you are joining a movement of cultural brilliance.</p>",
+            "text": "<h3>The Designers</h3><p>Every designer in the Penya Collective carries something that cannot be replicated — not just an aesthetic, but a worldview. Jasper Mandizera of Ivhu Tribe sees fashion as soil and memory. Danayi Chapfika of Haus of Stone sees it as architecture. Feli Nandi hears it as music. Chipo Hwami of Panashe wears it as armour. Bakari Sibanda builds it as a bridge between worlds. We do not flatten those differences. We amplify them. Each story matters to us — not as a marketing angle, but as the whole point.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -219,7 +215,7 @@
         "promise": {
           "type": "text",
           "settings": {
-            "text": "<h3>Our Promise</h3><p>To be Penya is to be intentional. We prioritize premium materials, ethical production, and timeless design. Whether you are walking the streets of Harare or the runways of the world, our pieces ensure you are seen, you are heard, and above all-you glow.</p>",
+            "text": "<h3>Our Responsibility</h3><p>To be Penya is to be intentional — about materials, about people, about the world we leave behind. We produce in small batches from fabrics chosen for durability and conscience: natural fibres that breathe, last, and do less harm. We pay fair wages to every artisan in our supply chain. We design for longevity, not seasons — because the most responsible garment is the one you wear for a decade. That is the exchange we ask you to make with us.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -365,7 +361,7 @@
         "pillar_1": {
           "type": "text",
           "settings": {
-            "text": "<h4>01 — Heritage</h4><p>Zimbabwe is a land of profound craftsmanship and living stories. We are stewards of that legacy — weaving ancestral narratives into the fabric of contemporary luxury.</p>",
+            "text": "<h3>01 — Heritage</h3><p>Zimbabwe is a land of profound craftsmanship and living stories. We are stewards of that legacy — weaving ancestral narratives into the fabric of contemporary luxury without reducing either.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -389,7 +385,7 @@
         "pillar_2": {
           "type": "text",
           "settings": {
-            "text": "<h4>02 — Craftsmanship</h4><p>From the sharp lines of our tailoring to the intricate patterns of our knitwear, every garment is hand-finished with precision. We collaborate with skilled Zimbabwean artisans to ensure excellence.</p>",
+            "text": "<h3>02 — The Collective</h3><p>Six designers. Six distinct voices. One stage. We do not define what African fashion should look like — we give space for each designer's answer to that question. Their stories are the collection.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -413,7 +409,31 @@
         "pillar_3": {
           "type": "text",
           "settings": {
-            "text": "<h4>03 — Intentionality</h4><p>To be Penya is to be deliberate. Premium materials, ethical production, and timeless design ensure that every piece you wear is not a fast choice — it is a lasting statement.</p>",
+            "text": "<h3>03 — Craftsmanship</h3><p>Every garment is produced in small runs, hand-finished with precision, and made to outlast the season it was designed in. We collaborate with skilled artisans who share our standard for excellence.</p>",
+            "width": "100%",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          }
+        },
+        "pillar_4": {
+          "type": "text",
+          "settings": {
+            "text": "<h3>04 — Sustainability</h3><p>We care where things come from and what they leave behind. Natural fibres, small-batch production, fair wages, and packaging without excess. Luxury that does not cost the world its future.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -438,7 +458,8 @@
       "block_order": [
         "pillar_1",
         "pillar_2",
-        "pillar_3"
+        "pillar_3",
+        "pillar_4"
       ],
       "settings": {
         "content_direction": "row",
@@ -474,7 +495,7 @@
         "cta_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Wear the Glow.</h2>",
+            "text": "<h2>Find the Piece That Carries Your Story.</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -498,7 +519,7 @@
         "cta_text": {
           "type": "text",
           "settings": {
-            "text": "<p>Discover the collection and find the piece that carries your story.</p>",
+            "text": "<p>Every designer here woke up one day and decided their culture was worth fighting for. Their work is proof. Find the piece that carries their light — and yours.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
@@ -522,8 +543,8 @@
         "cta_button": {
           "type": "button",
           "settings": {
-            "label": "Explore the Collection",
-            "link": "shopify://collections/all",
+            "label": "Meet the Collective",
+            "link": "/",
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
