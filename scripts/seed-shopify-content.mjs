@@ -91,6 +91,24 @@ async function ensurePage(handle, title, templateSuffix, bodyHtml) {
   return created.page;
 }
 
+async function ensurePageMetafield(pageId, namespace, key, value) {
+  const existing = await shopify(
+    `/pages/${pageId}/metafields.json?namespace=${encodeURIComponent(namespace)}&key=${encodeURIComponent(key)}`
+  );
+  if (existing.metafields && existing.metafields.length > 0) {
+    const mf = existing.metafields[0];
+    if (mf.value === value) return mf; // already correct — skip write
+    await shopify(`/pages/${pageId}/metafields/${mf.id}.json`, 'PUT', {
+      metafield: { id: mf.id, value },
+    });
+    return mf;
+  }
+  const created = await shopify(`/pages/${pageId}/metafields.json`, 'POST', {
+    metafield: { namespace, key, value, type: 'single_line_text_field' },
+  });
+  return created.metafield;
+}
+
 async function ensureArticle(blogId, article) {
   const existing = await shopify(`/blogs/${blogId}/articles.json?handle=${encodeURIComponent(article.handle)}`);
   if (existing.articles && existing.articles.length > 0) {
@@ -194,6 +212,60 @@ const pages = [
     templateSuffix: 'shipping',
     bodyHtml: 'Information on shipping, delivery, and returns.',
   },
+  {
+    handle: 'fit-guide',
+    title: 'Find Your Fit',
+    templateSuffix: 'fit-guide',
+    bodyHtml: '',
+  },
+  {
+    handle: 'designer-ivhu-tribe',
+    title: 'Ivhu Tribe',
+    templateSuffix: 'designer',
+    heroAsset: 'designer-ivhutribe.jpg',
+    collectionHandle: 'ivhu-tribe',
+    bodyHtml: '<p>Ivhu — the Shona word for soil — tells you everything about what this brand is reaching for. Not spectacle for its own sake, but fashion that is tethered to earth, culture, and memory.</p><h3>Born From the Land</h3><p>Founded in 2023 by self-taught designer Jasper Mandizera, Ivhu Tribe entered the Zimbabwean fashion landscape with a clear philosophical anchor: culture is not background noise. It is the whole story. Every silhouette, every textile choice, every collection asks the same question — how do we honour what came before while speaking to where we are going?</p><h3>The Aesthetic</h3><p>Ivhu Tribe moves between extravagance and restraint with ease. Their collections range from bold ceremonial statements to quietly powerful everyday pieces — always carrying the visual codes of Zimbabwe\'s cultural traditions without becoming costumes. Tribal prints are recontextualised, natural fibres speak to sustainability, and the occasional unexpected material — including an outfit made from baobab tree — signals a brand unafraid to experiment from a place of deep knowledge.</p><h3>A Global Voice</h3><p>In just one year, Ivhu Tribe represented Zimbabwe at World Fashion Week China 2024 and the World Fashion Exhibition — a testament to both the quality of their work and the urgency of the story they carry. Co-led by Jasper and model Charlotte Muziri, the brand understands that fashion is performance, film, and education as much as it is clothing.</p><h3>Why They Shine</h3><p>In a crowded global fashion conversation, Ivhu Tribe does something rare: they speak from specific, rooted experience — and the specificity is what makes them universal. This is the Penya Collective ethos made visible.</p>',
+  },
+  {
+    handle: 'designer-a-tribe-called-zimbabwe',
+    title: 'A Tribe Called Zimbabwe',
+    templateSuffix: 'designer',
+    heroAsset: 'designer-atcz.jpg',
+    collectionHandle: 'a-tribe-called-zimbabwe',
+    bodyHtml: '<p>The name says everything. A Tribe Called Zimbabwe is not a fashion brand with heritage as a marketing angle — it is heritage as the point of origin, and fashion as the medium of declaration.</p><h3>An Identity, Not a Trend</h3><p>ATCZ was built to articulate something that many Zimbabwean creatives feel but rarely see reflected back: pride that is not performative, identity that is not explained away, culture that is worn with full conviction and zero apology. The brand\'s work does not reference Zimbabwean identity. It is Zimbabwean identity — translated into cut, colour, and construction.</p><h3>The Aesthetic</h3><p>Expect deliberate palettes drawn from the land: ochre, clay, storm-cloud grey, the deep green of Zimbabwe\'s highlands. Expect silhouettes that carry weight — structured pieces that refuse to be ignored. ATCZ garments are not background pieces. They are opening statements.</p><h3>Craft as Declaration</h3><p>Every piece from ATCZ reflects the belief that Zimbabwean craft belongs at the highest level of fashion — not as curiosity, not as exception, but as standard. The finishing is meticulous. The storytelling runs through every seam. When you wear ATCZ, you are wearing an argument — that African luxury is not aspiring to something. It already is something.</p><h3>Why They Shine</h3><p>At Penya Collective, we need voices that speak without hedging. ATCZ is exactly that voice — bold, grounded, and unapologetically Zimbabwean.</p>',
+  },
+  {
+    handle: 'designer-feli-nandi',
+    title: 'Feli Nandi',
+    templateSuffix: 'designer',
+    heroAsset: 'designer-felinandi.jpg',
+    collectionHandle: 'feli-nandi-apparels',
+    bodyHtml: '<p>Fashion is language. Music is language. Feli Nandi speaks both — and has spent her career proving that they were always the same conversation.</p><h3>Designer, Musician, One Vision</h3><p>Felistus Chipendo — known artistically as Feli Nandi — launched her eponymous apparel label in 2021 alongside an already active music career. For many, that would be a distraction. For Feli Nandi, it was completion. The same soul that writes songs about identity, womanhood, and African belonging now translates those themes directly into fabric. The result is clothing that sounds like something — confident, melodic, unapologetically female.</p><h3>The Aesthetic</h3><p>Feli Nandi Apparel works in the register of contemporary African elegance: clean lines informed by traditional textile traditions, colour that draws from the landscape and the continent\'s rich visual culture, and silhouettes designed specifically for the bodies and lives of African women. Her pieces are not replicas of heritage — they are its future form.</p><h3>Recognition at the Highest Level</h3><p>When the newly inaugurated President of Namibia, Netumbo Nandi-Ndaitwah, chose to mark her historic moment in a Feli Nandi creation, it was not a brand decision. It was a statement of values. The President of a nation, on one of the most significant days in her country\'s history, wanted to be dressed in African craft. That is the weight this brand carries.</p><h3>Zimbabwe Music Awards</h3><p>In 2023, Feli Nandi was named Best Female Artist at the Zimbabwe Music Awards — recognition not just of her musical output, but of the cultural contribution she makes across disciplines. A rare creative who excels at multiple crafts without diminishing either.</p><h3>Why She Shines</h3><p>Feli Nandi represents something important for the Penya Collective: the designer as complete creative. Not just someone who makes beautiful things, but someone who understands beauty as a full-spectrum practice — sonic, visual, cultural, political.</p>',
+  },
+  {
+    handle: 'designer-haus-of-stone',
+    title: 'Haus of Stone',
+    templateSuffix: 'designer',
+    heroAsset: 'designer-hausofstone.jpg',
+    collectionHandle: 'hausofstone',
+    bodyHtml: '<p>There is a phrase that defines Haus of Stone: where fantasy intersects with reality. It sounds like a tagline. It is actually a design philosophy — and once you understand it, every piece makes sudden, perfect sense.</p><h3>The Origin</h3><p>Founded by Danayi Chapfika Madondo in 2014 and relaunched with renewed focus in 2018 with her collection "Ode to Askana," Haus of Stone draws its name and its spirit from the Shona phrase "Dzimba Dzemabwe" — the origin of the word Zimbabwe itself, meaning "houses of stone." The Great Zimbabwe ruins — dry-stone walls assembled without mortar, standing for over eight centuries — are not just a historical reference. They are a design model: structures of extraordinary precision and permanence.</p><h3>Afro-Minimal, Slow Fashion</h3><p>Haus of Stone operates as a slow fashion brand. In a world addicted to volume and velocity, Danayi deliberately slows down. She repurposes artisan-made home objects and bestows luxury status on them. She looks at everyday African scenarios — domestic, communal, intimate — and reframes them as high fashion. The result is clothing that carries the weight of real life while elevating it to art.</p><h3>The World Has Noticed</h3><p>Haus of Stone has been featured in Vogue and Glamour Magazine. Their work was selected to represent Zimbabwe at the British Council\'s Creative DNA programme at London Fashion Week. Their film "Exodus: A Journey To New Worlds" screened at the 9th Fashion Film Festival Milano. They have exhibited at the CANEX Inter Africa Trade Fair — operating comfortably at international level, entirely on their own terms.</p><h3>Why They Shine</h3><p>Haus of Stone proves that Afro-minimal fashion — rooted in Africa but stripped of stereotype — is not just viable. It is compelling on a world stage. That is exactly the kind of proof the Penya Collective is built to carry forward.</p>',
+  },
+  {
+    handle: 'designer-panashe',
+    title: 'Panashe',
+    templateSuffix: 'designer',
+    heroAsset: 'designer-panashe.jpg',
+    collectionHandle: 'panashe-designs',
+    bodyHtml: '<p>Chipo Hwami arrived in the United States from Zimbabwe with four hundred dollars and a single suitcase. She built a fashion brand from that. But the more important detail is not the hustle — it is the why.</p><h3>Fashion as Confidence</h3><p>Panashe Designs was not built to fill a wardrobe gap. It was built to fill an emotional one. Chipo\'s work starts from a belief that clothing is not decorative — it is functional in the deepest sense. A well-made, intentionally designed garment gives a woman presence before she speaks a word. That is the exchange Panashe offers: deliberate style as a form of armour, confidence, and declaration.</p><h3>The Aesthetic</h3><p>Panashe pieces are bold. Not loud — bold. There is a difference. Loud seeks attention. Bold commands respect. Chipo\'s work favours rich colours, statement silhouettes, and finishes that make clear this garment was not made by accident. Limited production runs ensure exclusivity — these are pieces for women who want to stand apart, not just dress up.</p><h3>Rooted in Zimbabwe</h3><p>Despite her international base, Chipo\'s design language remains unmistakably Zimbabwean. The heritage is not worn as nostalgia — it is used as a design vocabulary. The patterns, the colour relationships, the sense of proportion: all informed by where she came from, channelled into clothing made for wherever her customers are going.</p><h3>Why She Shines</h3><p>Panashe is a reminder that Zimbabwean fashion does not only live in Harare. It lives wherever Zimbabwean creators carry it — and Chipo Hwami carries it with exceptional intention.</p>',
+  },
+  {
+    handle: 'designer-by-bakari',
+    title: 'By Bakari',
+    templateSuffix: 'designer',
+    heroAsset: 'designer-bybakari.jpg',
+    collectionHandle: 'by-bakari',
+    bodyHtml: '<p>Bakari Sibanda grew up in Bulawayo. He came to fashion not through a design school or an apprenticeship, but through a deep personal conviction that African textiles were being misread — and a determination to correct the record.</p><h3>Reframing the African Print</h3><p>By Bakari was built to dismantle a familiar story. Bakari\'s work takes vibrant, pattern-rich, culturally loaded textiles and repositions them in the contemporary wardrobe. Not because he wants to modernise African print, but because he knows it was never just historical. It was always current. Always elegant. Always capable of sitting alongside any other fashion tradition in the world.</p><h3>The Aesthetic</h3><p>By Bakari has a signature energy: confident, wearable, urban. His pieces are not conceptual exercises — they are clothes people want to live in. The construction is clean, the proportions are considered, and the textiles do the talking. He targets a generation that is global in its references and unambiguously African in its identity.</p><h3>Digital-First, International by Design</h3><p>By Bakari took his brand global through social media — international orders arriving from the UK, Canada, Australia. He built those relationships without intermediaries, on the strength of the work and the clarity of the brand\'s voice. A Zimbabwean brand with a genuinely international audience, built from the ground up.</p><h3>Why He Shines</h3><p>By Bakari is proof that the appetite for genuine African fashion — not Western fashion with African accents, but fashion made by and for African people — is global. Bakari found that audience by trusting the work. At Penya Collective, we trust it too.</p>',
+  },
 ];
 
 const collections = [
@@ -228,6 +300,14 @@ async function main() {
   for (const page of pages) {
     const result = await ensurePage(page.handle, page.title, page.templateSuffix, page.bodyHtml);
     console.log(`Page ready: ${result.title} → /pages/${result.handle}`);
+    if (page.heroAsset) {
+      await ensurePageMetafield(result.id, 'custom', 'hero_image_asset', page.heroAsset);
+      console.log(`  ↳ hero_image_asset = ${page.heroAsset}`);
+    }
+    if (page.collectionHandle) {
+      await ensurePageMetafield(result.id, 'custom', 'collection_handle', page.collectionHandle);
+      console.log(`  ↳ collection_handle = ${page.collectionHandle}`);
+    }
   }
 
   for (const article of articles) {

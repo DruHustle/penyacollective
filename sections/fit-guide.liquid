@@ -1,0 +1,374 @@
+
+{%- doc -%}
+  Fit Guide section.
+  All copy, measurement steps, and size table rows are fully editable via the Shopify theme editor.
+  Add "Measurement step" blocks for the how-to guide.
+  Add "Size row" blocks for the size reference table.
+{%- enddoc -%}
+
+<div class="fit-guide page-width">
+
+  <div class="fit-guide__intro">
+    {% if section.settings.eyebrow != blank %}
+      <p class="fit-guide__eyebrow">{{ section.settings.eyebrow }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="fit-guide__heading">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.intro_text != blank %}
+      <p class="fit-guide__subtext">{{ section.settings.intro_text }}</p>
+    {% endif %}
+  </div>
+
+  {% assign step_blocks = section.blocks | where: 'type', 'measurement_step' %}
+  {% assign row_blocks = section.blocks | where: 'type', 'size_row' %}
+
+  {% if step_blocks.size > 0 %}
+    <div class="fit-guide__steps">
+      {% for block in step_blocks %}
+        <div class="fit-guide__step" {{ block.shopify_attributes }}>
+          <span
+            class="fit-guide__step-number"
+            aria-label="Step {{ forloop.index }}"
+          >{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <div class="fit-guide__step-content">
+            {% if block.settings.title != blank %}
+              <h3 class="fit-guide__step-title">{{ block.settings.title }}</h3>
+            {% endif %}
+            {% if block.settings.description != blank %}
+              <p>{{ block.settings.description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if row_blocks.size > 0 %}
+    <div class="fit-guide__size-table">
+      {% if section.settings.table_heading != blank %}
+        <h3 class="fit-guide__table-heading">{{ section.settings.table_heading }}</h3>
+      {% endif %}
+      {% if section.settings.table_note != blank %}
+        <p class="fit-guide__table-note">{{ section.settings.table_note }}</p>
+      {% endif %}
+      <div class="fit-guide__table-scroll">
+        <table class="fit-guide__table">
+          <thead>
+            <tr>
+              <th scope="col">Size</th>
+              <th scope="col">Chest (cm)</th>
+              <th scope="col">Waist (cm)</th>
+              <th scope="col">Hips (cm)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for block in row_blocks %}
+              <tr {{ block.shopify_attributes }}>
+                <td>{{ block.settings.size_label }}</td>
+                <td>{{ block.settings.chest }}</td>
+                <td>{{ block.settings.waist }}</td>
+                <td>{{ block.settings.hips }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  {% endif %}
+
+  {% if section.settings.note_heading != blank or section.settings.note_text != blank %}
+    <div class="fit-guide__note">
+      {% if section.settings.note_heading != blank %}
+        <h3>{{ section.settings.note_heading }}</h3>
+      {% endif %}
+      {% if section.settings.note_text != blank %}
+        <p>{{ section.settings.note_text }}</p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% stylesheet %}
+  .fit-guide {
+    padding-block: 80px;
+  }
+
+  .fit-guide__intro {
+    max-width: 620px;
+    margin: 0 auto 4rem;
+    text-align: center;
+  }
+
+  .fit-guide__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .fit-guide__heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+
+  .fit-guide__subtext {
+    opacity: 0.75;
+    line-height: 1.7;
+  }
+
+  .fit-guide__steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 4rem;
+    margin-bottom: 5rem;
+    max-width: 860px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .fit-guide__step {
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+  }
+
+  .fit-guide__step-number {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    padding-top: 0.25rem;
+    flex-shrink: 0;
+    min-width: 2rem;
+  }
+
+  .fit-guide__step-title {
+    font-family: var(--font-heading--family);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .fit-guide__step-content p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.8;
+  }
+
+  .fit-guide__size-table {
+    max-width: 640px;
+    margin: 0 auto 4rem;
+  }
+
+  .fit-guide__table-heading {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .fit-guide__table-note {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .fit-guide__table-scroll {
+    overflow-x: auto;
+  }
+
+  .fit-guide__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .fit-guide__table th,
+  .fit-guide__table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+  }
+
+  .fit-guide__table th {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .fit-guide__table tbody tr {
+    transition: background-color 0.15s ease;
+  }
+
+  .fit-guide__table tbody tr:hover {
+    background-color: rgb(var(--color-foreground-rgb) / 0.08);
+  }
+
+  .fit-guide__note {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    border-radius: 4px;
+  }
+
+  .fit-guide__note h3 {
+    font-family: var(--font-heading--family);
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .fit-guide__note p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 749px) {
+    .fit-guide {
+      padding-block: 48px 64px;
+    }
+
+    .fit-guide__steps {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+
+    .fit-guide__step {
+      gap: 1rem;
+      padding: 1.25rem;
+      border: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+      border-radius: 4px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Fit Guide",
+  "blocks": [
+    {
+      "type": "measurement_step",
+      "name": "Measurement step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step title",
+          "placeholder": "e.g. Chest"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Instructions",
+          "placeholder": "How to take this measurement..."
+        }
+      ]
+    },
+    {
+      "type": "size_row",
+      "name": "Size row",
+      "settings": [
+        {
+          "type": "text",
+          "id": "size_label",
+          "label": "Size",
+          "placeholder": "e.g. M"
+        },
+        {
+          "type": "text",
+          "id": "chest",
+          "label": "Chest range (cm)",
+          "placeholder": "e.g. 88 – 94"
+        },
+        {
+          "type": "text",
+          "id": "waist",
+          "label": "Waist range (cm)",
+          "placeholder": "e.g. 70 – 76"
+        },
+        {
+          "type": "text",
+          "id": "hips",
+          "label": "Hips range (cm)",
+          "placeholder": "e.g. 96 – 102"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Your Fit, Your Way"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Finding the right fit should feel effortless."
+    },
+    {
+      "type": "textarea",
+      "id": "intro_text",
+      "label": "Intro text"
+    },
+    {
+      "type": "header",
+      "content": "Size table"
+    },
+    {
+      "type": "text",
+      "id": "table_heading",
+      "label": "Table heading",
+      "default": "Size Reference"
+    },
+    {
+      "type": "textarea",
+      "id": "table_note",
+      "label": "Table note"
+    },
+    {
+      "type": "header",
+      "content": "Closing note"
+    },
+    {
+      "type": "text",
+      "id": "note_heading",
+      "label": "Note heading",
+      "default": "A note on fit"
+    },
+    {
+      "type": "textarea",
+      "id": "note_text",
+      "label": "Note text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Fit Guide",
+      "blocks": [
+        { "type": "measurement_step", "settings": { "title": "Chest", "description": "Wrap the tape around the fullest part of your chest, parallel to the ground. Breathe naturally — do not pull it tight." } },
+        { "type": "measurement_step", "settings": { "title": "Waist", "description": "Measure around your natural waistline — the narrowest point of your torso, usually an inch above your navel. Exhale gently and measure." } },
+        { "type": "measurement_step", "settings": { "title": "Hips", "description": "Stand with feet together and measure around the fullest part of your hips, roughly 20 cm below your natural waistline. Keep the tape level." } },
+        { "type": "measurement_step", "settings": { "title": "Height", "description": "Stand straight in bare feet against a wall. Mark the top of your head and measure to the floor. Helps us suggest the right length." } },
+        { "type": "size_row", "settings": { "size_label": "XS", "chest": "80 – 84", "waist": "62 – 66", "hips": "88 – 92" } },
+        { "type": "size_row", "settings": { "size_label": "S",  "chest": "84 – 88", "waist": "66 – 70", "hips": "92 – 96" } },
+        { "type": "size_row", "settings": { "size_label": "M",  "chest": "88 – 94", "waist": "70 – 76", "hips": "96 – 102" } },
+        { "type": "size_row", "settings": { "size_label": "L",  "chest": "94 – 100", "waist": "76 – 82", "hips": "102 – 108" } },
+        { "type": "size_row", "settings": { "size_label": "XL", "chest": "100 – 108", "waist": "82 – 90", "hips": "108 – 116" } },
+        { "type": "size_row", "settings": { "size_label": "XXL", "chest": "108 – 116", "waist": "90 – 98", "hips": "116 – 124" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

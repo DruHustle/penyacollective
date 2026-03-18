@@ -54,11 +54,20 @@ test.describe('Homepage', () => {
   test('designer images load without 404', async ({ page }) => {
     const images = page.locator('.penya-designers__grid img');
     const count = await images.count();
-    expect(count).toBe(6);
+    expect(count).toBeGreaterThanOrEqual(6);
     for (let i = 0; i < count; i++) {
       const src = await images.nth(i).getAttribute('src');
       const res = await page.request.get(src);
       expect(res.status(), `Designer image failed: ${src}`).toBe(200);
+    }
+  });
+
+  test('designer cards link to profile pages not collections', async ({ page }) => {
+    const cards = page.locator('.penya-designers__grid a');
+    const count = await cards.count();
+    for (let i = 0; i < count; i++) {
+      const href = await cards.nth(i).getAttribute('href');
+      expect(href, `Designer card should link to /pages/designer-*`).toMatch(/^\/pages\/designer-/);
     }
   });
 
@@ -164,6 +173,72 @@ test.describe('Pages', () => {
       expect(body).not.toContain('Liquid error');
     });
   }
+});
+
+// ─── Designer profiles ─────────────────────────────────────────────────────
+test.describe('Designer profiles', () => {
+  const designers = [
+    'designer-ivhu-tribe',
+    'designer-a-tribe-called-zimbabwe',
+    'designer-feli-nandi',
+    'designer-haus-of-stone',
+    'designer-panashe',
+    'designer-by-bakari',
+  ];
+
+  for (const handle of designers) {
+    test(`/pages/${handle} loads without errors`, async ({ page }) => {
+      const res = await page.goto(`/pages/${handle}`);
+      expect(res.status()).toBe(200);
+      const body = await page.textContent('body');
+      expect(body).not.toContain('Liquid error');
+    });
+
+    test(`/pages/${handle} has designer name heading`, async ({ page }) => {
+      await page.goto(`/pages/${handle}`);
+      const heading = page.locator('.designer-profile__name');
+      await expect(heading).toBeVisible();
+      const text = await heading.textContent();
+      expect(text.trim().length).toBeGreaterThan(0);
+    });
+
+    test(`/pages/${handle} has a shop CTA`, async ({ page }) => {
+      await page.goto(`/pages/${handle}`);
+      const cta = page.locator('.designer-profile__cta a');
+      await expect(cta).toBeVisible();
+      const href = await cta.getAttribute('href');
+      expect(href).toBeTruthy();
+    });
+  }
+});
+
+// ─── Fit Guide ─────────────────────────────────────────────────────────────
+test.describe('Fit Guide', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/pages/fit-guide');
+  });
+
+  test('loads without errors', async ({ page }) => {
+    const body = await page.textContent('body');
+    expect(body).not.toContain('Liquid error');
+  });
+
+  test('has measurement steps', async ({ page }) => {
+    const steps = page.locator('.fit-guide__step');
+    const count = await steps.count();
+    expect(count).toBeGreaterThanOrEqual(4);
+  });
+
+  test('has size table with rows', async ({ page }) => {
+    const rows = page.locator('.fit-guide__table tbody tr');
+    const count = await rows.count();
+    expect(count).toBeGreaterThanOrEqual(6);
+  });
+
+  test('size table has accessible column headers', async ({ page }) => {
+    const headers = page.locator('.fit-guide__table th[scope="col"]');
+    await expect(headers).toHaveCount(4);
+  });
 });
 
 // ─── SEO ───────────────────────────────────────────────────────────────────

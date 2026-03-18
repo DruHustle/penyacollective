@@ -91,6 +91,7 @@ jobs:
 
       - name: Run Playwright tests
         if: env.SECRETS_OK == 'true'
+        timeout-minutes: 15
         env:
           E2E_BASE_URL: "https://${{ secrets.SHOPIFY_STORE_DOMAIN }}?preview_theme_id=${{ secrets.SHOPIFY_DEV_THEME_ID }}"
         run: npx playwright test
@@ -113,6 +114,7 @@ jobs:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
       SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
       SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
+      SHOPIFY_ADMIN_API_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -122,7 +124,7 @@ jobs:
 
       - name: Check required deploy secrets
         run: |
-          for var in SHOPIFY_CLI_THEME_TOKEN SHOPIFY_STORE_DOMAIN SHOPIFY_THEME_ID; do
+          for var in SHOPIFY_CLI_THEME_TOKEN SHOPIFY_STORE_DOMAIN SHOPIFY_THEME_ID SHOPIFY_ADMIN_API_TOKEN; do
             if [ -z "${!var}" ]; then
               echo "❌ Required secret $var is not set — cannot deploy"
               exit 1
@@ -141,6 +143,12 @@ jobs:
             --path . \
             --allow-live \
             --no-color
+
+      - name: Seed content
+        run: node scripts/seed-shopify-content.mjs
+        env:
+          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+          SHOPIFY_ADMIN_API_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
 
       - name: Notify on successful deploy
         if: success()
