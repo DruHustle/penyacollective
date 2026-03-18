@@ -1,5 +1,5 @@
 
-{%- doc -%}
+{%- comment -%}
   Designer profile section.
 
   Hero image sources (priority order):
@@ -10,7 +10,7 @@
   1. section.settings.collection_url — set via theme editor
   2. /collections/ + page.metafields.custom.collection_handle — set by seed script
   3. /collections/all — absolute fallback so the CTA is always visible
-{%- enddoc -%}
+{%- endcomment-%}
 
 {% liquid
   assign hero_image     = section.settings.hero_image
