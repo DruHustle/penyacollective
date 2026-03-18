@@ -8,60 +8,143 @@
 {%- endcomment -%}
 
 {% liquid
-  assign designer_handles = 'designer-ivhu-tribe|designer-a-tribe-called-zimbabwe|designer-feli-nandi|designer-haus-of-stone|designer-panashe|designer-by-bakari' | split: '|'
-  assign designer_fallback_titles = 'Ivhu Tribe|A Tribe Called Zimbabwe|Feli Nandi Apparels|Haus of Stone|Panashe Designs|By Bakari' | split: '|'
-  assign designer_fallback_assets = 'designer-ivhutribe.jpg|designer-atcz.jpg|designer-felinandi.jpg|designer-hausofstone.jpg|designer-panashe.jpg|designer-bybakari.jpg' | split: '|'
-  assign designer_countries = 'Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe' | split: '|'
+  assign designer_handles          = 'designer-ivhu-tribe|designer-a-tribe-called-zimbabwe|designer-feli-nandi|designer-haus-of-stone|designer-panashe|designer-by-bakari' | split: '|'
+  assign designer_fallback_titles  = 'Ivhu Tribe|A Tribe Called Zimbabwe|Feli Nandi Apparels|Haus of Stone|Panashe Designs|By Bakari' | split: '|'
+  assign designer_fallback_assets  = 'designer-ivhutribe.jpg|designer-atcz.jpg|designer-felinandi.jpg|designer-hausofstone.jpg|designer-panashe.jpg|designer-bybakari.jpg' | split: '|'
+  assign designer_countries        = 'Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe' | split: '|'
 %}
 
 <style>
-  .penya-designers__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 2.5rem; }
-  .penya-designers__card { display: block; text-decoration: none; color: inherit; }
-  .penya-designers__card-image { aspect-ratio: 3/4; overflow: hidden; margin-bottom: 1rem; }
-  .penya-designers__card-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
-  .penya-designers__card:hover .penya-designers__card-image img { transform: scale(1.04); }
-  .penya-designers__card-shop { font-family: var(--font-subheading--family); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; border-bottom: 1px solid currentColor; padding-bottom: 2px; }
-  @media (max-width: 989px) { .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
-  @media (max-width: 480px) { .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
+  .penya-designers__header {
+    margin-bottom: 2rem;
+  }
+  .penya-designers__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.5rem;
+  }
+  .penya-designers__heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    margin-bottom: 0.75rem;
+  }
+  .penya-designers__subtext {
+    font-family: var(--font-body--family);
+    color: var(--color-foreground);
+    opacity: 0.7;
+    max-width: 480px;
+    line-height: 1.6;
+  }
+  .penya-designers__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 2.5rem;
+  }
+  .penya-designers__card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+  .penya-designers__card-image {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    background-color: rgb(var(--color-foreground-rgb) / 0.06);
+  }
+  .penya-designers__card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+  }
+  .penya-designers__card:hover .penya-designers__card-image img {
+    transform: scale(1.04);
+  }
+  .penya-designers__card-country {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.25rem;
+  }
+  .penya-designers__card-name {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem;
+    color: var(--color-foreground-heading);
+  }
+  .penya-designers__card-cta {
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 2px;
+    display: inline-block;
+    transition: opacity 0.2s ease;
+  }
+  .penya-designers__card:hover .penya-designers__card-cta {
+    opacity: 0.6;
+  }
+  @media (max-width: 989px) {
+    .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+  @media (max-width: 480px) {
+    .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  }
 </style>
 
 <div class="penya-designers">
   <div class="penya-designers__header">
-    <p style="font-family: var(--font-subheading--family); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.5rem;">The Collective</p>
-    <h2 style="font-family: var(--font-heading--family); margin-bottom: 0.75rem;">Shop by Designer</h2>
-    <p style="font-family: var(--font-body--family); color: var(--color-foreground); opacity: 0.7; max-width: 480px;">Curated pieces from designers across Africa and beyond.</p>
+    <p class="penya-designers__eyebrow">The Collective</p>
+    <h2 class="penya-designers__heading">Shop by Designer</h2>
+    <p class="penya-designers__subtext">Curated pieces from designers across Africa and beyond.</p>
   </div>
+
   <div class="penya-designers__grid">
     {% for handle in designer_handles %}
-      {% assign index = forloop.index0 %}
-      {% assign fallback_title = designer_fallback_titles[index] %}
-      {% assign fallback_asset = designer_fallback_assets[index] %}
-      {% assign fallback_country = designer_countries[index] %}
-      {% assign designer_page = pages[handle] %}
-      {% assign designer_title = designer_page.title | default: fallback_title %}
-      {% assign fallback_url = '/pages/' | append: handle %}
-      {% assign designer_url = designer_page.url | default: fallback_url %}
-      {% assign hero_asset = designer_page.metafields.custom.hero_image_asset.value | default: fallback_asset %}
-      {% assign image_loading = 'lazy' %}
-      {% assign fetch_priority = '' %}
-      {% if forloop.index0 < 2 %}
-        {% assign image_loading = 'eager' %}
-        {% assign fetch_priority = 'high' %}
+      {% assign index            = forloop.index0 %}
+      {% assign fallback_title   = designer_fallback_titles[index] %}
+      {% assign fallback_asset   = designer_fallback_assets[index] %}
+      {% assign country          = designer_countries[index] %}
+      {% assign designer_page    = pages[handle] %}
+      {% assign designer_title   = designer_page.title | default: fallback_title %}
+      {% assign designer_url     = designer_page.url | default: '/pages/' | append: handle %}
+      {% assign hero_asset       = designer_page.metafields.custom.hero_image_asset.value | default: fallback_asset %}
+
+      {%- comment -%} First 3 are in the visible viewport on desktop — load eagerly {%- endcomment -%}
+      {% if index < 3 %}
+        {% assign image_loading   = 'eager' %}
+        {% assign fetch_priority  = 'high' %}
+      {% else %}
+        {% assign image_loading   = 'lazy' %}
+        {% assign fetch_priority  = '' %}
       {% endif %}
-      <a href="{{ designer_url }}" class="penya-designers__card">
+
+      <a
+        href="{{ designer_url }}"
+        class="penya-designers__card"
+        aria-label="Read the story of {{ designer_title }}"
+      >
         <div class="penya-designers__card-image">
           <img
             src="{{ hero_asset | asset_url }}"
-            alt="{{ designer_title | escape }}"
+            alt="{{ designer_title | escape }} — designer"
             loading="{{ image_loading }}"
             width="900"
             height="1200"
             {% if fetch_priority != '' %}fetchpriority="{{ fetch_priority }}"{% endif %}
           >
         </div>
-        <p style="font-family: var(--font-subheading--family); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--color-primary); margin-bottom: 0.25rem;">{{ fallback_country }}</p>
-        <h3 style="font-family: var(--font-heading--family); margin: 0 0 0.5rem; font-size: 1.25rem;">{{ designer_title }}</h3>
-        <span class="penya-designers__card-shop">Read the Story</span>
+        <p class="penya-designers__card-country">{{ country }}</p>
+        <h3 class="penya-designers__card-name">{{ designer_title }}</h3>
+        <span class="penya-designers__card-cta">Read the Story</span>
       </a>
     {% endfor %}
   </div>
