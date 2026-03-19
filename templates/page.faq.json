@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "main": {
@@ -29,7 +20,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How much does shipping cost?",
-            "answer": "<p>Shipping is <strong>free on all orders over €200</strong>. Orders below this threshold are charged at standard rates, which are displayed clearly at checkout before you pay.</p>"
+            "answer": "<p>Shipping is <strong>free on qualifying orders</strong>. If your order does not qualify, the standard rate for your destination is displayed clearly at checkout before you pay.</p>"
           }
         },
         "faq_ship_catalog": {
@@ -179,7 +170,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How do I get in touch?",
-            "answer": "<p>Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a>. We aim to reply within one business day. You can also use the form on our <a href=\"/pages/contact\">Contact page</a>.</p>"
+            "answer": "<p>Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a>, message us on <a href=\"https://wa.me/4915147416152\">WhatsApp</a>, or use the form on our <a href=\"/pages/contact\">Contact page</a>. We aim to reply within one business day.</p>"
           }
         }
       },
@@ -214,7 +205,7 @@
         "eyebrow": "Help & Information",
         "heading": "Frequently Asked Questions",
         "intro_text": "Everything you need to know about ordering, shipping, and caring for your Penya pieces.",
-        "contact_text": "<p>Still have a question? Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a> — we reply within one business day.</p>"
+        "contact_text": "<p>Still have a question? Email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> or message us on <a href=\"https://wa.me/4915147416152\">WhatsApp</a> — we reply within one business day.</p>"
       }
     }
   },

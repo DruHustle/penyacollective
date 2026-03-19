@@ -6,74 +6,35 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
-    "main": {
-      "type": "main-page",
-      "blocks": {
-        "title": {
-          "type": "text",
-          "name": "t:names.title",
-          "settings": {
-            "text": "<h1>{{ closest.page.title }}</h1>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "center",
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        },
-        "content": {
-          "type": "text",
-          "name": "t:names.content",
-          "settings": {
-            "text": "<p>For bespoke orders, wholesale inquiries, or general enquiries, email <a href=\"mailto:info@penya.africa\">info@penya.africa</a> or use the form below. We respond within 1–2 business days.</p><p><strong>Penya Collective</strong><br>Steinhofweg 47<br>69118 Heidelberg, Germany<br>Tel: <a href=\"tel:+4915147416152\">+49 1514 7416152</a></p>",
-            "width": "100%",
-            "max_width": "narrow",
-            "alignment": "center",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "title",
-        "content"
-      ],
+    "client_care": {
+      "type": "penya-client-care",
       "settings": {
-        "content_direction": "column",
-        "gap": 32,
-        "color_scheme": "scheme-2",
-        "padding-block-start": 40,
-        "padding-block-end": 0
+        "eyebrow": "Client Care",
+        "heading": "Contact",
+        "copy": "<p>For bespoke commissions, wholesale conversations, or help choosing the right piece, reach out directly. We reply with the same care we bring to the clothes.</p>",
+        "primary_label": "Email Client Care",
+        "primary_link": "mailto:info@penya.africa",
+        "secondary_label": "WhatsApp Us",
+        "secondary_link": "https://wa.me/4915147416152",
+        "secondary_new_tab": true,
+        "text_link_label": "Need sizing help? View the Fit Guide",
+        "text_link": "/pages/fit-guide",
+        "email_label": "Email",
+        "email_address": "info@penya.africa",
+        "email_note": "Best for bespoke enquiries, wholesale, editorial requests, and detailed sizing questions.",
+        "whatsapp_label": "WhatsApp",
+        "whatsapp_text": "+49 1514 7416152",
+        "whatsapp_url": "https://wa.me/4915147416152",
+        "whatsapp_note": "Best for quick questions, event deadlines, and real-time fit advice before you order.",
+        "response_label": "Response time",
+        "response_text": "Within one business day",
+        "response_note": "If your request is urgent, mention your event date and we will prioritise the reply.",
+        "address_label": "Operations",
+        "address_text": "<p><strong>Penya Collective</strong><br>Steinhofweg 47<br>69118 Heidelberg, Germany</p><p>We work between Heidelberg and Harare, in close collaboration with our designers and artisan partners.</p>",
+        "color_scheme": "scheme-2"
       }
     },
     "form": {
@@ -139,13 +100,13 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 48,
-        "padding-block-end": 32
+        "padding-block-start": 32,
+        "padding-block-end": 48
       }
     }
   },
   "order": [
-    "main",
+    "client_care",
     "form"
   ]
 }

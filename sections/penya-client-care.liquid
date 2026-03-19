@@ -1,0 +1,382 @@
+{%- comment -%}
+  Penya client care hero.
+
+  Dependency mapping:
+  - Template JSON provides page-level copy and action labels.
+  - Theme settings keep support details editable without touching Liquid.
+{%- endcomment -%}
+
+<section class="penya-client-care color-{{ section.settings.color_scheme }}">
+  <div class="penya-client-care__inner page-width">
+    <div class="penya-client-care__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="penya-client-care__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h1 class="penya-client-care__heading">{{ section.settings.heading }}</h1>
+      {% endif %}
+
+      {% if section.settings.copy != blank %}
+        <div class="penya-client-care__copy rte">
+          {{ section.settings.copy }}
+        </div>
+      {% endif %}
+
+      <div class="penya-client-care__actions">
+        {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
+          <a href="{{ section.settings.primary_link }}" class="button">
+            {{ section.settings.primary_label }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
+          <a href="{{ section.settings.secondary_link }}" class="button button-secondary"{% if section.settings.secondary_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+            {{ section.settings.secondary_label }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.text_link_label != blank and section.settings.text_link != blank %}
+          <a href="{{ section.settings.text_link }}" class="penya-client-care__text-link">
+            {{ section.settings.text_link_label }}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="penya-client-care__cards">
+      {% if section.settings.email_address != blank %}
+        <article class="penya-client-care__card">
+          <p class="penya-client-care__card-label">{{ section.settings.email_label }}</p>
+          <a href="mailto:{{ section.settings.email_address }}" class="penya-client-care__card-link">{{ section.settings.email_address }}</a>
+          {% if section.settings.email_note != blank %}
+            <p class="penya-client-care__card-copy">{{ section.settings.email_note }}</p>
+          {% endif %}
+        </article>
+      {% endif %}
+
+      {% if section.settings.whatsapp_url != blank %}
+        <article class="penya-client-care__card">
+          <p class="penya-client-care__card-label">{{ section.settings.whatsapp_label }}</p>
+          <a href="{{ section.settings.whatsapp_url }}" class="penya-client-care__card-link" target="_blank" rel="noopener noreferrer">{{ section.settings.whatsapp_text }}</a>
+          {% if section.settings.whatsapp_note != blank %}
+            <p class="penya-client-care__card-copy">{{ section.settings.whatsapp_note }}</p>
+          {% endif %}
+        </article>
+      {% endif %}
+
+      {% if section.settings.response_text != blank %}
+        <article class="penya-client-care__card">
+          <p class="penya-client-care__card-label">{{ section.settings.response_label }}</p>
+          <p class="penya-client-care__card-strong">{{ section.settings.response_text }}</p>
+          {% if section.settings.response_note != blank %}
+            <p class="penya-client-care__card-copy">{{ section.settings.response_note }}</p>
+          {% endif %}
+        </article>
+      {% endif %}
+
+      {% if section.settings.address_text != blank %}
+        <article class="penya-client-care__card penya-client-care__card--wide">
+          <p class="penya-client-care__card-label">{{ section.settings.address_label }}</p>
+          <div class="penya-client-care__card-copy rte">
+            {{ section.settings.address_text }}
+          </div>
+        </article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .penya-client-care {
+    background:
+      linear-gradient(180deg, rgb(var(--color-background-rgb)) 0%, rgb(var(--color-background-rgb)) 65%, rgb(var(--color-foreground-rgb) / 0.03) 100%);
+  }
+
+  .penya-client-care__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+    padding-block: 3.5rem 1rem;
+  }
+
+  .penya-client-care__intro {
+    max-width: 34rem;
+  }
+
+  .penya-client-care__eyebrow {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .penya-client-care__heading {
+    margin: 0 0 1rem;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2.25rem, 4vw, 4rem);
+    line-height: 0.98;
+    color: var(--color-foreground-heading);
+    text-wrap: balance;
+  }
+
+  .penya-client-care__copy {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+  }
+
+  .penya-client-care__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+    align-items: center;
+    margin-top: 1.75rem;
+  }
+
+  .penya-client-care__text-link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding-bottom: 0.15rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .penya-client-care__text-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .penya-client-care__cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .penya-client-care__card {
+    min-height: 12rem;
+    padding: 1.35rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.09);
+    background: rgb(var(--color-foreground-rgb) / 0.03);
+  }
+
+  .penya-client-care__card--wide {
+    grid-column: 1 / -1;
+    min-height: auto;
+  }
+
+  .penya-client-care__card-label {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .penya-client-care__card-link,
+  .penya-client-care__card-strong {
+    display: inline-block;
+    margin: 0 0 0.65rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.2rem;
+    line-height: 1.35;
+    color: var(--color-foreground-heading);
+    text-decoration: none;
+    text-wrap: balance;
+  }
+
+  .penya-client-care__card-link:hover {
+    color: var(--color-primary);
+  }
+
+  .penya-client-care__card-copy {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: rgb(var(--color-foreground-rgb) / 0.78);
+  }
+
+  .penya-client-care__card-copy p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 989px) {
+    .penya-client-care__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .penya-client-care__intro {
+      max-width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .penya-client-care__inner {
+      padding-block: 2.5rem 0.75rem;
+    }
+
+    .penya-client-care__cards {
+      grid-template-columns: 1fr;
+    }
+
+    .penya-client-care__card {
+      min-height: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Penya client care",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Client Care"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Contact"
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Intro copy",
+      "default": "<p>For bespoke commissions, wholesale conversations, or help choosing the right piece, reach out directly. We reply with the same care we bring to the clothes.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Email Client Care"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "WhatsApp Us"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_new_tab",
+      "label": "Open secondary link in new tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text_link_label",
+      "label": "Text link label",
+      "default": "Need sizing help? View the Fit Guide"
+    },
+    {
+      "type": "url",
+      "id": "text_link",
+      "label": "Text link"
+    },
+    {
+      "type": "header",
+      "content": "Support cards"
+    },
+    {
+      "type": "text",
+      "id": "email_label",
+      "label": "Email card label",
+      "default": "Email"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Email address",
+      "default": "info@penya.africa"
+    },
+    {
+      "type": "textarea",
+      "id": "email_note",
+      "label": "Email note",
+      "default": "Best for bespoke enquiries, wholesale, editorial requests, and detailed sizing questions."
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_label",
+      "label": "WhatsApp card label",
+      "default": "WhatsApp"
+    },
+    {
+      "type": "text",
+      "id": "whatsapp_text",
+      "label": "WhatsApp text",
+      "default": "+49 1514 7416152"
+    },
+    {
+      "type": "url",
+      "id": "whatsapp_url",
+      "label": "WhatsApp link"
+    },
+    {
+      "type": "textarea",
+      "id": "whatsapp_note",
+      "label": "WhatsApp note",
+      "default": "Best for quick questions, event deadlines, and real-time fit advice before you order."
+    },
+    {
+      "type": "text",
+      "id": "response_label",
+      "label": "Response card label",
+      "default": "Response time"
+    },
+    {
+      "type": "text",
+      "id": "response_text",
+      "label": "Response headline",
+      "default": "Within one business day"
+    },
+    {
+      "type": "textarea",
+      "id": "response_note",
+      "label": "Response note",
+      "default": "If your request is urgent, mention your event date and we will prioritise the reply."
+    },
+    {
+      "type": "text",
+      "id": "address_label",
+      "label": "Address card label",
+      "default": "Operations"
+    },
+    {
+      "type": "richtext",
+      "id": "address_text",
+      "label": "Address card text",
+      "default": "<p><strong>Penya Collective</strong><br>Steinhofweg 47<br>69118 Heidelberg, Germany</p><p>We work between Heidelberg and Harare, in close collaboration with our designers and artisan partners.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Penya client care"
+    }
+  ]
+}
+{% endschema %}

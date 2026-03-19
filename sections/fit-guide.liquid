@@ -53,12 +53,29 @@
         <p class="fit-guide__table-note">{{ section.settings.table_note }}</p>
       {% endif %}
 
+      {%- comment -%} Detect which genders have rows so we only show relevant tabs {%- endcomment -%}
+      {%- assign has_men   = false -%}
+      {%- assign has_women = false -%}
+      {%- assign has_kids  = false -%}
+      {%- for block in row_blocks -%}
+        {%- if block.settings.gender == 'men'   -%}{%- assign has_men   = true -%}{%- endif -%}
+        {%- if block.settings.gender == 'women' -%}{%- assign has_women = true -%}{%- endif -%}
+        {%- if block.settings.gender == 'kids'  -%}{%- assign has_kids  = true -%}{%- endif -%}
+      {%- endfor -%}
+      {%- assign tab_count = 0 -%}
+      {%- if has_men   -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+      {%- if has_women -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+      {%- if has_kids  -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+      {%- assign default_gender = 'men' -%}
+      {%- if has_men == false and has_women -%}{%- assign default_gender = 'women' -%}{%- endif -%}
+      {%- if has_men == false and has_women == false and has_kids -%}{%- assign default_gender = 'kids' -%}{%- endif -%}
+
       {%- comment -%} Find My Size calculator {%- endcomment -%}
       <div class="fit-guide__calculator" id="fit-calculator-{{ section.id }}">
         <p class="fit-guide__calculator-label">Find your size instantly</p>
         <div class="fit-guide__calculator-inputs">
           <label class="fit-guide__calc-field">
-            <span>Chest</span>
+            <span class="fit-guide__chest-input-label">Chest</span>
             <input type="number" class="fit-guide__calc-input" data-measure="chest" min="60" max="160" placeholder="e.g. 90" aria-label="Chest measurement in centimetres">
             <span class="fit-guide__calc-unit">cm</span>
           </label>
@@ -78,6 +95,19 @@
       </div>
 
       <div class="fit-guide__table-controls">
+        {%- if tab_count > 1 -%}
+          <div class="fit-guide__gender-tabs" role="tablist" aria-label="Sizing by gender" data-default-gender="{{ default_gender }}">
+            {%- if has_men -%}
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'men' %} is-active{% endif %}" data-gender="men" role="tab" aria-selected="{% if default_gender == 'men' %}true{% else %}false{% endif %}">Men</button>
+            {%- endif -%}
+            {%- if has_women -%}
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'women' %} is-active{% endif %}" data-gender="women" role="tab" aria-selected="false">Women</button>
+            {%- endif -%}
+            {%- if has_kids -%}
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'kids' %} is-active{% endif %}" data-gender="kids" role="tab" aria-selected="false">Kids</button>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
         <div class="fit-guide__unit-toggle" role="group" aria-label="Unit system">
           <button type="button" class="fit-guide__unit-btn is-active" data-unit="cm">CM</button>
           <button type="button" class="fit-guide__unit-btn" data-unit="in">IN</button>
@@ -89,7 +119,9 @@
           <thead>
             <tr>
               <th scope="col">Size</th>
-              <th scope="col" data-col="chest">Chest <span class="fit-guide__unit-label">(cm)</span></th>
+              <th scope="col" data-col="eu">EU</th>
+              <th scope="col" data-col="us">US</th>
+              <th scope="col" data-col="chest"><span class="fit-guide__chest-label">Chest</span> <span class="fit-guide__unit-label">(cm)</span></th>
               <th scope="col" data-col="waist">Waist <span class="fit-guide__unit-label">(cm)</span></th>
               <th scope="col" data-col="hips">Hips <span class="fit-guide__unit-label">(cm)</span></th>
             </tr>
@@ -102,6 +134,7 @@
               {%- assign hips_parts  = block.settings.hips  | split: '–' -%}
               <tr
                 {{ block.shopify_attributes }}
+                data-gender="{{ block.settings.gender | default: 'men' }}"
                 data-chest-min="{{ chest_parts[0] | strip | plus: 0 }}"
                 data-chest-max="{{ chest_parts[1] | strip | plus: 0 }}"
                 data-waist-min="{{ waist_parts[0] | strip | plus: 0 }}"
@@ -110,6 +143,8 @@
                 data-hips-max="{{ hips_parts[1] | strip | plus: 0 }}"
               >
                 <td>{{ block.settings.size_label }}</td>
+                <td>{{ block.settings.eu }}</td>
+                <td>{{ block.settings.us }}</td>
                 <td data-cm="{{ block.settings.chest }}">{{ block.settings.chest }}</td>
                 <td data-cm="{{ block.settings.waist }}">{{ block.settings.waist }}</td>
                 <td data-cm="{{ block.settings.hips }}">{{ block.settings.hips }}</td>
@@ -129,6 +164,33 @@
       {% if section.settings.note_text != blank %}
         <p>{{ section.settings.note_text }}</p>
       {% endif %}
+    </div>
+  {% endif %}
+
+  {% if section.settings.support_heading != blank or section.settings.support_text != blank or section.settings.support_primary_label != blank or section.settings.support_secondary_label != blank %}
+    <div class="fit-guide__support">
+      <div class="fit-guide__support-copy">
+        {% if section.settings.support_heading != blank %}
+          <h3>{{ section.settings.support_heading }}</h3>
+        {% endif %}
+        {% if section.settings.support_text != blank %}
+          <p>{{ section.settings.support_text }}</p>
+        {% endif %}
+      </div>
+
+      <div class="fit-guide__support-actions">
+        {% if section.settings.support_primary_label != blank and section.settings.support_primary_link != blank %}
+          <a href="{{ section.settings.support_primary_link }}" class="button">
+            {{ section.settings.support_primary_label }}
+          </a>
+        {% endif %}
+
+        {% if section.settings.support_secondary_label != blank and section.settings.support_secondary_link != blank %}
+          <a href="{{ section.settings.support_secondary_link }}" class="fit-guide__support-link"{% if section.settings.support_secondary_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+            {{ section.settings.support_secondary_label }}
+          </a>
+        {% endif %}
+      </div>
     </div>
   {% endif %}
 
@@ -206,7 +268,7 @@
   }
 
   .fit-guide__size-table {
-    max-width: 640px;
+    max-width: 820px;
     margin: 0 auto 4rem;
   }
 
@@ -274,6 +336,56 @@
     font-size: 0.9rem;
     line-height: 1.7;
     opacity: 0.8;
+  }
+
+  .fit-guide__support {
+    max-width: 820px;
+    margin: 1.5rem auto 0;
+    padding: 1.5rem 1.75rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    background-color: rgb(var(--color-foreground-rgb) / 0.03);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .fit-guide__support-copy {
+    max-width: 36rem;
+  }
+
+  .fit-guide__support-copy h3 {
+    margin: 0 0 0.4rem;
+    font-family: var(--font-heading--family);
+    font-size: 1.05rem;
+  }
+
+  .fit-guide__support-copy p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    opacity: 0.8;
+  }
+
+  .fit-guide__support-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+    align-items: center;
+  }
+
+  .fit-guide__support-link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding-bottom: 0.15rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .fit-guide__support-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
   }
 
   /* ── Find My Size calculator ──────────────────────────── */
@@ -366,10 +478,43 @@
     opacity: 0.65;
   }
 
+  /* ── Gender tabs ──────────────────────────────────────── */
+  .fit-guide__gender-tabs {
+    display: flex;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .fit-guide__gender-btn {
+    padding: 0.3rem 1.25rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-foreground);
+    opacity: 0.5;
+    transition: background-color 0.15s ease, opacity 0.15s ease;
+  }
+
+  .fit-guide__gender-btn.is-active {
+    background-color: var(--color-foreground-heading);
+    color: var(--color-background);
+    opacity: 1;
+  }
+
+  .fit-guide__table tbody tr[hidden] {
+    display: none;
+  }
+
   /* ── Unit toggle ───────────────────────────────────────── */
   .fit-guide__table-controls {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 0.75rem;
   }
 
@@ -436,11 +581,61 @@
     .fit-guide__calc-input {
       width: 80px;
     }
+
+    .fit-guide__support {
+      align-items: flex-start;
+      padding: 1.25rem;
+    }
+
+    .fit-guide__support-actions {
+      width: 100%;
+      align-items: flex-start;
+      flex-direction: column;
+    }
   }
 {% endstylesheet %}
 
 {% javascript %}
   (function () {
+    // ── Gender tabs ──────────────────────────────────────────
+    document.querySelectorAll('.fit-guide__gender-tabs').forEach(function (tabs) {
+      var tableSection = tabs.closest('.fit-guide__size-table');
+      var table = tableSection.querySelector('.fit-guide__table');
+      var chestLabel = table.querySelector('.fit-guide__chest-label');
+      var chestInputLabel = tableSection.querySelector('.fit-guide__chest-input-label');
+
+      function setGender(gender) {
+        // Update tab state
+        tabs.querySelectorAll('.fit-guide__gender-btn').forEach(function (btn) {
+          var active = btn.dataset.gender === gender;
+          btn.classList.toggle('is-active', active);
+          btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        });
+
+        // Show/hide rows
+        table.querySelectorAll('tbody tr').forEach(function (row) {
+          row.hidden = row.dataset.gender !== gender;
+        });
+
+        // Chest → Bust for women only; kids and men use "Chest"
+        var label = gender === 'women' ? 'Bust' : 'Chest';
+        if (chestLabel) chestLabel.textContent = label;
+        if (chestInputLabel) chestInputLabel.textContent = label;
+
+        // Clear result and highlights on switch
+        table.querySelectorAll('tbody tr').forEach(function (r) { r.classList.remove('is-highlighted'); });
+        var result = tableSection.querySelector('.fit-guide__calc-result');
+        if (result) { result.hidden = true; result.textContent = ''; }
+      }
+
+      tabs.querySelectorAll('.fit-guide__gender-btn').forEach(function (btn) {
+        btn.addEventListener('click', function () { setGender(btn.dataset.gender); });
+      });
+
+      // Initialise using the server-rendered default gender
+      setGender(tabs.dataset.defaultGender || 'men');
+    });
+
     // ── Unit toggle ──────────────────────────────────────────
     function convertRange(str, toInches) {
       const factor = toInches ? 0.3937 : 2.54;
@@ -524,7 +719,8 @@
           r.classList.remove('is-highlighted');
         });
 
-        const rows = Array.from(tableEl.querySelectorAll('tbody tr'));
+        // Only search rows visible in the active gender tab
+        const rows = Array.from(tableEl.querySelectorAll('tbody tr')).filter(function (r) { return !r.hidden; });
         let matched = null;
 
         for (const row of rows) {
@@ -591,10 +787,33 @@
       "name": "Size row",
       "settings": [
         {
+          "type": "select",
+          "id": "gender",
+          "label": "Sizing for",
+          "options": [
+            { "value": "men",   "label": "Men" },
+            { "value": "women", "label": "Women" },
+            { "value": "kids",  "label": "Kids" }
+          ],
+          "default": "men"
+        },
+        {
           "type": "text",
           "id": "size_label",
           "label": "Size",
           "placeholder": "e.g. M"
+        },
+        {
+          "type": "text",
+          "id": "eu",
+          "label": "EU size",
+          "placeholder": "e.g. 48"
+        },
+        {
+          "type": "text",
+          "id": "us",
+          "label": "US size",
+          "placeholder": "e.g. 38"
         },
         {
           "type": "text",
@@ -664,6 +883,50 @@
       "type": "textarea",
       "id": "note_text",
       "label": "Note text"
+    },
+    {
+      "type": "header",
+      "content": "Support panel"
+    },
+    {
+      "type": "text",
+      "id": "support_heading",
+      "label": "Support heading",
+      "default": "Need a second opinion?"
+    },
+    {
+      "type": "textarea",
+      "id": "support_text",
+      "label": "Support text",
+      "default": "If you are between sizes, ordering for an event, or need bespoke guidance, our team will help you choose with confidence."
+    },
+    {
+      "type": "text",
+      "id": "support_primary_label",
+      "label": "Primary support button label",
+      "default": "Contact Client Care"
+    },
+    {
+      "type": "url",
+      "id": "support_primary_link",
+      "label": "Primary support button link"
+    },
+    {
+      "type": "text",
+      "id": "support_secondary_label",
+      "label": "Secondary support link label",
+      "default": "WhatsApp Us"
+    },
+    {
+      "type": "url",
+      "id": "support_secondary_link",
+      "label": "Secondary support link"
+    },
+    {
+      "type": "checkbox",
+      "id": "support_secondary_new_tab",
+      "label": "Open secondary support link in new tab",
+      "default": true
     }
   ],
   "presets": [

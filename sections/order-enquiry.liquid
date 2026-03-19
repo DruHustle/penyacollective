@@ -1,0 +1,422 @@
+
+{%- comment -%}
+  Order Enquiry section.
+  Uses Shopify's native contact form (/contact) to email the store owner.
+  Captures name, email, phone, items of interest, and an optional note.
+  Shows a success confirmation after submission (Shopify adds ?customer_posted=true).
+{%- endcomment -%}
+
+<div class="order-enquiry page-width">
+
+  <div class="order-enquiry__layout">
+
+    {%- comment -%} Left — intro copy {%- endcomment -%}
+    <div class="order-enquiry__intro">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="order-enquiry__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h1 class="order-enquiry__heading">{{ section.settings.heading }}</h1>
+      {%- endif -%}
+      {%- if section.settings.intro_text != blank -%}
+        <p class="order-enquiry__subtext">{{ section.settings.intro_text }}</p>
+      {%- endif -%}
+
+      <div class="order-enquiry__steps">
+        <div class="order-enquiry__step">
+          <span class="order-enquiry__step-num">01</span>
+          <p>Fill in the form with your details and what you would like to order.</p>
+        </div>
+        <div class="order-enquiry__step">
+          <span class="order-enquiry__step-num">02</span>
+          <p>A Penya representative will contact you within 1 business day to confirm availability and discuss your order.</p>
+        </div>
+        <div class="order-enquiry__step">
+          <span class="order-enquiry__step-num">03</span>
+          <p>Once confirmed, we will send you payment details and begin crafting your piece.</p>
+        </div>
+      </div>
+
+      <div class="order-enquiry__alt">
+        <p class="order-enquiry__alt-label">Prefer to reach us directly?</p>
+        <a
+          href="https://wa.me/4915147416152"
+          class="order-enquiry__wa-link"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          WhatsApp: +49 1514 7416152
+        </a>
+      </div>
+    </div>
+
+    {%- comment -%} Right — form {%- endcomment -%}
+    <div class="order-enquiry__form-wrap">
+
+      {%- if request.path contains '/pages/' and customer_posted -%}
+        {%- comment -%} Success state — Shopify sets customer_posted after form submission on the same page {%- endcomment -%}
+      {%- endif -%}
+
+      {%- if form.posted_successfully? -%}
+        <div class="order-enquiry__success" role="alert">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="20" cy="20" r="19" stroke="currentColor" stroke-width="1.5"/>
+            <polyline points="12,21 18,27 28,14" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2 class="order-enquiry__success-heading">Enquiry received</h2>
+          <p>Thank you — a Penya representative will be in touch within 1 business day to confirm your order and next steps.</p>
+        </div>
+      {%- else -%}
+        {%- form 'contact', id: 'OrderEnquiryForm' -%}
+
+          <div class="order-enquiry__fields">
+
+            <div class="order-enquiry__field">
+              <label class="order-enquiry__label" for="OE_name">
+                Full name <span class="order-enquiry__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="order-enquiry__input"
+                type="text"
+                id="OE_name"
+                name="contact[name]"
+                autocomplete="name"
+                required
+                placeholder="e.g. Amara Dube"
+                value="{{ form.name | escape }}"
+                aria-required="true"
+              >
+            </div>
+
+            <div class="order-enquiry__field">
+              <label class="order-enquiry__label" for="OE_email">
+                Email address <span class="order-enquiry__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="order-enquiry__input"
+                type="email"
+                id="OE_email"
+                name="contact[email]"
+                autocomplete="email"
+                required
+                placeholder="e.g. amara@example.com"
+                value="{{ form.email | escape }}"
+                aria-required="true"
+              >
+            </div>
+
+            <div class="order-enquiry__field">
+              <label class="order-enquiry__label" for="OE_phone">
+                Phone / WhatsApp <span class="order-enquiry__required" aria-hidden="true">*</span>
+              </label>
+              <input
+                class="order-enquiry__input"
+                type="tel"
+                id="OE_phone"
+                name="contact[phone]"
+                autocomplete="tel"
+                required
+                placeholder="e.g. +263 77 123 4567"
+                aria-required="true"
+              >
+            </div>
+
+            <div class="order-enquiry__field">
+              <label class="order-enquiry__label" for="OE_items">
+                Items you are interested in
+              </label>
+              <input
+                class="order-enquiry__input"
+                type="text"
+                id="OE_items"
+                name="contact[body]"
+                placeholder="e.g. Ivhu Tribe dashiki — size M, women's wrap dress in blue"
+              >
+            </div>
+
+            <div class="order-enquiry__field">
+              <label class="order-enquiry__label" for="OE_note">
+                Additional notes
+              </label>
+              <textarea
+                class="order-enquiry__input order-enquiry__textarea"
+                id="OE_note"
+                name="contact[note]"
+                rows="4"
+                placeholder="Bespoke requests, preferred delivery window, questions…"
+              ></textarea>
+            </div>
+
+            {%- if form.errors -%}
+              <p class="order-enquiry__error" role="alert">
+                {{ form.errors | default_errors }}
+              </p>
+            {%- endif -%}
+
+            <button type="submit" class="order-enquiry__submit button">
+              Send Enquiry
+            </button>
+
+            <p class="order-enquiry__disclaimer">
+              By submitting this form you agree to be contacted regarding your order. We do not share your details with third parties.
+            </p>
+
+          </div>
+
+        {%- endform -%}
+      {%- endif -%}
+
+    </div>
+
+  </div>
+
+</div>
+
+{% stylesheet %}
+  .order-enquiry {
+    padding-block: 72px 80px;
+  }
+
+  .order-enquiry__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: flex-start;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  /* ── Intro (left) ────────────────────────────────── */
+  .order-enquiry__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .order-enquiry__heading {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    line-height: 1.1;
+    margin-bottom: 1rem;
+  }
+
+  .order-enquiry__subtext {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    opacity: 0.75;
+    margin-bottom: 2.5rem;
+  }
+
+  .order-enquiry__steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .order-enquiry__step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .order-enquiry__step-num {
+    font-family: var(--font-subheading--family);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    padding-top: 0.2rem;
+    flex-shrink: 0;
+    min-width: 2rem;
+  }
+
+  .order-enquiry__step p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    opacity: 0.8;
+    margin: 0;
+  }
+
+  .order-enquiry__alt {
+    padding-top: 2rem;
+    border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+  }
+
+  .order-enquiry__alt-label {
+    font-size: 0.8rem;
+    opacity: 0.6;
+    margin-bottom: 0.6rem;
+  }
+
+  .order-enquiry__wa-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #25D366;
+    text-decoration: none;
+    font-family: var(--font-subheading--family);
+    letter-spacing: 0.04em;
+    transition: opacity 0.15s ease;
+  }
+
+  .order-enquiry__wa-link:hover {
+    opacity: 0.8;
+  }
+
+  /* ── Form (right) ────────────────────────────────── */
+  .order-enquiry__form-wrap {
+    background-color: rgb(var(--color-foreground-rgb) / 0.03);
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+    border-radius: 4px;
+    padding: 2.5rem;
+  }
+
+  .order-enquiry__fields {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .order-enquiry__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .order-enquiry__label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    opacity: 0.8;
+  }
+
+  .order-enquiry__required {
+    color: var(--color-primary);
+  }
+
+  .order-enquiry__input {
+    width: 100%;
+    padding: 0.65rem 0.875rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.2);
+    border-radius: 3px;
+    background: transparent;
+    color: var(--color-foreground);
+    font-size: 0.95rem;
+    font-family: var(--font-body--family);
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+
+  .order-enquiry__input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: transparent;
+  }
+
+  .order-enquiry__input::placeholder {
+    opacity: 0.4;
+  }
+
+  .order-enquiry__textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .order-enquiry__error {
+    font-size: 0.875rem;
+    color: #c0392b;
+    background-color: rgb(192 57 43 / 0.08);
+    padding: 0.75rem 1rem;
+    border-radius: 3px;
+    border-left: 3px solid #c0392b;
+  }
+
+  .order-enquiry__submit {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.25rem;
+  }
+
+  .order-enquiry__disclaimer {
+    font-size: 0.775rem;
+    opacity: 0.5;
+    line-height: 1.5;
+    text-align: center;
+    margin-top: 0;
+  }
+
+  /* ── Success ─────────────────────────────────────── */
+  .order-enquiry__success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    gap: 1rem;
+    color: var(--color-primary);
+  }
+
+  .order-enquiry__success-heading {
+    font-family: var(--font-heading--family);
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  .order-enquiry__success p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    opacity: 0.75;
+    color: var(--color-foreground);
+    max-width: 340px;
+  }
+
+  @media screen and (max-width: 899px) {
+    .order-enquiry__layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+
+    .order-enquiry__form-wrap {
+      padding: 1.75rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Order Enquiry",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Place an Order"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Ready to order? Let's talk."
+    },
+    {
+      "type": "textarea",
+      "id": "intro_text",
+      "label": "Intro text",
+      "default": "Every Penya piece is crafted when you order it. Fill in the form below and a member of our team will reach out within 1 business day to confirm your order and next steps."
+    }
+  ],
+  "presets": [
+    { "name": "Order Enquiry" }
+  ]
+}
+{% endschema %}

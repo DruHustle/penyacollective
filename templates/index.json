@@ -289,7 +289,7 @@
         "mission_eyebrow": {
           "type": "text",
           "settings": {
-            "text": "<p>The Mission</p>",
+            "text": "<p>Rooted in Harare</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "center",
@@ -313,7 +313,7 @@
         "mission_text": {
           "type": "text",
           "settings": {
-            "text": "<p>Penya Collective celebrates the modern glow of African heritage through premium craftsmanship.</p>",
+            "text": "<p>Penya is a curated stage for designers whose work carries heritage, craft, and an unmistakable point of view.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
@@ -337,7 +337,7 @@
         "mission_button": {
           "type": "button",
           "settings": {
-            "label": "The Story",
+            "label": "Read Our Story",
             "link": "shopify://pages/about",
             "open_in_new_tab": false,
             "style_class": "button-secondary",
@@ -520,7 +520,7 @@
         "collections_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Shop In-House</h2>",
+            "text": "<h2>Shop the House</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -621,9 +621,9 @@
       ],
       "settings": {
         "blog": "journal",
-        "layout_type": "editorial",
+        "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "post_limit": 6,
+        "post_limit": 50,
         "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",
@@ -748,7 +748,7 @@
         "padding-block-end": 80
       }
     },
-    "instagram_feed": {
+    "collective_designers": {
       "type": "custom-liquid",
       "settings": {
         "custom_liquid": "{% render 'designer-grid' %}",
@@ -763,9 +763,9 @@
     "hero_penya",
     "brand_marquee",
     "mission_statement",
-    "featured_collections",
-    "instagram_feed",
+    "collective_designers",
     "brand_pillars",
+    "featured_collections",
     "journal_preview",
     "newsletter_signup"
   ]

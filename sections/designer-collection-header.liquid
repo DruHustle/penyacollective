@@ -1,0 +1,195 @@
+
+{%- comment -%}
+  Designer collection header.
+  Shown above the product grid for any collection using the "designer" template suffix.
+  The brand story is pulled from collection.description (set via the seed script / Admin).
+  The link to the full designer page is driven by the custom.designer_page_handle metafield.
+{%- endcomment -%}
+
+<div class="designer-header page-width">
+  <div class="designer-header__inner">
+
+    {%- if collection.featured_image -%}
+      <div class="designer-header__image-wrap">
+        <img
+          src="{{ collection.featured_image | image_url: width: 760 }}"
+          alt="{{ collection.featured_image.alt | default: collection.title | escape }}"
+          width="760"
+          height="570"
+          loading="eager"
+          class="designer-header__image"
+        >
+      </div>
+    {%- endif -%}
+
+    <div class="designer-header__content">
+      <p class="designer-header__eyebrow">Designer</p>
+      <h1 class="designer-header__name">{{ collection.title }}</h1>
+
+      {%- if collection.description != blank -%}
+        <div class="designer-header__bio">{{ collection.description }}</div>
+      {%- endif -%}
+
+      {%- assign designer_handle = collection.metafields.custom.designer_page_handle.value -%}
+      {%- if designer_handle != blank -%}
+        <a href="/pages/{{ designer_handle }}" class="designer-header__cta">
+          Full brand story <span aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+
+      <div class="designer-header__support">
+        <span class="designer-header__support-label">Need help before you order?</span>
+        <div class="designer-header__support-links">
+          <a href="/pages/fit-guide" class="designer-header__support-link">View Fit Guide</a>
+          <a href="/pages/contact" class="designer-header__support-link">Enquire About Bespoke</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% stylesheet %}
+  .designer-header {
+    padding-block: 56px 48px;
+  }
+
+  .designer-header__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1060px;
+    margin: 0 auto;
+  }
+
+  .designer-header__image-wrap {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    aspect-ratio: 4 / 3;
+  }
+
+  .designer-header__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .designer-header__eyebrow {
+    font-family: var(--font-subheading--family);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .designer-header__name {
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.75rem, 3vw, 2.75rem);
+    line-height: 1.1;
+    margin-bottom: 1.25rem;
+  }
+
+  .designer-header__bio {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    opacity: 0.8;
+    max-width: 520px;
+  }
+
+  .designer-header__bio p {
+    margin-bottom: 1em;
+  }
+
+  .designer-header__bio p:last-child {
+    margin-bottom: 0;
+  }
+
+  .designer-header__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.15rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .designer-header__cta:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .designer-header__support {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: center;
+    margin-top: 1.25rem;
+  }
+
+  .designer-header__support-label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.64);
+  }
+
+  .designer-header__support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+    align-items: center;
+  }
+
+  .designer-header__support-link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding-bottom: 0.15rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .designer-header__support-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  @media screen and (max-width: 749px) {
+    .designer-header {
+      padding-block: 40px 32px;
+    }
+
+    .designer-header__inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .designer-header__image-wrap {
+      aspect-ratio: 16 / 9;
+    }
+
+    .designer-header__support {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Designer header",
+  "settings": [],
+  "presets": [{ "name": "Designer header" }]
+}
+{% endschema %}

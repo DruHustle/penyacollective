@@ -36,6 +36,94 @@
 
   assign aliases_us = 'us,usa,america,united states of america'
   assign aliases_uk = 'uk,gb,great britain'
+
+  assign penya_preferred_language = ''
+  case localization.country.iso_code
+    when 'AR', 'BO', 'CL', 'CO', 'CR', 'CU', 'DO', 'EC', 'GT', 'HN', 'MX', 'NI', 'PA', 'PE', 'PR', 'PY', 'SV', 'UY', 'VE'
+      assign penya_preferred_language = 'es'
+    when 'AD', 'ES'
+      assign penya_preferred_language = 'es'
+    when 'AL', 'XK'
+      assign penya_preferred_language = 'sq'
+    when 'AT', 'CH', 'DE'
+      assign penya_preferred_language = 'de'
+    when 'BA', 'HR'
+      assign penya_preferred_language = 'hr'
+    when 'BE', 'FR', 'LU', 'MC'
+      assign penya_preferred_language = 'fr'
+    when 'BG'
+      assign penya_preferred_language = 'bg'
+    when 'CY', 'GR'
+      assign penya_preferred_language = 'el'
+    when 'CZ'
+      assign penya_preferred_language = 'cs'
+    when 'DK'
+      assign penya_preferred_language = 'da'
+    when 'EE'
+      assign penya_preferred_language = 'et'
+    when 'ET'
+      assign penya_preferred_language = 'am'
+    when 'FI'
+      assign penya_preferred_language = 'fi'
+    when 'HK', 'MO'
+      assign penya_preferred_language = 'zh'
+    when 'GE'
+      assign penya_preferred_language = 'ka'
+    when 'HU'
+      assign penya_preferred_language = 'hu'
+    when 'ID'
+      assign penya_preferred_language = 'id'
+    when 'IT', 'SM', 'VA'
+      assign penya_preferred_language = 'it'
+    when 'JP'
+      assign penya_preferred_language = 'ja'
+    when 'KE', 'TZ', 'UG'
+      assign penya_preferred_language = 'sw'
+    when 'KR'
+      assign penya_preferred_language = 'ko'
+    when 'KZ', 'RU'
+      assign penya_preferred_language = 'ru'
+    when 'LT'
+      assign penya_preferred_language = 'lt'
+    when 'LV'
+      assign penya_preferred_language = 'lv'
+    when 'MK'
+      assign penya_preferred_language = 'mk'
+    when 'MT'
+      assign penya_preferred_language = 'mt'
+    when 'BR', 'MZ', 'PT'
+      assign penya_preferred_language = 'pt'
+    when 'NL'
+      assign penya_preferred_language = 'nl'
+    when 'NO'
+      assign penya_preferred_language = 'nb'
+    when 'PL'
+      assign penya_preferred_language = 'pl'
+    when 'RO', 'MD'
+      assign penya_preferred_language = 'ro'
+    when 'RS', 'ME'
+      assign penya_preferred_language = 'sr'
+    when 'RW'
+      assign penya_preferred_language = 'rw'
+    when 'SE'
+      assign penya_preferred_language = 'sv'
+    when 'SI'
+      assign penya_preferred_language = 'sl'
+    when 'SK'
+      assign penya_preferred_language = 'sk'
+    when 'CN', 'TW'
+      assign penya_preferred_language = 'zh'
+    when 'TH'
+      assign penya_preferred_language = 'th'
+    when 'TR'
+      assign penya_preferred_language = 'tr'
+    when 'UA'
+      assign penya_preferred_language = 'uk'
+    when 'VN'
+      assign penya_preferred_language = 'vi'
+    when 'ZW'
+      assign penya_preferred_language = 'sn'
+  endcase
 %}
 <localization-form-component
   ref="localizationForm"
@@ -257,6 +345,40 @@
           on:change="/changeLanguage"
         >
           {%- for language in localization.available_languages -%}
+            {% assign language_root = language.iso_code | split: '-' | first %}
+            {% unless language_root == penya_preferred_language %}
+              {% continue %}
+            {% endunless %}
+            <option
+              value="{{ language.iso_code }}"
+              lang="{{ language.iso_code }}"
+              {% if language.iso_code == localization.language.iso_code %}
+                selected
+              {% endif %}
+            >
+              {{ language.endonym_name | capitalize }}
+            </option>
+          {%- endfor -%}
+          {%- for language in localization.available_languages -%}
+            {% assign language_root = language.iso_code | split: '-' | first %}
+            {% unless language_root == 'en' and language_root != penya_preferred_language %}
+              {% continue %}
+            {% endunless %}
+            <option
+              value="{{ language.iso_code }}"
+              lang="{{ language.iso_code }}"
+              {% if language.iso_code == localization.language.iso_code %}
+                selected
+              {% endif %}
+            >
+              {{ language.endonym_name | capitalize }}
+            </option>
+          {%- endfor -%}
+          {%- for language in localization.available_languages -%}
+            {% assign language_root = language.iso_code | split: '-' | first %}
+            {% if language_root == penya_preferred_language or language_root == 'en' %}
+              {% continue %}
+            {% endif %}
             <option
               value="{{ language.iso_code }}"
               lang="{{ language.iso_code }}"

@@ -82,7 +82,11 @@ test.describe('Homepage', () => {
   });
 
   test('Shop In-House collections section is visible', async ({ page }) => {
-    await expect(page.getByText(/Shop In-House/i)).toBeVisible();
+    await expect(page.getByText(/Shop (?:In-House|the House)/i)).toBeVisible();
+  });
+
+  test('header shows the localization currency control', async ({ page }) => {
+    await expect(page.locator('[data-testid="localization-currency-code"]').first()).toBeVisible();
   });
 });
 
@@ -90,7 +94,11 @@ test.describe('Homepage', () => {
 test.describe('Collections', () => {
   for (const handle of ['men', 'women', 'accessories']) {
     test(`/collections/${handle} loads`, async ({ page }) => {
-      const res = await goto(page, `/collections/${handle}`);
+      let res = await goto(page, `/collections/${handle}`);
+      // Shopify occasionally returns 503 under CI load — retry once before failing
+      if (res.status() === 503) {
+        res = await goto(page, `/collections/${handle}`);
+      }
       expect(res.status()).toBe(200);
       const body = await page.textContent('body');
       expect(body).not.toContain('Liquid error');
@@ -98,6 +106,8 @@ test.describe('Collections', () => {
 
     test(`/collections/${handle} shows empty state when no products`, async ({ page }) => {
       await goto(page, `/collections/${handle}`);
+      // Wait for the results-list web component to finish initialising before inspecting the grid
+      await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
       const hasProducts = await page.locator('.product-grid__item:not(.product-grid__empty)').count();
       if (hasProducts === 0) {
         await expect(page.getByText(/New pieces coming soon/i)).toBeVisible();
@@ -167,11 +177,11 @@ test.describe('Pages', () => {
 
   test('Our Story page has hero image', async ({ page }) => {
     await goto(page, '/pages/about');
-    const heroImg = page.locator('.media-block img, .media-block__media').first();
+    const heroImg = page.locator('.penya-story-hero__image, .media-block img, .media-block__media').first();
     await expect(heroImg).toBeVisible();
   });
 
-  for (const handle of ['sustainability', 'contact', 'shipping']) {
+  for (const handle of ['sustainability', 'contact', 'shipping', 'terms', 'faq']) {
     test(`/pages/${handle} loads`, async ({ page }) => {
       const res = await goto(page, `/pages/${handle}`);
       expect(res.status()).toBe(200);
@@ -179,6 +189,36 @@ test.describe('Pages', () => {
       expect(body).not.toContain('Liquid error');
     });
   }
+
+  test('Contact page surfaces direct support paths', async ({ page }) => {
+    await goto(page, '/pages/contact');
+    const clientCare = page.locator('.penya-client-care');
+    await expect(clientCare.getByRole('link', { name: /email client care/i })).toBeVisible();
+    await expect(clientCare.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
+    await expect(clientCare.getByRole('link', { name: /fit guide/i })).toBeVisible();
+  });
+
+  test('FAQ page has accordion items', async ({ page }) => {
+    await goto(page, '/pages/faq');
+    const items = page.locator('.faq__item');
+    const count = await items.count();
+    expect(count).toBeGreaterThanOrEqual(10);
+  });
+
+  test('FAQ accordion opens on click', async ({ page }) => {
+    await goto(page, '/pages/faq');
+    const firstItem = page.locator('.faq__item').first();
+    await expect(firstItem).not.toHaveAttribute('open');
+    await firstItem.locator('summary').click();
+    await expect(firstItem).toHaveAttribute('open', '');
+  });
+
+  test('Terms page has legal content', async ({ page }) => {
+    await goto(page, '/pages/terms');
+    const body = await page.textContent('body');
+    expect(body).toContain('Governing Law');
+    expect(body).toContain('Returns');
+  });
 });
 
 // ─── Designer profiles ─────────────────────────────────────────────────────
@@ -210,10 +250,16 @@ test.describe('Designer profiles', () => {
 
     test(`/pages/${handle} has a shop CTA`, async ({ page }) => {
       await goto(page, `/pages/${handle}`);
-      const cta = page.locator('.designer-profile__cta a');
+      const cta = page.locator('.designer-profile__cta .button');
       await expect(cta).toBeVisible();
       const href = await cta.getAttribute('href');
       expect(href).toBeTruthy();
+    });
+
+    test(`/pages/${handle} shows fit and bespoke support links`, async ({ page }) => {
+      await goto(page, `/pages/${handle}`);
+      await expect(page.getByRole('link', { name: /view fit guide/i })).toBeVisible();
+      await expect(page.getByRole('link', { name: /enquire about bespoke/i })).toBeVisible();
     });
   }
 });
@@ -241,9 +287,15 @@ test.describe('Fit Guide', () => {
     expect(count).toBeGreaterThanOrEqual(6);
   });
 
+  test('has direct support actions', async ({ page }) => {
+    const support = page.locator('.fit-guide__support');
+    await expect(support.getByRole('link', { name: /contact client care/i })).toBeVisible();
+    await expect(support.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
+  });
+
   test('size table has accessible column headers', async ({ page }) => {
     const headers = page.locator('.fit-guide__table th[scope="col"]');
-    await expect(headers).toHaveCount(4);
+    await expect(headers).toHaveCount(6);
   });
 });
 

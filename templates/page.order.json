@@ -1,0 +1,59 @@
+{
+  "sections": {
+    "order_back_nav": {
+      "type": "section",
+      "blocks": {
+        "back_to_shop": {
+          "type": "button",
+          "settings": {
+            "label": "← Continue Shopping",
+            "link": "/collections/all",
+            "open_in_new_tab": false,
+            "style_class": "button-unstyled",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          }
+        }
+      },
+      "block_order": ["back_to_shop"],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "scheme-2",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 32,
+        "padding-block-end": 0
+      }
+    },
+    "order_form": {
+      "type": "order-enquiry",
+      "settings": {
+        "eyebrow": "Place an Order",
+        "heading": "Ready to order? Let's talk.",
+        "intro_text": "Every Penya piece is crafted when you order it. Fill in the form below and a member of our team will reach out within 1 business day to confirm your order and next steps."
+      }
+    }
+  },
+  "order": ["order_back_nav", "order_form"]
+}

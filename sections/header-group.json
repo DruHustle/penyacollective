@@ -17,7 +17,7 @@
         "announcement_1": {
           "type": "_announcement",
           "settings": {
-            "text": "Complimentary gift wrapping on all orders · Free shipping on orders over $300",
+            "text": "Complimentary gift wrapping on all orders · Free shipping on qualifying orders",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -106,9 +106,9 @@
         "show_search": true,
         "search_position": "right",
         "search_row": "top",
-        "show_country": false,
+        "show_country": true,
         "country_selector_style": true,
-        "show_language": false,
+        "show_language": true,
         "localization_font": "heading",
         "localization_font_size": "0.875rem",
         "localization_position": "right",

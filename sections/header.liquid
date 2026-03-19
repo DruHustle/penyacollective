@@ -145,7 +145,7 @@
     endif
   endif
 
-  if section.settings.show_country or section.settings.show_language
+  if show_country or show_language
     if section.settings.localization_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'localization,'
     endif

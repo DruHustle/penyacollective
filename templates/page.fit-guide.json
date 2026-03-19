@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "fit_guide_back_nav": {
@@ -61,68 +52,146 @@
         "step_chest": {
           "type": "measurement_step",
           "settings": {
-            "title": "Chest",
-            "description": "Wrap the tape around the fullest part of your chest, parallel to the ground. Breathe naturally — do not pull it tight."
+            "title": "Chest / Bust",
+            "description": "Wrap the tape around the fullest part of your chest or bust, keeping it parallel to the ground. Breathe naturally — do not pull it tight or hold your breath."
           }
         },
         "step_waist": {
           "type": "measurement_step",
           "settings": {
             "title": "Waist",
-            "description": "Measure around your natural waistline — the narrowest point of your torso, usually an inch above your navel. Exhale gently and measure."
+            "description": "Measure around your natural waistline — the narrowest point of your torso, usually about an inch above your navel. Exhale gently before reading the tape."
           }
         },
         "step_hips": {
           "type": "measurement_step",
           "settings": {
             "title": "Hips",
-            "description": "Stand with feet together and measure around the fullest part of your hips, roughly 20 cm below your natural waistline. Keep the tape level."
+            "description": "Stand with your feet together and measure around the fullest part of your hips and seat, roughly 20 cm below your natural waistline. Keep the tape level all the way around."
           }
         },
         "step_height": {
           "type": "measurement_step",
           "settings": {
             "title": "Height",
-            "description": "Stand straight in bare feet against a wall. Mark the top of your head and measure to the floor. Helps us suggest the right length for trousers, dresses, and full-length pieces."
+            "description": "Stand straight in bare feet against a wall. Have someone mark the top of your head and measure to the floor. Useful for judging trouser, dress, and coat lengths."
           }
         },
-        "row_xs": {
+        "men_xs": {
           "type": "size_row",
-          "settings": { "size_label": "XS", "chest": "80 – 84", "waist": "62 – 66", "hips": "88 – 92" }
+          "settings": { "gender": "men", "size_label": "XS", "eu": "44", "us": "34", "chest": "82 – 86", "waist": "66 – 70", "hips": "86 – 90" }
         },
-        "row_s": {
+        "men_s": {
           "type": "size_row",
-          "settings": { "size_label": "S", "chest": "84 – 88", "waist": "66 – 70", "hips": "92 – 96" }
+          "settings": { "gender": "men", "size_label": "S",  "eu": "46", "us": "36", "chest": "86 – 90", "waist": "70 – 74", "hips": "90 – 94" }
         },
-        "row_m": {
+        "men_m": {
           "type": "size_row",
-          "settings": { "size_label": "M", "chest": "88 – 94", "waist": "70 – 76", "hips": "96 – 102" }
+          "settings": { "gender": "men", "size_label": "M",  "eu": "48", "us": "38", "chest": "90 – 96", "waist": "74 – 80", "hips": "94 – 100" }
         },
-        "row_l": {
+        "men_l": {
           "type": "size_row",
-          "settings": { "size_label": "L", "chest": "94 – 100", "waist": "76 – 82", "hips": "102 – 108" }
+          "settings": { "gender": "men", "size_label": "L",  "eu": "50", "us": "40", "chest": "96 – 102", "waist": "80 – 86", "hips": "100 – 106" }
         },
-        "row_xl": {
+        "men_xl": {
           "type": "size_row",
-          "settings": { "size_label": "XL", "chest": "100 – 108", "waist": "82 – 90", "hips": "108 – 116" }
+          "settings": { "gender": "men", "size_label": "XL", "eu": "52", "us": "42", "chest": "102 – 108", "waist": "86 – 92", "hips": "106 – 112" }
         },
-        "row_xxl": {
+        "men_xxl": {
           "type": "size_row",
-          "settings": { "size_label": "XXL", "chest": "108 – 116", "waist": "90 – 98", "hips": "116 – 124" }
+          "settings": { "gender": "men", "size_label": "XXL", "eu": "54", "us": "44", "chest": "108 – 116", "waist": "92 – 100", "hips": "112 – 120" }
+        },
+        "women_xs": {
+          "type": "size_row",
+          "settings": { "gender": "women", "size_label": "XS", "eu": "32", "us": "2", "chest": "78 – 82", "waist": "60 – 64", "hips": "84 – 88" }
+        },
+        "women_s": {
+          "type": "size_row",
+          "settings": { "gender": "women", "size_label": "S",  "eu": "34", "us": "4", "chest": "82 – 86", "waist": "64 – 68", "hips": "88 – 92" }
+        },
+        "women_m": {
+          "type": "size_row",
+          "settings": { "gender": "women", "size_label": "M",  "eu": "36", "us": "6", "chest": "86 – 90", "waist": "68 – 72", "hips": "92 – 96" }
+        },
+        "women_l": {
+          "type": "size_row",
+          "settings": { "gender": "women", "size_label": "L",  "eu": "38", "us": "8", "chest": "90 – 96", "waist": "72 – 78", "hips": "96 – 102" }
+        },
+        "women_xl": {
+          "type": "size_row",
+          "settings": { "gender": "women", "size_label": "XL", "eu": "40", "us": "10", "chest": "96 – 104", "waist": "78 – 86", "hips": "102 – 110" }
+        },
+        "women_xxl": {
+          "type": "size_row",
+          "settings": { "gender": "women", "size_label": "XXL", "eu": "42", "us": "12", "chest": "104 – 112", "waist": "86 – 94", "hips": "110 – 118" }
+        },
+        "kids_2_3": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "2 – 3 yrs", "eu": "92 – 98", "us": "2T – 3T", "chest": "52 – 56", "waist": "50 – 54", "hips": "54 – 58" }
+        },
+        "kids_3_4": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "3 – 4 yrs", "eu": "98 – 104", "us": "3T – 4T", "chest": "54 – 58", "waist": "52 – 56", "hips": "57 – 62" }
+        },
+        "kids_4_5": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "4 – 5 yrs", "eu": "104 – 110", "us": "4T – 5", "chest": "57 – 62", "waist": "53 – 57", "hips": "60 – 65" }
+        },
+        "kids_5_6": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "5 – 6 yrs", "eu": "110 – 116", "us": "5 – 6", "chest": "60 – 65", "waist": "55 – 59", "hips": "63 – 68" }
+        },
+        "kids_6_7": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "6 – 7 yrs", "eu": "116 – 122", "us": "6X – 7", "chest": "63 – 68", "waist": "57 – 62", "hips": "66 – 72" }
+        },
+        "kids_7_8": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "7 – 8 yrs", "eu": "122 – 128", "us": "7 – 8", "chest": "66 – 72", "waist": "59 – 64", "hips": "69 – 76" }
+        },
+        "kids_8_9": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "8 – 9 yrs", "eu": "128 – 134", "us": "8 – 10", "chest": "69 – 76", "waist": "61 – 66", "hips": "72 – 79" }
+        },
+        "kids_9_10": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "9 – 10 yrs", "eu": "134 – 140", "us": "10 – 12", "chest": "72 – 80", "waist": "63 – 69", "hips": "75 – 83" }
+        },
+        "kids_11_12": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "11 – 12 yrs", "eu": "146 – 152", "us": "12 – 14", "chest": "76 – 85", "waist": "65 – 73", "hips": "79 – 88" }
+        },
+        "kids_13_14": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "13 – 14 yrs", "eu": "152 – 158", "us": "14 – 16", "chest": "80 – 91", "waist": "68 – 78", "hips": "83 – 94" }
+        },
+        "kids_15_16": {
+          "type": "size_row",
+          "settings": { "gender": "kids", "size_label": "15 – 16 yrs", "eu": "164 – 170", "us": "16 – 18", "chest": "85 – 97", "waist": "71 – 82", "hips": "88 – 100" }
         }
       },
       "block_order": [
         "step_chest", "step_waist", "step_hips", "step_height",
-        "row_xs", "row_s", "row_m", "row_l", "row_xl", "row_xxl"
+        "men_xs", "men_s", "men_m", "men_l", "men_xl", "men_xxl",
+        "women_xs", "women_s", "women_m", "women_l", "women_xl", "women_xxl",
+        "kids_2_3", "kids_3_4", "kids_4_5", "kids_5_6", "kids_6_7", "kids_7_8",
+        "kids_8_9", "kids_9_10", "kids_11_12", "kids_13_14", "kids_15_16"
       ],
       "settings": {
         "eyebrow": "Your Fit, Your Way",
         "heading": "Finding the right fit should feel effortless.",
         "intro_text": "Penya pieces are designed with care for how clothes feel on a real body. Take two minutes with these four measurements and we will do the rest.",
         "table_heading": "Size Reference",
-        "table_note": "All measurements in centimetres. If you are between sizes, we recommend sizing up for a relaxed fit or sizing down for a closer silhouette.",
+        "table_note": "All body measurements in centimetres. EU sizes follow the EN 13402 standard; US sizes are equivalent ready-to-wear labels. For Kids, EU = height range in cm, US = standard children's label. If your measurements fall between two sizes, size up for comfort. For a bespoke fit, contact us.",
         "note_heading": "A note on fit",
-        "note_text": "Penya pieces are designed with intentional ease — we do not cut for a single body type. Some styles have a relaxed silhouette by design; others are more tailored. Each product page includes specific fit notes where relevant. If you are unsure, our team is always happy to advise."
+        "note_text": "Penya pieces are designed with intentional ease — we do not cut for a single body type. Some styles have a relaxed silhouette by design; others are more tailored. Each product page includes specific fit notes where relevant. If you are unsure, or if your child's proportions don't match our ranges, our team is always happy to advise — including for bespoke commissions.",
+        "support_heading": "Need a second opinion?",
+        "support_text": "If you are between sizes, ordering for an event, or need bespoke guidance, our team will help you choose with confidence.",
+        "support_primary_label": "Contact Client Care",
+        "support_primary_link": "/pages/contact",
+        "support_secondary_label": "WhatsApp Us",
+        "support_secondary_link": "https://wa.me/4915147416152",
+        "support_secondary_new_tab": true
       }
     }
   },
