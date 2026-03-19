@@ -244,7 +244,7 @@ test.describe('Designer profiles', () => {
 
     test(`/pages/${handle} has a shop CTA`, async ({ page }) => {
       await goto(page, `/pages/${handle}`);
-      const cta = page.locator('.designer-profile__cta a');
+      const cta = page.locator('.designer-profile__cta .button');
       await expect(cta).toBeVisible();
       const href = await cta.getAttribute('href');
       expect(href).toBeTruthy();
