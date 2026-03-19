@@ -1,15 +1,13 @@
 const { test, expect } = require('@playwright/test');
 
 const goto = async (page, path) => {
-  // Block the Shopify Preview Bar at the network level — it renders as a popover
-  // iframe that intercepts pointer events on CI preview-theme URLs.
-  await page.route('**/shopifycloud/preview-bar/**', route => route.abort()).catch(() => {});
-
   // Klaviyo's onsite embed is a Shopify App Embed (served from cdn.shopify.com),
   // so URL blocking alone won't reach it, and a MutationObserver loses the race
   // when Klaviyo re-inserts its popup after removal.
   // Constructable Stylesheets win permanently: the rule applies to every element
   // Klaviyo adds, regardless of when or how often it re-inserts them.
+  // The Shopify Preview Bar (#PBarNextFrameWrapper) is also suppressed here via CSS
+  // rather than a route block, to avoid disrupting the preview-theme session cookies.
   await page.addInitScript(() => {
     try {
       const sheet = new CSSStyleSheet();
@@ -355,6 +353,8 @@ test.describe('Fit Guide', () => {
 
   test('unit toggle switches table values to inches', async ({ page }) => {
     const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    // Scroll to center so the sticky header does not cover the button
+    await inBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
     await inBtn.click();
     const firstCell = page.locator('.fit-guide__table tbody td[data-cm]').first();
     const text = await firstCell.textContent();
@@ -367,7 +367,10 @@ test.describe('Fit Guide', () => {
     const cmBtn = page.locator('.fit-guide__unit-btn[data-unit="cm"]').first();
     const firstCell = page.locator('.fit-guide__table tbody td[data-cm]').first();
     const originalText = await firstCell.textContent();
+    // Scroll to center so the sticky header does not cover the button
+    await inBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
     await inBtn.click();
+    await cmBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
     await cmBtn.click();
     await expect(firstCell).toHaveText(originalText);
   });
@@ -377,7 +380,10 @@ test.describe('Fit Guide', () => {
     const originalMin = await input.getAttribute('min');
     const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
     const cmBtn = page.locator('.fit-guide__unit-btn[data-unit="cm"]').first();
+    // Scroll to center so the sticky header does not cover the button
+    await inBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
     await inBtn.click();
+    await cmBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
     await cmBtn.click();
     await expect(input).toHaveAttribute('min', originalMin);
   });

@@ -383,8 +383,12 @@
   }
 
   /* ── Trigger button ── */
-  .penya-chat__trigger,
-  .penya-chat__panel {
+  /* Trigger is always interactive; panel only captures events when the widget is open */
+  .penya-chat__trigger {
+    pointer-events: auto;
+  }
+
+  .penya-chat[data-open="true"] .penya-chat__panel {
     pointer-events: auto;
   }
 
