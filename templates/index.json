@@ -623,7 +623,7 @@
         "blog": "journal",
         "layout_type": "carousel",
         "carousel_on_mobile": true,
-        "post_limit": 50,
+        "post_limit": 10,
         "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",
@@ -763,9 +763,9 @@
     "hero_penya",
     "brand_marquee",
     "mission_statement",
-    "collective_designers",
-    "brand_pillars",
     "featured_collections",
+    "brand_pillars",
+    "collective_designers",
     "journal_preview",
     "newsletter_signup"
   ]
