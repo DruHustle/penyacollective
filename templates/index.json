@@ -623,7 +623,7 @@
         "blog": "journal",
         "layout_type": "editorial",
         "carousel_on_mobile": true,
-        "post_limit": 6,
+        "post_limit": 50,
         "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",

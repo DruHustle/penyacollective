@@ -56,10 +56,19 @@
       {%- comment -%} Detect which genders have rows so we only show relevant tabs {%- endcomment -%}
       {%- assign has_men   = false -%}
       {%- assign has_women = false -%}
+      {%- assign has_kids  = false -%}
       {%- for block in row_blocks -%}
         {%- if block.settings.gender == 'men'   -%}{%- assign has_men   = true -%}{%- endif -%}
         {%- if block.settings.gender == 'women' -%}{%- assign has_women = true -%}{%- endif -%}
+        {%- if block.settings.gender == 'kids'  -%}{%- assign has_kids  = true -%}{%- endif -%}
       {%- endfor -%}
+      {%- assign tab_count = 0 -%}
+      {%- if has_men   -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+      {%- if has_women -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+      {%- if has_kids  -%}{%- assign tab_count = tab_count | plus: 1 -%}{%- endif -%}
+      {%- assign default_gender = 'men' -%}
+      {%- if has_men == false and has_women -%}{%- assign default_gender = 'women' -%}{%- endif -%}
+      {%- if has_men == false and has_women == false and has_kids -%}{%- assign default_gender = 'kids' -%}{%- endif -%}
 
       {%- comment -%} Find My Size calculator {%- endcomment -%}
       <div class="fit-guide__calculator" id="fit-calculator-{{ section.id }}">
@@ -86,10 +95,17 @@
       </div>
 
       <div class="fit-guide__table-controls">
-        {%- if has_men and has_women -%}
-          <div class="fit-guide__gender-tabs" role="tablist" aria-label="Sizing by gender">
-            <button type="button" class="fit-guide__gender-btn is-active" data-gender="men" role="tab" aria-selected="true">Men</button>
-            <button type="button" class="fit-guide__gender-btn" data-gender="women" role="tab" aria-selected="false">Women</button>
+        {%- if tab_count > 1 -%}
+          <div class="fit-guide__gender-tabs" role="tablist" aria-label="Sizing by gender" data-default-gender="{{ default_gender }}">
+            {%- if has_men -%}
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'men' %} is-active{% endif %}" data-gender="men" role="tab" aria-selected="{{ default_gender | equals: 'men' | default: 'false' }}">Men</button>
+            {%- endif -%}
+            {%- if has_women -%}
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'women' %} is-active{% endif %}" data-gender="women" role="tab" aria-selected="false">Women</button>
+            {%- endif -%}
+            {%- if has_kids -%}
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'kids' %} is-active{% endif %}" data-gender="kids" role="tab" aria-selected="false">Kids</button>
+            {%- endif -%}
           </div>
         {%- endif -%}
         <div class="fit-guide__unit-toggle" role="group" aria-label="Unit system">
@@ -509,7 +525,7 @@
           row.hidden = row.dataset.gender !== gender;
         });
 
-        // Chest → Bust for women
+        // Chest → Bust for women only; kids and men use "Chest"
         var label = gender === 'women' ? 'Bust' : 'Chest';
         if (chestLabel) chestLabel.textContent = label;
         if (chestInputLabel) chestInputLabel.textContent = label;
@@ -524,8 +540,8 @@
         btn.addEventListener('click', function () { setGender(btn.dataset.gender); });
       });
 
-      // Initialise: hide women's rows (men tab is active by default)
-      setGender('men');
+      // Initialise using the server-rendered default gender
+      setGender(tabs.dataset.defaultGender || 'men');
     });
 
     // ── Unit toggle ──────────────────────────────────────────
@@ -684,7 +700,8 @@
           "label": "Sizing for",
           "options": [
             { "value": "men",   "label": "Men" },
-            { "value": "women", "label": "Women" }
+            { "value": "women", "label": "Women" },
+            { "value": "kids",  "label": "Kids" }
           ],
           "default": "men"
         },

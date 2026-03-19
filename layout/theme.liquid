@@ -38,6 +38,50 @@
     {% endif %}
 
     {{ content_for_header }}
+    <style>
+      /* ── WhatsApp order button (cart page) ─────────────── */
+      .penya-wa-order {
+        max-width: 480px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 2rem 1.5rem;
+        border: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+        border-radius: 6px;
+      }
+      .penya-wa-order__label {
+        font-family: var(--font-subheading--family);
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--color-foreground);
+        opacity: 0.6;
+        margin-bottom: 1rem;
+      }
+      .penya-wa-order__btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background-color: #25D366;
+        color: #fff;
+        font-family: var(--font-subheading--family);
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 0.75rem 1.75rem;
+        border-radius: 3px;
+        transition: background-color 0.2s ease;
+      }
+      .penya-wa-order__btn:hover {
+        background-color: #1ebe5d;
+      }
+      .penya-wa-order__note {
+        margin-top: 0.875rem;
+        font-size: 0.8rem;
+        opacity: 0.55;
+        line-height: 1.5;
+      }
+    </style>
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
