@@ -1,6 +1,30 @@
 const { test, expect } = require('@playwright/test');
 
 const goto = async (page, path) => {
+  // Klaviyo's onsite embed is a Shopify App Embed (served from cdn.shopify.com),
+  // so URL blocking alone won't reach it, and a MutationObserver loses the race
+  // when Klaviyo re-inserts its popup after removal.
+  // Constructable Stylesheets win permanently: the rule applies to every element
+  // Klaviyo adds, regardless of when or how often it re-inserts them.
+  // The Shopify Preview Bar (#PBarNextFrameWrapper) is also suppressed here via CSS
+  // rather than a route block, to avoid disrupting the preview-theme session cookies.
+  await page.addInitScript(() => {
+    try {
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(`
+        [aria-label*="POPUP"][role="dialog"],
+        .kl-private-reset-css-Xuajs1,
+        #PBarNextFrameWrapper,
+        #PBarNextFrame {
+          display: none !important;
+          pointer-events: none !important;
+          visibility: hidden !important;
+        }
+      `);
+      document.adoptedStyleSheets = [...(document.adoptedStyleSheets || []), sheet];
+    } catch (_) {}
+  });
+
   const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
   await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
   return response;
@@ -87,6 +111,19 @@ test.describe('Homepage', () => {
 
   test('header shows the localization currency control', async ({ page }) => {
     await expect(page.locator('[data-testid="localization-currency-code"]').first()).toBeVisible();
+  });
+
+  test('journal carousel renders as horizontal scroll container', async ({ page }) => {
+    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+    const carousel = page.locator('[data-testid="featured-blog-posts"] slideshow-component').first();
+    await expect(carousel).toBeAttached();
+  });
+
+  test('journal carousel contains at least 3 article cards', async ({ page }) => {
+    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+    const cards = page.locator('[data-testid="featured-blog-posts"] .resource-list__slide');
+    const count = await cards.count();
+    expect(count).toBeGreaterThanOrEqual(3);
   });
 });
 
@@ -312,6 +349,43 @@ test.describe('Fit Guide', () => {
   test('size table has accessible column headers', async ({ page }) => {
     const headers = page.locator('.fit-guide__table th[scope="col"]');
     await expect(headers).toHaveCount(6);
+  });
+
+  test('unit toggle switches table values to inches', async ({ page }) => {
+    const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    // Scroll to center so the sticky header does not cover the button
+    await inBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
+    await inBtn.click();
+    const firstCell = page.locator('.fit-guide__table tbody td[data-cm]').first();
+    const text = await firstCell.textContent();
+    // CM values are whole numbers like "80 – 84"; inch values contain decimals
+    expect(text).toMatch(/\d+\.\d/);
+  });
+
+  test('unit toggle restores cm values when switching back', async ({ page }) => {
+    const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    const cmBtn = page.locator('.fit-guide__unit-btn[data-unit="cm"]').first();
+    const firstCell = page.locator('.fit-guide__table tbody td[data-cm]').first();
+    const originalText = await firstCell.textContent();
+    // Scroll to center so the sticky header does not cover the button
+    await inBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
+    await inBtn.click();
+    await cmBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
+    await cmBtn.click();
+    await expect(firstCell).toHaveText(originalText);
+  });
+
+  test('calculator inputs restore correct cm bounds after in/cm toggle', async ({ page }) => {
+    const input = page.locator('.fit-guide__calc-input').first();
+    const originalMin = await input.getAttribute('min');
+    const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    const cmBtn = page.locator('.fit-guide__unit-btn[data-unit="cm"]').first();
+    // Scroll to center so the sticky header does not cover the button
+    await inBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
+    await inBtn.click();
+    await cmBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
+    await cmBtn.click();
+    await expect(input).toHaveAttribute('min', originalMin);
   });
 });
 

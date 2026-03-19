@@ -7,6 +7,10 @@ const previewStatePath = path.join(__dirname, '.playwright', 'preview-state.json
 module.exports = defineConfig({
   testDir: './tests',
   timeout: 60_000,
+  // CI hits the live Shopify store from a remote runner — pages can be slow.
+  // Raise the assertion timeout from the default 5 s so toBeVisible() etc.
+  // don't time out before the element appears.
+  expect: { timeout: 15_000 },
   retries: 0,
   globalSetup: previewThemeId ? require.resolve('./tests/setup-preview-state.js') : undefined,
   use: {
