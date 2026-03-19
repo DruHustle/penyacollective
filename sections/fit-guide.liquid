@@ -98,7 +98,7 @@
         {%- if tab_count > 1 -%}
           <div class="fit-guide__gender-tabs" role="tablist" aria-label="Sizing by gender" data-default-gender="{{ default_gender }}">
             {%- if has_men -%}
-              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'men' %} is-active{% endif %}" data-gender="men" role="tab" aria-selected="{{ default_gender | equals: 'men' | default: 'false' }}">Men</button>
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'men' %} is-active{% endif %}" data-gender="men" role="tab" aria-selected="{% if default_gender == 'men' %}true{% else %}false{% endif %}">Men</button>
             {%- endif -%}
             {%- if has_women -%}
               <button type="button" class="fit-guide__gender-btn{% if default_gender == 'women' %} is-active{% endif %}" data-gender="women" role="tab" aria-selected="false">Women</button>
