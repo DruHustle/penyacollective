@@ -1,9 +1,21 @@
 const { test, expect } = require('@playwright/test');
 
 const goto = async (page, path) => {
-  // Block Klaviyo onsite embeds — their popup fires on every fresh page load in CI
-  // and the resulting dialog intercepts pointer events, breaking visibility/click assertions.
-  await page.route('**/*.klaviyo.com/**', route => route.abort()).catch(() => {});
+  // Klaviyo's onsite embed is a Shopify App Embed — its script is served from
+  // cdn.shopify.com, so URL-pattern blocking won't reach it. Instead, inject a
+  // MutationObserver before any page script runs to remove both known interceptors
+  // the instant they appear in the DOM:
+  //   • Klaviyo POPUP Form dialog  (aria-label contains "POPUP")
+  //   • Shopify Preview Bar iframe (#PBarNextFrameWrapper, present in CI preview URLs)
+  await page.addInitScript(() => {
+    const removeOverlays = () => {
+      document.querySelectorAll('[role="dialog"][aria-label*="POPUP"]').forEach(el => el.remove());
+      const pbar = document.getElementById('PBarNextFrameWrapper');
+      if (pbar) pbar.remove();
+    };
+    const observer = new MutationObserver(removeOverlays);
+    observer.observe(document.documentElement, { childList: true, subtree: true });
+  });
   const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
   await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
   return response;
