@@ -94,7 +94,11 @@ test.describe('Homepage', () => {
 test.describe('Collections', () => {
   for (const handle of ['men', 'women', 'accessories']) {
     test(`/collections/${handle} loads`, async ({ page }) => {
-      const res = await goto(page, `/collections/${handle}`);
+      let res = await goto(page, `/collections/${handle}`);
+      // Shopify occasionally returns 503 under CI load — retry once before failing
+      if (res.status() === 503) {
+        res = await goto(page, `/collections/${handle}`);
+      }
       expect(res.status()).toBe(200);
       const body = await page.textContent('body');
       expect(body).not.toContain('Liquid error');
@@ -102,6 +106,8 @@ test.describe('Collections', () => {
 
     test(`/collections/${handle} shows empty state when no products`, async ({ page }) => {
       await goto(page, `/collections/${handle}`);
+      // Wait for the results-list web component to finish initialising before inspecting the grid
+      await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
       const hasProducts = await page.locator('.product-grid__item:not(.product-grid__empty)').count();
       if (hasProducts === 0) {
         await expect(page.getByText(/New pieces coming soon/i)).toBeVisible();
