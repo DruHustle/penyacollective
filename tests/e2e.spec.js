@@ -1,6 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
 const goto = async (page, path) => {
+  // Block Klaviyo onsite embeds — their popup fires on every fresh page load in CI
+  // and the resulting dialog intercepts pointer events, breaking visibility/click assertions.
+  await page.route('**/*.klaviyo.com/**', route => route.abort()).catch(() => {});
   const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
   await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
   return response;
