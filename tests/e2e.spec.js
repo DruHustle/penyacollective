@@ -88,6 +88,19 @@ test.describe('Homepage', () => {
   test('header shows the localization currency control', async ({ page }) => {
     await expect(page.locator('[data-testid="localization-currency-code"]').first()).toBeVisible();
   });
+
+  test('journal carousel renders as horizontal scroll container', async ({ page }) => {
+    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+    const carousel = page.locator('[data-testid="featured-blog-posts"] slideshow-component').first();
+    await expect(carousel).toBeAttached();
+  });
+
+  test('journal carousel contains at least 3 article cards', async ({ page }) => {
+    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+    const cards = page.locator('[data-testid="featured-blog-posts"] .resource-list__slide');
+    const count = await cards.count();
+    expect(count).toBeGreaterThanOrEqual(3);
+  });
 });
 
 // ─── Collections ──────────────────────────────────────────────────────────
@@ -312,6 +325,35 @@ test.describe('Fit Guide', () => {
   test('size table has accessible column headers', async ({ page }) => {
     const headers = page.locator('.fit-guide__table th[scope="col"]');
     await expect(headers).toHaveCount(6);
+  });
+
+  test('unit toggle switches table values to inches', async ({ page }) => {
+    const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    await inBtn.click();
+    const firstCell = page.locator('.fit-guide__table tbody td[data-cm]').first();
+    const text = await firstCell.textContent();
+    // CM values are whole numbers like "80 – 84"; inch values contain decimals
+    expect(text).toMatch(/\d+\.\d/);
+  });
+
+  test('unit toggle restores cm values when switching back', async ({ page }) => {
+    const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    const cmBtn = page.locator('.fit-guide__unit-btn[data-unit="cm"]').first();
+    const firstCell = page.locator('.fit-guide__table tbody td[data-cm]').first();
+    const originalText = await firstCell.textContent();
+    await inBtn.click();
+    await cmBtn.click();
+    await expect(firstCell).toHaveText(originalText);
+  });
+
+  test('calculator inputs restore correct cm bounds after in/cm toggle', async ({ page }) => {
+    const input = page.locator('.fit-guide__calc-input').first();
+    const originalMin = await input.getAttribute('min');
+    const inBtn = page.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+    const cmBtn = page.locator('.fit-guide__unit-btn[data-unit="cm"]').first();
+    await inBtn.click();
+    await cmBtn.click();
+    await expect(input).toHaveAttribute('min', originalMin);
   });
 });
 

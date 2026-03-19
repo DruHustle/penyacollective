@@ -98,25 +98,41 @@ function markManualOverride() {
   } catch (_) {}
 }
 
+function isCountryForm(form) {
+  return !!form.querySelector('input[name="country_code"]');
+}
+
 function wireManualOverrideListeners() {
+  // Only country-form submissions should lock out auto-country selection.
+  // Language-form submissions must not set the country override flag.
   document.querySelectorAll('form.localization-form').forEach((form) => {
+    if (!isCountryForm(form)) return;
     form.addEventListener('submit', () => {
       if (autoSubmitting) {
         autoSubmitting = false;
         return;
       }
-
       markManualOverride();
     });
   });
 
+  // List-item clicks are country selections — always mark override.
   document
     .querySelectorAll('localization-form-component .localization-form__list-item[data-value]')
-    .forEach((item) => item.addEventListener('click', markManualOverride, { passive: true }));
+    .forEach((item) => {
+      const form = item.closest('form.localization-form');
+      if (!form || !isCountryForm(form)) return;
+      item.addEventListener('click', markManualOverride, { passive: true });
+    });
 
+  // Select changes inside country forms mark override; language selects do not.
   document
     .querySelectorAll('localization-form-component .localization-form__select')
-    .forEach((select) => select.addEventListener('change', markManualOverride));
+    .forEach((select) => {
+      const form = select.closest('form.localization-form');
+      if (!form || !isCountryForm(form)) return;
+      select.addEventListener('change', markManualOverride);
+    });
 }
 
 function autoSelectCountry() {

@@ -1,0 +1,493 @@
+{% comment %}
+  Penya Collective — branded floating contact widget.
+  Renders a chat-style trigger button (bottom-right) with a slide-up panel
+  offering WhatsApp, order enquiry, and contact form actions.
+{% endcomment %}
+
+{%- liquid
+  assign wa_greeting = 'Hi, I found you on the Penya Collective website and would love some help.' | url_encode
+-%}
+
+<div class="penya-chat" id="penya-chat" data-open="false">
+
+  {{- '<!-- Contact panel -->' -}}
+  <div
+    class="penya-chat__panel"
+    id="penya-chat-panel"
+    role="dialog"
+    aria-modal="false"
+    aria-label="Contact Penya Collective"
+    aria-hidden="true"
+  >
+    <div class="penya-chat__header">
+      <div class="penya-chat__identity">
+        <div class="penya-chat__avatar" aria-hidden="true">P</div>
+        <div class="penya-chat__meta">
+          <span class="penya-chat__name">Penya Collective</span>
+          <span class="penya-chat__status">
+            <span class="penya-chat__status-dot" aria-hidden="true"></span>
+            Replies within 24 hours
+          </span>
+        </div>
+      </div>
+      <button
+        class="penya-chat__close"
+        id="penya-chat-close"
+        type="button"
+        aria-label="Close contact panel"
+      >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="penya-chat__body">
+      <p class="penya-chat__greeting">How can we help?</p>
+      <p class="penya-chat__subtext">Our team is here for sizing, bespoke requests, and order support. Choose the fastest path below.</p>
+    </div>
+
+    <nav class="penya-chat__actions" aria-label="Contact options">
+      <a
+        href="https://wa.me/4915147416152?text={{ wa_greeting }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="penya-chat__action penya-chat__action--primary"
+      >
+        <span class="penya-chat__action-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+        </span>
+        <span class="penya-chat__action-text">
+          <strong>Chat on WhatsApp</strong>
+          <em>Fastest response</em>
+        </span>
+        <svg class="penya-chat__action-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <a href="/pages/order" class="penya-chat__action">
+        <span class="penya-chat__action-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+        </span>
+        <span class="penya-chat__action-text">
+          <strong>Place an Order</strong>
+          <em>Made-to-order enquiries</em>
+        </span>
+        <svg class="penya-chat__action-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+
+      <a href="/pages/contact" class="penya-chat__action">
+        <span class="penya-chat__action-icon" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </span>
+        <span class="penya-chat__action-text">
+          <strong>Send a Message</strong>
+          <em>We will reply by email</em>
+        </span>
+        <svg class="penya-chat__action-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </nav>
+
+    <p class="penya-chat__footer">Penya Collective &middot; Heidelberg, Germany</p>
+  </div>
+
+  {{- '<!-- Trigger button -->' -}}
+  <button
+    class="penya-chat__trigger"
+    id="penya-chat-trigger"
+    type="button"
+    aria-expanded="false"
+    aria-controls="penya-chat-panel"
+    aria-label="Contact us"
+  >
+    <svg class="penya-chat__trigger-icon penya-chat__trigger-icon--chat" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    </svg>
+    <svg class="penya-chat__trigger-icon penya-chat__trigger-icon--close" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+      <path d="M4 4l12 12M16 4L4 16"/>
+    </svg>
+    <span class="penya-chat__badge" aria-hidden="true"></span>
+  </button>
+</div>
+
+<style>
+  .penya-chat {
+    --chat-bg: #0f0e0c;
+    --chat-bg-header: #171410;
+    --chat-border: #2a2118;
+    --chat-gold: #c8a25a;
+    --chat-gold-dim: #a0804080;
+    --chat-text: #f2ede5;
+    --chat-text-muted: #a09688;
+    --chat-action-bg: #1a1710;
+    --chat-action-hover: #241f16;
+    --chat-trigger-size: 56px;
+    --chat-width: 320px;
+    --chat-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 2px 12px rgba(0, 0, 0, 0.4);
+
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9000;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .penya-chat {
+      bottom: 20px;
+      right: 16px;
+    }
+  }
+
+  /* ── Panel ── */
+  .penya-chat__panel {
+    width: var(--chat-width);
+    background: var(--chat-bg);
+    border: 1px solid var(--chat-border);
+    box-shadow: var(--chat-shadow);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(12px) scale(0.97);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.2s ease;
+    transform-origin: bottom right;
+  }
+
+  @media screen and (max-width: 749px) {
+    .penya-chat__panel {
+      width: calc(100vw - 32px);
+    }
+  }
+
+  .penya-chat[data-open="true"] .penya-chat__panel {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Header ── */
+  .penya-chat__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 16px 14px;
+    background: var(--chat-bg-header);
+    border-bottom: 1px solid var(--chat-border);
+  }
+
+  .penya-chat__identity {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .penya-chat__avatar {
+    width: 36px;
+    height: 36px;
+    background: var(--chat-gold);
+    color: #0b0b0b;
+    font-family: var(--font-heading--family, serif);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .penya-chat__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .penya-chat__name {
+    font-family: var(--font-heading--family, serif);
+    font-size: 0.8125rem;
+    color: var(--chat-text);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .penya-chat__status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.6875rem;
+    color: var(--chat-text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .penya-chat__status-dot {
+    width: 6px;
+    height: 6px;
+    background: #4caf7d;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .penya-chat__close {
+    background: none;
+    border: none;
+    padding: 4px;
+    color: var(--chat-text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .penya-chat__close:hover {
+    color: var(--chat-text);
+  }
+
+  /* ── Body ── */
+  .penya-chat__body {
+    padding: 20px 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .penya-chat__greeting {
+    font-family: var(--font-heading--family, serif);
+    font-size: 1.125rem;
+    color: var(--chat-text);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .penya-chat__subtext {
+    font-size: 0.8125rem;
+    color: var(--chat-text-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  /* ── Actions ── */
+  .penya-chat__actions {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 12px 12px;
+    gap: 6px;
+  }
+
+  .penya-chat__action {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    background: var(--chat-action-bg);
+    border: 1px solid var(--chat-border);
+    color: var(--chat-text);
+    text-decoration: none;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .penya-chat__action:hover {
+    background: var(--chat-action-hover);
+    border-color: var(--chat-gold-dim);
+  }
+
+  .penya-chat__action--primary {
+    border-color: var(--chat-gold-dim);
+    background: #1e1a10;
+  }
+
+  .penya-chat__action--primary:hover {
+    background: #251f0e;
+    border-color: var(--chat-gold);
+  }
+
+  .penya-chat__action-icon {
+    color: var(--chat-gold);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .penya-chat__action-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .penya-chat__action-text strong {
+    font-family: var(--font-body--family, sans-serif);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--chat-text);
+    letter-spacing: 0.01em;
+  }
+
+  .penya-chat__action-text em {
+    font-style: normal;
+    font-size: 0.6875rem;
+    color: var(--chat-text-muted);
+    letter-spacing: 0.01em;
+  }
+
+  .penya-chat__action-arrow {
+    color: var(--chat-text-muted);
+    flex-shrink: 0;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .penya-chat__action:hover .penya-chat__action-arrow {
+    color: var(--chat-gold);
+    transform: translateX(2px);
+  }
+
+  /* ── Footer ── */
+  .penya-chat__footer {
+    padding: 10px 16px;
+    font-size: 0.625rem;
+    color: var(--chat-text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    border-top: 1px solid var(--chat-border);
+    margin: 0;
+  }
+
+  /* ── Trigger button ── */
+  .penya-chat__trigger {
+    width: var(--chat-trigger-size);
+    height: var(--chat-trigger-size);
+    background: var(--chat-gold);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0b0b0b;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(200, 162, 90, 0.35), 0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  }
+
+  .penya-chat__trigger:hover {
+    background: #d7b874;
+    box-shadow: 0 6px 28px rgba(200, 162, 90, 0.45), 0 2px 10px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .penya-chat__trigger:active {
+    transform: translateY(0);
+  }
+
+  .penya-chat__trigger-icon {
+    position: absolute;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  .penya-chat__trigger-icon--chat {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .penya-chat__trigger-icon--close {
+    opacity: 0;
+    transform: scale(0.7) rotate(-45deg);
+  }
+
+  .penya-chat[data-open="true"] .penya-chat__trigger-icon--chat {
+    opacity: 0;
+    transform: scale(0.7) rotate(45deg);
+  }
+
+  .penya-chat[data-open="true"] .penya-chat__trigger-icon--close {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+
+  /* Notification badge */
+  .penya-chat__badge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 9px;
+    height: 9px;
+    background: #e05a3a;
+    border-radius: 50%;
+    border: 2px solid var(--chat-gold);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .penya-chat[data-open="true"] .penya-chat__badge {
+    opacity: 0;
+    transform: scale(0);
+  }
+</style>
+
+<script>
+  (function () {
+    var widget = document.getElementById('penya-chat');
+    var trigger = document.getElementById('penya-chat-trigger');
+    var panel = document.getElementById('penya-chat-panel');
+    var closeBtn = document.getElementById('penya-chat-close');
+    if (!widget || !trigger || !panel) return;
+
+    function open() {
+      widget.dataset.open = 'true';
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.setAttribute('aria-hidden', 'false');
+      closeBtn && closeBtn.focus();
+    }
+
+    function close() {
+      widget.dataset.open = 'false';
+      trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('aria-hidden', 'true');
+      trigger.focus();
+    }
+
+    function toggle() {
+      widget.dataset.open === 'true' ? close() : open();
+    }
+
+    trigger.addEventListener('click', toggle);
+    closeBtn && closeBtn.addEventListener('click', close);
+
+    // Close on Escape
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && widget.dataset.open === 'true') close();
+    });
+
+    // Dismiss badge after 4 s to avoid distraction
+    setTimeout(function () {
+      var badge = widget.querySelector('.penya-chat__badge');
+      if (badge) badge.style.opacity = '0.6';
+    }, 4000);
+  })();
+</script>
