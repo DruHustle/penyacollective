@@ -170,11 +170,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How do I get in touch?",
-<<<<<<< features
             "answer": "<p>Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a>, message us on <a href=\"https://wa.me/4915147416152\">WhatsApp</a>, or use the form on our <a href=\"/pages/contact\">Contact page</a>. We aim to reply within one business day.</p>"
-=======
-            "answer": "<p>Email us at <a href=\"mailto:info@penya.africa\">info@penya.africa</a>. We aim to reply within one business day. You can also use the form on our <a href=\"/pages/contact\">Contact page</a>.</p>"
->>>>>>> main
           }
         }
       },

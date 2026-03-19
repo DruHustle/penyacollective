@@ -621,13 +621,9 @@
       ],
       "settings": {
         "blog": "journal",
-        "layout_type": "editorial",
+        "layout_type": "carousel",
         "carousel_on_mobile": true,
-<<<<<<< features
         "post_limit": 50,
-=======
-        "post_limit": 6,
->>>>>>> main
         "columns": 3,
         "mobile_columns": "1",
         "mobile_card_size": "60cqw",

@@ -10,126 +10,7 @@
 {
   "sections": {
     "about_hero": {
-<<<<<<< features
       "type": "penya-story-hero",
-=======
-      "type": "media-with-content",
-      "blocks": {
-        "media": {
-          "type": "_media-without-appearance",
-          "static": true,
-          "settings": {
-            "media_type": "image",
-            "video_loop": true,
-            "video_autoplay": false,
-            "image_position": "cover",
-            "video_position": "cover"
-          }
-        },
-        "content": {
-          "type": "_content-without-appearance",
-          "static": true,
-          "settings": {
-            "horizontal_alignment_flex_direction_column": "flex-start",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 16
-          },
-          "blocks": {
-            "eyebrow": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Our Story</p>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "custom",
-                "font": "var(--font-subheading--family)",
-                "font_size": "0.75rem",
-                "line_height": "normal",
-                "letter_spacing": "loose",
-                "case": "uppercase",
-                "wrap": "pretty",
-                "color": "var(--color-primary)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "heading": {
-              "type": "text",
-              "settings": {
-                "text": "<h1>Every Glow Has a Story.</h1>",
-                "width": "100%",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h3",
-                "font": "var(--font-heading--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "tagline": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Born in Harare. Built to make every designer in Africa shine.</p>",
-                "width": "100%",
-                "max_width": "narrow",
-                "alignment": "left",
-                "type_preset": "paragraph",
-                "font": "var(--font-body--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              }
-            },
-            "button": {
-              "type": "button",
-              "settings": {
-                "label": "Get in Touch",
-                "link": "shopify://pages/contact",
-                "open_in_new_tab": false,
-                "style_class": "button-secondary",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              }
-            }
-          },
-          "block_order": [
-            "eyebrow",
-            "heading",
-            "tagline",
-            "button"
-          ]
-        }
-      },
->>>>>>> main
       "settings": {
         "hero_image_asset": "blog-penya-collective.jpg",
         "hero_image_alt": "Penya Collective editorial portrait in monochrome",
@@ -550,13 +431,8 @@
         "cta_button": {
           "type": "button",
           "settings": {
-<<<<<<< features
             "label": "Shop All Collections",
             "link": "shopify://collections/all",
-=======
-            "label": "Meet the Collective",
-            "link": "/",
->>>>>>> main
             "open_in_new_tab": false,
             "style_class": "button",
             "width": "fit-content",
