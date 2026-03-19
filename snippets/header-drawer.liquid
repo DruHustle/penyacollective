@@ -579,8 +579,15 @@
           if localization.available_countries.size <= 1
             assign show_country = false
           endif
+
+          assign show_localization = false
+          if data_header_drawer_type == 'mobile-drawer'
+            if show_country or show_language
+              assign show_localization = true
+            endif
+          endif
         %}
-        {% if data_header_drawer_type == 'mobile-drawer' and show_country or show_language %}
+        {% if show_localization %}
           {% liquid
             assign background_brightness = block.settings.color_scheme.settings.background | color_brightness
             if background_brightness < 64

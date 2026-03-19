@@ -82,7 +82,11 @@ test.describe('Homepage', () => {
   });
 
   test('Shop In-House collections section is visible', async ({ page }) => {
-    await expect(page.getByText(/Shop In-House/i)).toBeVisible();
+    await expect(page.getByText(/Shop (?:In-House|the House)/i)).toBeVisible();
+  });
+
+  test('header shows the localization currency control', async ({ page }) => {
+    await expect(page.locator('[data-testid="localization-currency-code"]').first()).toBeVisible();
   });
 });
 
@@ -167,7 +171,7 @@ test.describe('Pages', () => {
 
   test('Our Story page has hero image', async ({ page }) => {
     await goto(page, '/pages/about');
-    const heroImg = page.locator('.media-block img, .media-block__media').first();
+    const heroImg = page.locator('.penya-story-hero__image, .media-block img, .media-block__media').first();
     await expect(heroImg).toBeVisible();
   });
 
@@ -179,6 +183,14 @@ test.describe('Pages', () => {
       expect(body).not.toContain('Liquid error');
     });
   }
+
+  test('Contact page surfaces direct support paths', async ({ page }) => {
+    await goto(page, '/pages/contact');
+    const clientCare = page.locator('.penya-client-care');
+    await expect(clientCare.getByRole('link', { name: /email client care/i })).toBeVisible();
+    await expect(clientCare.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
+    await expect(clientCare.getByRole('link', { name: /fit guide/i })).toBeVisible();
+  });
 
   test('FAQ page has accordion items', async ({ page }) => {
     await goto(page, '/pages/faq');
@@ -237,6 +249,12 @@ test.describe('Designer profiles', () => {
       const href = await cta.getAttribute('href');
       expect(href).toBeTruthy();
     });
+
+    test(`/pages/${handle} shows fit and bespoke support links`, async ({ page }) => {
+      await goto(page, `/pages/${handle}`);
+      await expect(page.getByRole('link', { name: /view fit guide/i })).toBeVisible();
+      await expect(page.getByRole('link', { name: /enquire about bespoke/i })).toBeVisible();
+    });
   }
 });
 
@@ -263,9 +281,15 @@ test.describe('Fit Guide', () => {
     expect(count).toBeGreaterThanOrEqual(6);
   });
 
+  test('has direct support actions', async ({ page }) => {
+    const support = page.locator('.fit-guide__support');
+    await expect(support.getByRole('link', { name: /contact client care/i })).toBeVisible();
+    await expect(support.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
+  });
+
   test('size table has accessible column headers', async ({ page }) => {
     const headers = page.locator('.fit-guide__table th[scope="col"]');
-    await expect(headers).toHaveCount(4);
+    await expect(headers).toHaveCount(6);
   });
 });
 

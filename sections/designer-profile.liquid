@@ -79,9 +79,21 @@
       </div>
 
       <div class="designer-profile__cta">
-        <a href="{{ collection_url }}" class="button">
-          Shop {{ page.title }}'s Collection
-        </a>
+        <p class="designer-profile__cta-intro">Discover pieces shaped by {{ page.title }}'s point of view.</p>
+
+        <div class="designer-profile__actions">
+          <a href="{{ collection_url }}" class="button">
+            Shop {{ page.title }}
+          </a>
+
+          <div class="designer-profile__support">
+            <span class="designer-profile__support-label">Need help before you order?</span>
+            <div class="designer-profile__support-links">
+              <a href="/pages/fit-guide" class="designer-profile__text-link">View Fit Guide</a>
+              <a href="/pages/contact" class="designer-profile__text-link">Enquire About Bespoke</a>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -153,6 +165,55 @@
     border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.12);
   }
 
+  .designer-profile__cta-intro {
+    margin: 0 0 1rem;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    color: rgb(var(--color-foreground-rgb) / 0.76);
+  }
+
+  .designer-profile__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .designer-profile__support {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: center;
+  }
+
+  .designer-profile__support-label {
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.64);
+  }
+
+  .designer-profile__support-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1.25rem;
+    align-items: center;
+  }
+
+  .designer-profile__text-link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding-bottom: 0.15rem;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .designer-profile__text-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
   @media screen and (max-width: 749px) {
     .designer-profile__body {
       padding-block: 40px 60px;
@@ -160,6 +221,15 @@
 
     .designer-profile__hero {
       max-height: 60vh;
+    }
+
+    .designer-profile__support {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .designer-profile__support-links {
+      gap: 0.75rem 1rem;
     }
   }
 {% endstylesheet %}

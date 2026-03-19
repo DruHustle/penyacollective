@@ -184,7 +184,14 @@
         "table_heading": "Size Reference",
         "table_note": "All body measurements in centimetres. EU sizes follow the EN 13402 standard; US sizes are equivalent ready-to-wear labels. For Kids, EU = height range in cm, US = standard children's label. If your measurements fall between two sizes, size up for comfort. For a bespoke fit, contact us.",
         "note_heading": "A note on fit",
-        "note_text": "Penya pieces are designed with intentional ease — we do not cut for a single body type. Some styles have a relaxed silhouette by design; others are more tailored. Each product page includes specific fit notes where relevant. If you are unsure, or if your child's proportions don't match our ranges, our team is always happy to advise — including for bespoke commissions."
+        "note_text": "Penya pieces are designed with intentional ease — we do not cut for a single body type. Some styles have a relaxed silhouette by design; others are more tailored. Each product page includes specific fit notes where relevant. If you are unsure, or if your child's proportions don't match our ranges, our team is always happy to advise — including for bespoke commissions.",
+        "support_heading": "Need a second opinion?",
+        "support_text": "If you are between sizes, ordering for an event, or need bespoke guidance, our team will help you choose with confidence.",
+        "support_primary_label": "Contact Client Care",
+        "support_primary_link": "/pages/contact",
+        "support_secondary_label": "WhatsApp Us",
+        "support_secondary_link": "https://wa.me/4915147416152",
+        "support_secondary_new_tab": true
       }
     }
   },

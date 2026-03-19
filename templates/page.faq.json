@@ -20,7 +20,7 @@
           "type": "faq_item",
           "settings": {
             "question": "How much does shipping cost?",
-            "answer": "<p>Shipping is <strong>free on all orders over €200</strong>. Orders below this threshold are charged at standard rates, which are displayed clearly at checkout before you pay.</p>"
+            "answer": "<p>Shipping is <strong>free on qualifying orders</strong>. If your order does not qualify, the standard rate for your destination is displayed clearly at checkout before you pay.</p>"
           }
         },
         "faq_ship_catalog": {

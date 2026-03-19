@@ -248,6 +248,11 @@
     type="module"
     fetchpriority="low"
   ></script>
+  <script
+    src="{{ 'auto-localization.js' | asset_url }}"
+    type="module"
+    fetchpriority="low"
+  ></script>
 {% endif %}
 
 {% if template == 'product' or template.name == 'product' or request.page_type == 'product' %}
