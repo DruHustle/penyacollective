@@ -126,11 +126,14 @@ test.describe('Journal', () => {
   });
 
   for (const [, handle] of [
-    ['Sustainability in Focus: Hemp Fabrics', 'sustainability-hemp-fabrics'],
+    ['Bridge to Berlin', 'penya-collective-berlin-contemporary-2027'],
     ['Penya Collective: Rooted in Heritage', 'penya-collective-rooted-in-heritage'],
     ['Ivhu Tribe', 'ivhu-tribe-partner-spotlight'],
     ['Haus of Stone', 'haus-of-stone-partner-spotlight'],
     ['By Bakari', 'by-bakari-partner-spotlight'],
+    ['A Tribe Called Zimbabwe', 'a-tribe-called-zimbabwe-partner-spotlight'],
+    ['Feli Nandi', 'feli-nandi-partner-spotlight'],
+    ['Panashe', 'panashe-partner-spotlight'],
     ['How We Make It', 'how-we-make-it-production-process'],
   ]) {
     test(`article "${handle}" loads without errors`, async ({ page }) => {
@@ -168,6 +171,19 @@ test.describe('Journal', () => {
 
 // ─── Pages ─────────────────────────────────────────────────────────────────
 test.describe('Pages', () => {
+  test('Order enquiry page loads', async ({ page }) => {
+    const res = await goto(page, '/pages/order');
+    expect(res.status()).toBe(200);
+    const body = await page.textContent('body');
+    expect(body).not.toContain('Liquid error');
+  });
+
+  test('Order page has enquiry form', async ({ page }) => {
+    await goto(page, '/pages/order');
+    await expect(page.locator('input[type="email"]')).toBeVisible();
+    await expect(page.locator('input[type="tel"]')).toBeVisible();
+  });
+
   test('Our Story page loads', async ({ page }) => {
     const res = await goto(page, '/pages/about');
     expect(res.status()).toBe(200);
