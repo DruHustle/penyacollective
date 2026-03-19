@@ -147,6 +147,8 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 12px;
+    /* Container is passthrough — only interactive children capture events */
+    pointer-events: none;
   }
 
   @media screen and (max-width: 749px) {
@@ -381,6 +383,11 @@
   }
 
   /* ── Trigger button ── */
+  .penya-chat__trigger,
+  .penya-chat__panel {
+    pointer-events: auto;
+  }
+
   .penya-chat__trigger {
     width: var(--chat-trigger-size);
     height: var(--chat-trigger-size);

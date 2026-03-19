@@ -1,21 +1,32 @@
 const { test, expect } = require('@playwright/test');
 
 const goto = async (page, path) => {
-  // Klaviyo's onsite embed is a Shopify App Embed — its script is served from
-  // cdn.shopify.com, so URL-pattern blocking won't reach it. Instead, inject a
-  // MutationObserver before any page script runs to remove both known interceptors
-  // the instant they appear in the DOM:
-  //   • Klaviyo POPUP Form dialog  (aria-label contains "POPUP")
-  //   • Shopify Preview Bar iframe (#PBarNextFrameWrapper, present in CI preview URLs)
+  // Block the Shopify Preview Bar at the network level — it renders as a popover
+  // iframe that intercepts pointer events on CI preview-theme URLs.
+  await page.route('**/shopifycloud/preview-bar/**', route => route.abort()).catch(() => {});
+
+  // Klaviyo's onsite embed is a Shopify App Embed (served from cdn.shopify.com),
+  // so URL blocking alone won't reach it, and a MutationObserver loses the race
+  // when Klaviyo re-inserts its popup after removal.
+  // Constructable Stylesheets win permanently: the rule applies to every element
+  // Klaviyo adds, regardless of when or how often it re-inserts them.
   await page.addInitScript(() => {
-    const removeOverlays = () => {
-      document.querySelectorAll('[role="dialog"][aria-label*="POPUP"]').forEach(el => el.remove());
-      const pbar = document.getElementById('PBarNextFrameWrapper');
-      if (pbar) pbar.remove();
-    };
-    const observer = new MutationObserver(removeOverlays);
-    observer.observe(document.documentElement, { childList: true, subtree: true });
+    try {
+      const sheet = new CSSStyleSheet();
+      sheet.replaceSync(`
+        [aria-label*="POPUP"][role="dialog"],
+        .kl-private-reset-css-Xuajs1,
+        #PBarNextFrameWrapper,
+        #PBarNextFrame {
+          display: none !important;
+          pointer-events: none !important;
+          visibility: hidden !important;
+        }
+      `);
+      document.adoptedStyleSheets = [...(document.adoptedStyleSheets || []), sheet];
+    } catch (_) {}
   });
+
   const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
   await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
   return response;
