@@ -245,6 +245,12 @@ const pages = [
     bodyHtml: '',
   },
   {
+    handle: 'order',
+    title: 'Place an Order',
+    templateSuffix: 'order',
+    bodyHtml: '',
+  },
+  {
     handle: 'faq',
     title: 'FAQs',
     templateSuffix: 'faq',
