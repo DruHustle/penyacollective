@@ -39,31 +39,44 @@ async function shopify(path, method = 'GET', body) {
   return res.json();
 }
 
-async function ensureCollection(handle, title, imageFilename, bodyHtml) {
+async function ensureCollection(handle, title, imageFilename, bodyHtml, templateSuffix) {
   const existing = await shopify(`/custom_collections.json?handle=${encodeURIComponent(handle)}`);
+  const payload = {
+    title,
+    handle,
+    body_html: bodyHtml,
+    ...(templateSuffix ? { template_suffix: templateSuffix } : {}),
+    ...(imageFilename ? { image: { attachment: imageAttachment(imageFilename), filename: imageFilename } } : {}),
+  };
   if (existing.custom_collections && existing.custom_collections.length > 0) {
     const current = existing.custom_collections[0];
     const updated = await shopify(`/custom_collections/${current.id}.json`, 'PUT', {
-      custom_collection: {
-        id: current.id,
-        title,
-        handle,
-        body_html: bodyHtml,
-        image: { attachment: imageAttachment(imageFilename), filename: imageFilename },
-      },
+      custom_collection: { id: current.id, ...payload },
     });
     return updated.custom_collection;
   }
   const created = await shopify('/custom_collections.json', 'POST', {
-    custom_collection: {
-      title,
-      handle,
-      body_html: bodyHtml,
-      published: true,
-      image: { attachment: imageAttachment(imageFilename), filename: imageFilename },
-    },
+    custom_collection: { ...payload, published: true },
   });
   return created.custom_collection;
+}
+
+async function ensureCollectionMetafield(collectionId, namespace, key, value) {
+  const existing = await shopify(
+    `/custom_collections/${collectionId}/metafields.json?namespace=${encodeURIComponent(namespace)}&key=${encodeURIComponent(key)}`
+  );
+  if (existing.metafields && existing.metafields.length > 0) {
+    const mf = existing.metafields[0];
+    if (mf.value === value) return mf;
+    await shopify(`/custom_collections/${collectionId}/metafields/${mf.id}.json`, 'PUT', {
+      metafield: { id: mf.id, value },
+    });
+    return mf;
+  }
+  const created = await shopify(`/custom_collections/${collectionId}/metafields.json`, 'POST', {
+    metafield: { namespace, key, value, type: 'single_line_text_field' },
+  });
+  return created.metafield;
 }
 
 async function ensureBlog(handle, title) {
@@ -314,12 +327,70 @@ const collections = [
   },
 ];
 
+const designerCollections = [
+  {
+    handle: 'ivhu-tribe',
+    title: 'Ivhu Tribe',
+    imageFilename: 'designer-ivhutribe.jpg',
+    templateSuffix: 'designer',
+    designerPageHandle: 'designer-ivhu-tribe',
+    bodyHtml: '<p>Ivhu — the Shona word for soil — tells you everything about what this brand is reaching for. Fashion tethered to earth, culture, and memory. Founded in 2023 by Jasper Mandizera, Ivhu Tribe enters every collection with one question: how do we honour what came before while speaking to where we are going?</p><p>In just one year, Ivhu Tribe represented Zimbabwe at World Fashion Week China 2024 — tribal prints and ancestral codes turned into contemporary statements that belong on any world stage.</p>',
+  },
+  {
+    handle: 'a-tribe-called-zimbabwe',
+    title: 'A Tribe Called Zimbabwe',
+    imageFilename: 'designer-atcz.jpg',
+    templateSuffix: 'designer',
+    designerPageHandle: 'designer-a-tribe-called-zimbabwe',
+    bodyHtml: '<p>ATCZ is not a fashion brand with heritage as a marketing angle — it is heritage as the point of origin, and fashion as the medium of declaration. Bold, grounded, and unapologetically Zimbabwean.</p><p>Deliberate palettes drawn from the land, silhouettes that carry weight, and craft that belongs at the highest level of fashion. When you wear ATCZ, you are wearing an argument — that African luxury is not aspiring to something. It already is something.</p>',
+  },
+  {
+    handle: 'feli-nandi-apparels',
+    title: 'Feli Nandi',
+    imageFilename: 'designer-felinandi.jpg',
+    templateSuffix: 'designer',
+    designerPageHandle: 'designer-feli-nandi',
+    bodyHtml: '<p>Designer and musician, Felistus Chipendo wears both identities with full conviction. Feli Nandi Apparel was born from the same creative soul as her music — clothing that sounds like something: confident, melodic, and unapologetically female.</p><p>Zimbabwe Music Awards Best Female Artist 2023. In 2024, she dressed the newly inaugurated President of Namibia, Netumbo Nandi-Ndaitwah, on one of the most significant days in the country\'s history.</p>',
+  },
+  {
+    handle: 'hausofstone',
+    title: 'Haus of Stone',
+    imageFilename: 'designer-hausofstone.jpg',
+    templateSuffix: 'designer',
+    designerPageHandle: 'designer-haus-of-stone',
+    bodyHtml: '<p>Named for the Shona phrase that gave Zimbabwe its name — Dzimba Dzemabwe, houses of stone — Haus of Stone is a slow fashion brand that treats every garment as architecture: structured, considered, and built to endure.</p><p>Featured in Vogue. Selected for London Fashion Week via the British Council\'s Creative DNA programme. Their film screened at the Fashion Film Festival Milano. Afro-minimal fashion with a world stage.</p>',
+  },
+  {
+    handle: 'panashe-designs',
+    title: 'Panashe',
+    imageFilename: 'designer-panashe.jpg',
+    templateSuffix: 'designer',
+    designerPageHandle: 'designer-panashe',
+    bodyHtml: '<p>Chipo Hwami built Panashe Designs from a four-hundred-dollar starting point and a conviction that clothing is not decorative — it is functional in the deepest sense. A well-made garment gives a woman presence before she speaks a word.</p><p>Bold palettes, statement silhouettes, and limited runs for women who want to stand apart, not just dress up. Rooted in Zimbabwe, designed for wherever her customers are going.</p>',
+  },
+  {
+    handle: 'by-bakari',
+    title: 'By Bakari',
+    imageFilename: 'designer-bybakari.jpg',
+    templateSuffix: 'designer',
+    designerPageHandle: 'designer-by-bakari',
+    bodyHtml: '<p>Bakari Sibanda grew up in Bulawayo with a conviction that African textiles were being misread. By Bakari exists to correct that record — confident, wearable, urban pieces that take vibrant, culturally loaded textiles and reposition them in the contemporary wardrobe.</p><p>Built an international audience across the UK, Canada, and Australia on the strength of the work alone. A generation that is global in its references and unambiguously African in its identity.</p>',
+  },
+];
+
 async function main() {
   const blog = await ensureBlog('journal', 'Journal');
 
   for (const collection of collections) {
     const result = await ensureCollection(collection.handle, collection.title, collection.imageFilename, collection.bodyHtml);
     console.log(`Collection ready: ${result.title} → /collections/${result.handle}`);
+  }
+
+  for (const dc of designerCollections) {
+    const result = await ensureCollection(dc.handle, dc.title, dc.imageFilename, dc.bodyHtml, dc.templateSuffix);
+    console.log(`Designer collection ready: ${result.title} → /collections/${result.handle}`);
+    await ensureCollectionMetafield(result.id, 'custom', 'designer_page_handle', dc.designerPageHandle);
+    console.log(`  ↳ designer_page_handle = ${dc.designerPageHandle}`);
   }
 
   for (const page of pages) {

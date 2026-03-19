@@ -119,6 +119,8 @@
           <thead>
             <tr>
               <th scope="col">Size</th>
+              <th scope="col" data-col="eu">EU</th>
+              <th scope="col" data-col="us">US</th>
               <th scope="col" data-col="chest"><span class="fit-guide__chest-label">Chest</span> <span class="fit-guide__unit-label">(cm)</span></th>
               <th scope="col" data-col="waist">Waist <span class="fit-guide__unit-label">(cm)</span></th>
               <th scope="col" data-col="hips">Hips <span class="fit-guide__unit-label">(cm)</span></th>
@@ -141,6 +143,8 @@
                 data-hips-max="{{ hips_parts[1] | strip | plus: 0 }}"
               >
                 <td>{{ block.settings.size_label }}</td>
+                <td>{{ block.settings.eu }}</td>
+                <td>{{ block.settings.us }}</td>
                 <td data-cm="{{ block.settings.chest }}">{{ block.settings.chest }}</td>
                 <td data-cm="{{ block.settings.waist }}">{{ block.settings.waist }}</td>
                 <td data-cm="{{ block.settings.hips }}">{{ block.settings.hips }}</td>
@@ -237,7 +241,7 @@
   }
 
   .fit-guide__size-table {
-    max-width: 640px;
+    max-width: 820px;
     margin: 0 auto 4rem;
   }
 
@@ -710,6 +714,18 @@
           "id": "size_label",
           "label": "Size",
           "placeholder": "e.g. M"
+        },
+        {
+          "type": "text",
+          "id": "eu",
+          "label": "EU size",
+          "placeholder": "e.g. 48"
+        },
+        {
+          "type": "text",
+          "id": "us",
+          "label": "US size",
+          "placeholder": "e.g. 38"
         },
         {
           "type": "text",
