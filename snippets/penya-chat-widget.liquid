@@ -15,8 +15,8 @@
     class="penya-chat__panel"
     id="penya-chat-panel"
     role="dialog"
-    aria-modal="false"
-    aria-label="Contact Penya Collective"
+    aria-labelledby="penya-chat-title"
+    aria-describedby="penya-chat-description"
     aria-hidden="true"
   >
     <div class="penya-chat__header">
@@ -43,8 +43,8 @@
     </div>
 
     <div class="penya-chat__body">
-      <p class="penya-chat__greeting">How can we help?</p>
-      <p class="penya-chat__subtext">Our team is here for sizing, bespoke requests, and order support. Choose the fastest path below.</p>
+      <p class="penya-chat__greeting" id="penya-chat-title">How can we help?</p>
+      <p class="penya-chat__subtext" id="penya-chat-description">Our team is here for sizing, bespoke requests, and order support. Choose the fastest path below.</p>
     </div>
 
     <nav class="penya-chat__actions" aria-label="Contact options">
@@ -112,6 +112,7 @@
     type="button"
     aria-expanded="false"
     aria-controls="penya-chat-panel"
+    aria-haspopup="dialog"
     aria-label="Contact us"
   >
     <svg class="penya-chat__trigger-icon penya-chat__trigger-icon--chat" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

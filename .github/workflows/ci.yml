@@ -49,6 +49,8 @@ jobs:
     name: Playwright E2E
     runs-on: ubuntu-latest
     needs: [theme-check, validate-json]
+    outputs:
+      secrets_ok: ${{ steps.e2e_secrets.outputs.secrets_ok }}
     env:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
       SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
@@ -69,15 +71,33 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Check required secrets
+        id: e2e_secrets
+        shell: bash
         run: |
           missing=0
           for var in SHOPIFY_CLI_THEME_TOKEN SHOPIFY_STORE_DOMAIN SHOPIFY_DEV_THEME_ID; do
             if [ -z "${!var}" ]; then
-              echo "⚠️  Secret $var is not set — E2E tests will be skipped"
+              echo "⚠️  Secret $var is not set"
               missing=1
             fi
           done
-          echo "SECRETS_OK=$([ $missing -eq 0 ] && echo true || echo false)" >> $GITHUB_ENV
+
+          if [ "$missing" -eq 0 ]; then
+            echo "secrets_ok=true" >> "$GITHUB_OUTPUT"
+            echo "SECRETS_OK=true" >> "$GITHUB_ENV"
+            echo "All preview-theme E2E secrets present ✅"
+            exit 0
+          fi
+
+          echo "secrets_ok=false" >> "$GITHUB_OUTPUT"
+          echo "SECRETS_OK=false" >> "$GITHUB_ENV"
+
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            echo "❌ Required E2E secrets are missing on main — refusing to skip the quality gate"
+            exit 1
+          fi
+
+          echo "⚠️  E2E secrets missing outside main — preview-theme tests will be skipped"
 
       - name: Push to dev/preview theme
         if: env.SECRETS_OK == 'true'
@@ -115,7 +135,7 @@ jobs:
     name: Deploy to Live
     runs-on: ubuntu-latest
     needs: [theme-check, validate-json, e2e]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' && needs.e2e.outputs.secrets_ok == 'true'
     env:
       SHOPIFY_CLI_THEME_TOKEN: ${{ secrets.SHOPIFY_CLI_THEME_TOKEN }}
       SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}

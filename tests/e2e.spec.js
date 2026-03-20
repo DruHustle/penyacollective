@@ -128,6 +128,16 @@ test.describe('Homepage', () => {
     await expect(panel).toHaveAttribute('aria-hidden', 'true');
   });
 
+  test('floating contact widget exposes a labelled dialog', async ({ page }) => {
+    const trigger = page.locator('#penya-chat-trigger');
+    const panel = page.locator('#penya-chat-panel');
+
+    await expect(trigger).toHaveAttribute('aria-haspopup', 'dialog');
+    await expect(panel).toHaveAttribute('role', 'dialog');
+    await expect(panel).toHaveAttribute('aria-labelledby', 'penya-chat-title');
+    await expect(panel).toHaveAttribute('aria-describedby', 'penya-chat-description');
+  });
+
   test('floating contact widget closes when clicking outside', async ({ page }) => {
     const trigger = page.locator('#penya-chat-trigger');
     const panel = page.locator('#penya-chat-panel');
@@ -228,6 +238,14 @@ test.describe('Journal', () => {
       await goto(page, `/blogs/journal/${handle}`);
       await expect(page.getByText(/Stay in the Glow/i)).toBeVisible();
       await expect(page.locator('input[type="email"]').last()).toBeVisible();
+    });
+
+    test(`article "${handle}" has visible body content`, async ({ page }) => {
+      await goto(page, `/blogs/journal/${handle}`);
+      const content = page.locator('.blog-post-content').first();
+      await expect(content).toBeVisible();
+      const text = (await content.textContent()) || '';
+      expect(text.trim().length).toBeGreaterThan(80);
     });
   }
 });
@@ -347,6 +365,7 @@ test.describe('Designer profiles', () => {
 test.describe('Fit Guide', () => {
   test.beforeEach(async ({ page }) => {
     await goto(page, '/pages/fit-guide');
+    await page.locator('.fit-guide__size-table[data-enhanced="true"]').first().waitFor({ state: 'visible' });
   });
 
   test('loads without errors', async ({ page }) => {
@@ -370,6 +389,13 @@ test.describe('Fit Guide', () => {
     const support = page.locator('.fit-guide__support');
     await expect(support.getByRole('link', { name: /contact client care/i })).toBeVisible();
     await expect(support.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
+  });
+
+  test('active gender tab exposes aria-selected=true on first render', async ({ page }) => {
+    const activeTab = page.locator('.fit-guide__gender-btn.is-active').first();
+    if (await activeTab.count()) {
+      await expect(activeTab).toHaveAttribute('aria-selected', 'true');
+    }
   });
 
   test('size table has accessible column headers', async ({ page }) => {

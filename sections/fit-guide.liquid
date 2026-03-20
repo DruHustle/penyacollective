@@ -76,17 +76,17 @@
         <div class="fit-guide__calculator-inputs">
           <label class="fit-guide__calc-field">
             <span class="fit-guide__chest-input-label">Chest</span>
-            <input type="number" class="fit-guide__calc-input" data-measure="chest" min="60" max="160" placeholder="e.g. 90" aria-label="Chest measurement in centimetres">
+            <input type="number" class="fit-guide__calc-input" data-measure="chest" data-unit="cm" min="60" max="160" placeholder="e.g. 90" aria-label="Chest measurement in centimetres">
             <span class="fit-guide__calc-unit">cm</span>
           </label>
           <label class="fit-guide__calc-field">
             <span>Waist</span>
-            <input type="number" class="fit-guide__calc-input" data-measure="waist" min="50" max="140" placeholder="e.g. 74" aria-label="Waist measurement in centimetres">
+            <input type="number" class="fit-guide__calc-input" data-measure="waist" data-unit="cm" min="50" max="140" placeholder="e.g. 74" aria-label="Waist measurement in centimetres">
             <span class="fit-guide__calc-unit">cm</span>
           </label>
           <label class="fit-guide__calc-field">
             <span>Hips</span>
-            <input type="number" class="fit-guide__calc-input" data-measure="hips" min="60" max="160" placeholder="e.g. 98" aria-label="Hip measurement in centimetres">
+            <input type="number" class="fit-guide__calc-input" data-measure="hips" data-unit="cm" min="60" max="160" placeholder="e.g. 98" aria-label="Hip measurement in centimetres">
             <span class="fit-guide__calc-unit">cm</span>
           </label>
           <button type="button" class="fit-guide__calc-btn button">Find My Size</button>
@@ -101,10 +101,10 @@
               <button type="button" class="fit-guide__gender-btn{% if default_gender == 'men' %} is-active{% endif %}" data-gender="men" role="tab" aria-selected="{% if default_gender == 'men' %}true{% else %}false{% endif %}">Men</button>
             {%- endif -%}
             {%- if has_women -%}
-              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'women' %} is-active{% endif %}" data-gender="women" role="tab" aria-selected="false">Women</button>
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'women' %} is-active{% endif %}" data-gender="women" role="tab" aria-selected="{% if default_gender == 'women' %}true{% else %}false{% endif %}">Women</button>
             {%- endif -%}
             {%- if has_kids -%}
-              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'kids' %} is-active{% endif %}" data-gender="kids" role="tab" aria-selected="false">Kids</button>
+              <button type="button" class="fit-guide__gender-btn{% if default_gender == 'kids' %} is-active{% endif %}" data-gender="kids" role="tab" aria-selected="{% if default_gender == 'kids' %}true{% else %}false{% endif %}">Kids</button>
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -709,6 +709,8 @@
           });
         });
       });
+
+      section.setAttribute('data-enhanced', 'true');
     });
 
     // ── Find My Size calculator ──────────────────────────────
