@@ -13,6 +13,7 @@
   assign hero_alt = section.settings.hero_image_alt | default: section.settings.heading | default: 'Penya Collective story image'
   assign hero_asset_image = blank
   assign hero_asset_file = blank
+  assign hero_asset_file_preview = blank
 
   if hero_asset == blank
     assign hero_asset = 'blog-penya-collective.jpg'
@@ -22,6 +23,9 @@
     assign hero_asset_image = images[hero_asset]
     if hero_asset_image == blank
       assign hero_asset_file = files[hero_asset]
+      if hero_asset_file != blank
+        assign hero_asset_file_preview = hero_asset_file.preview_image
+      endif
     endif
   endif
 %}
@@ -44,6 +48,18 @@
       {% elsif hero_asset_image != blank %}
         {{
           hero_asset_image
+          | image_url: width: 2000
+          | image_tag:
+            widths: '480, 720, 960, 1280, 1600, 2000',
+            sizes: '(min-width: 990px) 48vw, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            class: 'penya-story-hero__image',
+            alt: hero_alt
+        }}
+      {% elsif hero_asset_file_preview != blank %}
+        {{
+          hero_asset_file_preview
           | image_url: width: 2000
           | image_tag:
             widths: '480, 720, 960, 1280, 1600, 2000',
