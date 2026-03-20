@@ -23,12 +23,30 @@
   assign meta_collection_raw  = page.metafields.custom.collection_handle.value
   assign meta_collection      = meta_collection_raw | handleize
   assign meta_collection_data = collections[meta_collection]
+  assign story_eyebrow_default = settings.penya_designer_story_eyebrow | default: 'Designer Story — Africa'
+  assign hero_asset_image = blank
+  assign hero_asset_file = blank
+  assign hero_asset_file_preview = blank
+
+  if eyebrow == blank or eyebrow == 'Designer Story — Zimbabwe'
+    assign eyebrow = story_eyebrow_default
+  endif
 
   if collection_url == blank
     if meta_collection != blank and meta_collection_data != blank
       assign collection_url = meta_collection_data.url
     else
       assign collection_url = '/collections/all'
+    endif
+  endif
+
+  if hero_asset != blank
+    assign hero_asset_image = images[hero_asset]
+    if hero_asset_image == blank
+      assign hero_asset_file = files[hero_asset]
+      if hero_asset_file != blank
+        assign hero_asset_file_preview = hero_asset_file.preview_image
+      endif
     endif
   endif
 %}
@@ -51,16 +69,48 @@
           alt: hero_alt
       }}
     </div>
-  {% elsif hero_asset != blank %}
+  {% elsif hero_asset_image != blank %}
+    <div class="designer-profile__hero">
+      {{
+        hero_asset_image
+        | image_url: width: 2400
+        | image_tag:
+          width: hero_asset_image.width,
+          height: hero_asset_image.height,
+          widths: '360, 600, 900, 1200, 1800, 2400',
+          sizes: '100vw',
+          class: 'designer-profile__hero-image',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: hero_alt
+      }}
+    </div>
+  {% elsif hero_asset_file_preview != blank %}
+    <div class="designer-profile__hero">
+      {{
+        hero_asset_file_preview
+        | image_url: width: 2400
+        | image_tag:
+          width: hero_asset_file_preview.width,
+          height: hero_asset_file_preview.height,
+          widths: '360, 600, 900, 1200, 1800, 2400',
+          sizes: '100vw',
+          class: 'designer-profile__hero-image',
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: hero_alt
+      }}
+    </div>
+  {% elsif hero_asset_file != blank %}
     <div class="designer-profile__hero">
       <img
-        src="{{ hero_asset | asset_url }}"
+        src="{{ hero_asset_file | file_url }}"
         class="designer-profile__hero-image"
         alt="{{ hero_alt | escape }}"
         loading="eager"
         fetchpriority="high"
-        width="2400"
-        height="3000"
+        width="{{ hero_asset_file.width | default: 2400 }}"
+        height="{{ hero_asset_file.height | default: 3000 }}"
       >
     </div>
   {% endif %}
@@ -260,7 +310,7 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Eyebrow text",
-      "default": "Designer Story — Zimbabwe"
+      "default": "Designer Story — Africa"
     }
   ],
   "presets": [

@@ -11,14 +11,18 @@
 
     {%- if collection.featured_image -%}
       <div class="designer-header__image-wrap">
-        <img
-          src="{{ collection.featured_image | image_url: width: 760 }}"
-          alt="{{ collection.featured_image.alt | default: collection.title | escape }}"
-          width="760"
-          height="570"
-          loading="eager"
-          class="designer-header__image"
-        >
+        {{
+          collection.featured_image
+          | image_url: width: 1600
+          | image_tag:
+            widths: '400, 600, 760, 960, 1200, 1600',
+            sizes: '(min-width: 990px) 36vw, 100vw',
+            width: collection.featured_image.width,
+            height: collection.featured_image.height,
+            loading: 'eager',
+            class: 'designer-header__image',
+            alt: collection.featured_image.alt | default: collection.title
+        }}
       </div>
     {%- endif -%}
 

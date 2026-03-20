@@ -12,21 +12,19 @@
   assign fallback_src = ''
   assign fallback_width = 2000
   assign fallback_height = 2500
-  assign fallback_candidates = blank
+  assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
+  assign image_position_style = ''
 
   if image == blank
-    case article_handle
-      when 'penya-collective-rooted-in-heritage'
-        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
-      when 'ivhu-tribe-partner-spotlight'
-        assign fallback_candidates = 'blog-ivhu.jpg' | split: '|'
-      when 'haus-of-stone-partner-spotlight'
-        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
-      when 'by-bakari-partner-spotlight'
-        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
-      when 'how-we-make-it-production-process'
-        assign fallback_candidates = 'blog-penya-collective.jpg' | split: '|'
-    endcase
+    capture fallback_meta
+      render 'penya-journal-fallback-meta', article_handle: article_handle
+    endcapture
+    assign fallback_meta = fallback_meta | strip | split: '||'
+    assign fallback_candidates = fallback_meta[0] | default: 'blog-penya-collective.jpg' | split: '|'
+    assign image_position = fallback_meta[2] | default: ''
+    if image_position != blank
+      assign image_position_style = 'object-position: ' | append: image_position | append: ';'
+    endif
 
     if fallback_candidates != blank
       for candidate in fallback_candidates
@@ -51,10 +49,6 @@
   endif
 
   assign image_class = 'blog-post-featured-image__image border-style'
-  assign image_position_style = ''
-  if article_handle == 'penya-collective-rooted-in-heritage'
-    assign image_position_style = 'object-position: center top;'
-  endif
 
   assign ratio_source = image
   if ratio_source == blank and fallback_file != blank

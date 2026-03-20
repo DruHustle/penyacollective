@@ -1,0 +1,39 @@
+{%- liquid
+  assign handle = article_handle | default: ''
+  assign fallback_candidates = 'blog-penya-collective.jpg'
+  assign fallback_alt = 'Penya Journal'
+  assign object_position = ''
+
+  case handle
+    when 'penya-collective-rooted-in-heritage'
+      assign fallback_candidates = 'blog-penya-collective.jpg'
+      assign fallback_alt = 'Penya Collective - Rooted in Heritage'
+      assign object_position = 'center top'
+    when 'penya-collective-berlin-contemporary-2027'
+      assign fallback_candidates = 'blog-hemp.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'Penya Collective - Berlin Contemporary 2027'
+    when 'ivhu-tribe-partner-spotlight'
+      assign fallback_candidates = 'blog-ivhu.jpg|designer-ivhutribe.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'Ivhu Tribe - Partner Spotlight'
+    when 'haus-of-stone-partner-spotlight'
+      assign fallback_candidates = 'designer-hausofstone.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'Haus of Stone - Partner Spotlight'
+    when 'by-bakari-partner-spotlight'
+      assign fallback_candidates = 'designer-bybakari.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'By Bakari - Partner Spotlight'
+    when 'a-tribe-called-zimbabwe-partner-spotlight'
+      assign fallback_candidates = 'blog-penya-collective.jpg|blog-hemp.jpg'
+      assign fallback_alt = 'A Tribe Called Zimbabwe - Partner Spotlight'
+    when 'feli-nandi-partner-spotlight'
+      assign fallback_candidates = 'designer-felinandi.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'Feli Nandi - Partner Spotlight'
+    when 'panashe-partner-spotlight'
+      assign fallback_candidates = 'designer-panashe.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'Panashe - Partner Spotlight'
+    when 'how-we-make-it-production-process'
+      assign fallback_candidates = 'blog-hemp.jpg|blog-penya-collective.jpg'
+      assign fallback_alt = 'How We Make It - Production Process'
+  endcase
+
+  echo fallback_candidates | append: '||' | append: fallback_alt | append: '||' | append: object_position
+-%}

@@ -46,16 +46,45 @@
   endunless
 
   # Determine image source based on content type
-  assign force_collection_images = true
-  assign force_article_images = true
   assign asset_fallback_key = ''
   assign asset_fallback_alt = ''
   assign asset_fallback_width = 2000
   assign asset_fallback_height = 2500
   assign file_fallback = blank
+  assign object_position_override = ''
 
   if content_type == 'articles'
-    if force_article_images
+    assign image_resource = image_source
+
+    if image_resource == blank and closest.article.handle != blank
+      capture fallback_meta
+        render 'penya-journal-fallback-meta', article_handle: closest.article.handle
+      endcapture
+      assign fallback_meta = fallback_meta | strip | split: '||'
+      assign fallback_candidates = fallback_meta[0] | default: 'blog-penya-collective.jpg' | split: '|'
+      assign asset_fallback_alt = fallback_meta[1] | default: 'Penya Journal'
+      assign object_position_override = fallback_meta[2] | default: ''
+      for candidate in fallback_candidates
+        assign candidate = candidate | strip
+        if image_resource == blank and images[candidate] != blank
+          assign image_resource = images[candidate]
+          assign asset_fallback_key = candidate
+          assign asset_fallback_width = image_resource.width | default: asset_fallback_width
+          assign asset_fallback_height = image_resource.height | default: asset_fallback_height
+          break
+        endif
+        if file_fallback == blank and files[candidate] != blank
+          assign file_fallback = files[candidate]
+          assign asset_fallback_key = candidate
+          assign asset_fallback_width = file_fallback.width | default: asset_fallback_width
+          assign asset_fallback_height = file_fallback.height | default: asset_fallback_height
+          break
+        endif
+      endfor
+      if asset_fallback_key == '' and fallback_candidates.size > 0
+        assign asset_fallback_key = fallback_candidates[0]
+      endif
+    elsif image_resource == blank
       assign fallback_groups = 'blog-penya-collective.jpg|blog-hemp.jpg|blog-ivhu.jpg|blog-penya-collective.jpg' | split: '|'
       assign fallback_alts = 'Penya Collective Journal|Sustainability in Focus: Hemp Fabrics|Ivhu Tribe — Partner Spotlight|Penya Collective Journal' | split: '|'
       assign block_parts = parent_block_id | split: '-'
@@ -87,58 +116,51 @@
       if asset_fallback_key == '' and fallback_candidates.size > 0
         assign asset_fallback_key = fallback_candidates[0]
       endif
-      if image_resource == blank and image_source != blank
-        assign image_resource = image_source
-      endif
-    else
-      assign image_resource = image_source
     endif
   elsif content_type == 'collections'
     assign collection = closest.collection
     assign image_resource = blank
     assign file_fallback = blank
-    if force_collection_images
-      case collection.handle
-        when 'men'
-          assign fallback_candidates = 'collection-men.jpg|photo-1625646741211-711bdd65c570.avif' | split: '|'
-          assign asset_fallback_alt = 'Men collection'
-        when 'women'
-          assign fallback_candidates = 'collection-women.avif|photo-1667366982563-dbeedf5281b9.avif' | split: '|'
-          assign asset_fallback_alt = 'Women collection'
-        when 'accessories'
-          assign fallback_candidates = 'collection-accessories.jpg|collection-accessories.avif|photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
-          assign asset_fallback_alt = 'Accessories collection'
-      endcase
-      if fallback_candidates == blank
-        assign collection_fallback_groups = 'collection-men.jpg|photo-1625646741211-711bdd65c570.avif;collection-women.avif|photo-1667366982563-dbeedf5281b9.avif;collection-accessories.jpg|photo-1696962678565-bee84e6b9cb6.avif' | split: ';'
-        assign block_parts = parent_block_id | split: '-'
-        assign content_index = block_parts.last | default: 0
-        assign fallback_index = content_index | modulo: collection_fallback_groups.size
-        assign fallback_group = collection_fallback_groups[fallback_index]
-        assign fallback_candidates = fallback_group | split: '|'
-        assign asset_fallback_alt = 'Penya Collection'
-      endif
-      if fallback_candidates != blank
-        for candidate in fallback_candidates
-          assign candidate = candidate | strip
-          if image_resource == blank and images[candidate] != blank
-            assign image_resource = images[candidate]
-            assign asset_fallback_key = candidate
-            assign asset_fallback_width = image_resource.width | default: asset_fallback_width
-            assign asset_fallback_height = image_resource.height | default: asset_fallback_height
-            break
-          endif
-          if file_fallback == blank and files[candidate] != blank
-            assign file_fallback = files[candidate]
-            assign asset_fallback_key = candidate
-            assign asset_fallback_width = file_fallback.width | default: asset_fallback_width
-            assign asset_fallback_height = file_fallback.height | default: asset_fallback_height
-            break
-          endif
-        endfor
-        if asset_fallback_key == '' and fallback_candidates.size > 0
-          assign asset_fallback_key = fallback_candidates[0]
+    case collection.handle
+      when 'men'
+        assign fallback_candidates = 'collection-men.jpg|photo-1625646741211-711bdd65c570.avif' | split: '|'
+        assign asset_fallback_alt = 'Men collection'
+      when 'women'
+        assign fallback_candidates = 'collection-women.avif|photo-1667366982563-dbeedf5281b9.avif' | split: '|'
+        assign asset_fallback_alt = 'Women collection'
+      when 'accessories'
+        assign fallback_candidates = 'collection-accessories.jpg|collection-accessories.avif|photo-1696962678565-bee84e6b9cb6.avif' | split: '|'
+        assign asset_fallback_alt = 'Accessories collection'
+    endcase
+    if fallback_candidates == blank
+      assign collection_fallback_groups = 'collection-men.jpg|photo-1625646741211-711bdd65c570.avif;collection-women.avif|photo-1667366982563-dbeedf5281b9.avif;collection-accessories.jpg|photo-1696962678565-bee84e6b9cb6.avif' | split: ';'
+      assign block_parts = parent_block_id | split: '-'
+      assign content_index = block_parts.last | default: 0
+      assign fallback_index = content_index | modulo: collection_fallback_groups.size
+      assign fallback_group = collection_fallback_groups[fallback_index]
+      assign fallback_candidates = fallback_group | split: '|'
+      assign asset_fallback_alt = 'Penya Collection'
+    endif
+    if fallback_candidates != blank
+      for candidate in fallback_candidates
+        assign candidate = candidate | strip
+        if image_resource == blank and images[candidate] != blank
+          assign image_resource = images[candidate]
+          assign asset_fallback_key = candidate
+          assign asset_fallback_width = image_resource.width | default: asset_fallback_width
+          assign asset_fallback_height = image_resource.height | default: asset_fallback_height
+          break
         endif
+        if file_fallback == blank and files[candidate] != blank
+          assign file_fallback = files[candidate]
+          assign asset_fallback_key = candidate
+          assign asset_fallback_width = file_fallback.width | default: asset_fallback_width
+          assign asset_fallback_height = file_fallback.height | default: asset_fallback_height
+          break
+        endif
+      endfor
+      if asset_fallback_key == '' and fallback_candidates.size > 0
+        assign asset_fallback_key = fallback_candidates[0]
       endif
     endif
   else
@@ -201,7 +223,9 @@
 
   assign penya_image_class = 'image-block__image'
   assign penya_image_style = ''
-  if closest.article.handle == 'penya-collective-rooted-in-heritage'
+  if object_position_override != blank
+    assign penya_image_style = 'object-position: ' | append: object_position_override | append: ';'
+  elsif closest.article.handle == 'penya-collective-rooted-in-heritage'
     assign penya_image_style = 'object-position: center top;'
   endif
 %}
@@ -274,6 +298,7 @@
     <img
       src="{{ file_fallback | file_url }}"
       class="{{ penya_image_class }}"
+      style="{{ penya_image_style }}"
       alt="{{ asset_fallback_alt | escape }}"
       width="{{ asset_fallback_width }}"
       height="{{ asset_fallback_height }}"
@@ -306,6 +331,7 @@
     <img
       src="{{ asset_fallback_key | asset_url }}"
       class="{{ penya_image_class }}"
+      style="{{ penya_image_style }}"
       alt="{{ asset_fallback_alt | escape }}"
       width="{{ asset_fallback_width }}"
       height="{{ asset_fallback_height }}"

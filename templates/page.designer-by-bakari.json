@@ -58,7 +58,7 @@
     "designer_profile": {
       "type": "designer-profile",
       "settings": {
-        "eyebrow": "Designer Story — Zimbabwe"
+        "eyebrow": "Designer Story — Africa"
       }
     },
     "designer_newsletter": {
@@ -136,7 +136,7 @@
             "label": "Join",
             "integrated_button": true,
             "button_type_preset": "paragraph",
-            "klaviyo_list_id": "VT3cw8"
+            "klaviyo_list_id": ""
           }
         }
       },

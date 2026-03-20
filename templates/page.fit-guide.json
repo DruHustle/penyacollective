@@ -190,7 +190,7 @@
         "support_primary_label": "Contact Client Care",
         "support_primary_link": "/pages/contact",
         "support_secondary_label": "WhatsApp Us",
-        "support_secondary_link": "https://wa.me/4915147416152",
+        "support_secondary_link": "",
         "support_secondary_new_tab": true
       }
     }

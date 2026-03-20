@@ -61,8 +61,8 @@
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
-        background-color: #25D366;
-        color: #fff;
+        background-color: var(--color-primary);
+        color: var(--color-background);
         font-family: var(--font-subheading--family);
         font-size: 0.85rem;
         letter-spacing: 0.08em;
@@ -73,7 +73,7 @@
         transition: background-color 0.2s ease;
       }
       .penya-wa-order__btn:hover {
-        background-color: #1ebe5d;
+        background-color: var(--color-primary-hover);
       }
       .penya-wa-order__note {
         margin-top: 0.875rem;
@@ -93,7 +93,7 @@
     <script>
       // Inline header height and menu style calculations to prevent layout shift
       // Note: Updates in calculateHeaderGroupHeight(), updateTransparentHeaderOffset() and setHeaderMenuStyle() utilities.js should be kept in sync with this function
-      (function setHeaderHeighCustomProperties() {
+      (function setHeaderHeightCustomProperties() {
         /*
          * Header calculation functions for maintaining CSS variables
          * Mimic calculateHeaderGroupHeight() in utilities.js

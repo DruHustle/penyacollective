@@ -5,7 +5,9 @@
 {% endcomment %}
 
 {%- liquid
-  assign wa_greeting = 'Hi, I found you on the Penya Collective website and would love some help.' | url_encode
+  assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
+  assign wa_greeting = settings.penya_support_whatsapp_greeting | default: 'Hi, I found you on the Penya Collective website and would love some help.'
+  assign wa_greeting = wa_greeting | url_encode
 -%}
 
 <div class="penya-chat" id="penya-chat" data-open="false">
@@ -15,8 +17,8 @@
     class="penya-chat__panel"
     id="penya-chat-panel"
     role="dialog"
-    aria-modal="false"
-    aria-label="Contact Penya Collective"
+    aria-labelledby="penya-chat-title"
+    aria-describedby="penya-chat-description"
     aria-hidden="true"
   >
     <div class="penya-chat__header">
@@ -43,13 +45,13 @@
     </div>
 
     <div class="penya-chat__body">
-      <p class="penya-chat__greeting">How can we help?</p>
-      <p class="penya-chat__subtext">Our team is here for sizing, bespoke requests, and order support. Choose the fastest path below.</p>
+      <p class="penya-chat__greeting" id="penya-chat-title">How can we help?</p>
+      <p class="penya-chat__subtext" id="penya-chat-description">Our team is here for sizing, bespoke requests, and order support. Choose the fastest path below.</p>
     </div>
 
     <nav class="penya-chat__actions" aria-label="Contact options">
       <a
-        href="https://wa.me/4915147416152?text={{ wa_greeting }}"
+        href="https://wa.me/{{ support_whatsapp_number }}?text={{ wa_greeting }}"
         target="_blank"
         rel="noopener noreferrer"
         class="penya-chat__action penya-chat__action--primary"
@@ -112,6 +114,7 @@
     type="button"
     aria-expanded="false"
     aria-controls="penya-chat-panel"
+    aria-haspopup="dialog"
     aria-label="Contact us"
   >
     <svg class="penya-chat__trigger-icon penya-chat__trigger-icon--chat" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -505,7 +508,7 @@
     document.addEventListener('click', function (e) {
       if (widget.dataset.open !== 'true') return;
       if (widget.contains(e.target)) return;
-      close(false);
+      close(true);
     });
 
     // Dismiss badge after 4 s to avoid distraction

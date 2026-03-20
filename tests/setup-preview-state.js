@@ -20,17 +20,26 @@ module.exports = async () => {
   await fs.mkdir(path.dirname(storageStatePath), { recursive: true });
 
   const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({ ignoreHTTPSErrors: true });
-  const page = await context.newPage();
 
-  await page.goto(buildPreviewUrl(baseURL, previewThemeId), {
-    waitUntil: 'commit',
-    timeout: 90_000,
-  });
+  try {
+    const context = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await context.newPage();
 
-  await page.locator('body').waitFor({ state: 'attached', timeout: 15_000 });
-  await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
-  await context.storageState({ path: storageStatePath });
+    await page.goto(buildPreviewUrl(baseURL, previewThemeId), {
+      waitUntil: 'commit',
+      timeout: 90_000,
+    });
 
-  await browser.close();
+    await page.locator('body').waitFor({ state: 'attached', timeout: 15_000 });
+
+    try {
+      await page.waitForLoadState('networkidle', { timeout: 15_000 });
+    } catch (error) {
+      console.warn(`[setup-preview-state] networkidle timeout for ${baseURL}: ${error.message}`);
+    }
+
+    await context.storageState({ path: storageStatePath });
+  } finally {
+    await browser.close();
+  }
 };
