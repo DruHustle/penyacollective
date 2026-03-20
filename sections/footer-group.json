@@ -271,7 +271,7 @@
           "type": "social-links",
           "settings": {
             "facebook_url": "",
-            "instagram_url": "https://www.instagram.com/penyacollective",
+            "instagram_url": "https://www.instagram.com/penyacollective/",
             "youtube_url": "",
             "tiktok_url": "https://www.tiktok.com/@penyacollective",
             "twitter_url": "",
@@ -279,7 +279,7 @@
             "linkedin_url": "",
             "bluesky_url": "",
             "snapchat_url": "",
-            "pinterest_url": "https://www.pinterest.com/penyacollective",
+            "pinterest_url": "",
             "tumblr_url": "",
             "vimeo_url": "",
             "custom_url": ""

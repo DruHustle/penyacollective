@@ -1,5 +1,6 @@
 const MANUAL_OVERRIDE_KEY = 'penya_manual_market_selection';
 const AUTO_ATTEMPT_KEY = 'penya_auto_market_attempted';
+const LANGUAGE_SUBMIT_ATTR = 'data-penya-language-submit';
 let autoSubmitting = false;
 
 const EUROPE_REGION_CODES = new Set([
@@ -56,7 +57,7 @@ function chooseTargetCountry(availableCountries, currentCountry) {
 
   if (zimbabweVisitor) {
     const zimbabwe = availableCountries.get('ZW');
-    if (zimbabwe?.currency === 'USD' || zimbabwe) {
+    if (zimbabwe?.currency === 'USD') {
       return 'ZW';
     }
 
@@ -98,6 +99,16 @@ function markManualOverride() {
   } catch (_) {}
 }
 
+function markLanguageSubmission(form) {
+  if (!form) return;
+  form.setAttribute(LANGUAGE_SUBMIT_ATTR, '1');
+}
+
+function clearLanguageSubmission(form) {
+  if (!form) return;
+  form.removeAttribute(LANGUAGE_SUBMIT_ATTR);
+}
+
 function isCountryForm(form) {
   return !!form.querySelector('input[name="country_code"]');
 }
@@ -110,6 +121,10 @@ function wireManualOverrideListeners() {
     form.addEventListener('submit', () => {
       if (autoSubmitting) {
         autoSubmitting = false;
+        return;
+      }
+      if (form.getAttribute(LANGUAGE_SUBMIT_ATTR) === '1') {
+        clearLanguageSubmission(form);
         return;
       }
       markManualOverride();
@@ -130,7 +145,12 @@ function wireManualOverrideListeners() {
     .querySelectorAll('localization-form-component .localization-form__select')
     .forEach((select) => {
       const form = select.closest('form.localization-form');
-      if (!form || !isCountryForm(form)) return;
+      if (!form) return;
+      if (select.name === 'language_code') {
+        select.addEventListener('change', () => markLanguageSubmission(form));
+        return;
+      }
+      if (!isCountryForm(form) || select.name !== 'country_code') return;
       select.addEventListener('change', markManualOverride);
     });
 }
