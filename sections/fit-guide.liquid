@@ -6,6 +6,17 @@
   Add "Size row" blocks for the size reference table.
 {%- endcomment -%}
 
+{% liquid
+  assign support_email = settings.penya_support_email | default: 'info@penya.africa'
+  assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
+  assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number
+  assign support_secondary_link = section.settings.support_secondary_link
+
+  if support_secondary_link == blank or support_secondary_link == 'https://wa.me/4915147416152'
+    assign support_secondary_link = support_whatsapp_url
+  endif
+%}
+
 <div class="fit-guide page-width">
 
   <div class="fit-guide__intro">
@@ -45,7 +56,7 @@
   {% endif %}
 
   {% if row_blocks.size > 0 %}
-    <div class="fit-guide__size-table">
+    <div class="fit-guide__size-table" data-support-email="{{ support_email | escape }}">
       {% if section.settings.table_heading != blank %}
         <h3 class="fit-guide__table-heading">{{ section.settings.table_heading }}</h3>
       {% endif %}
@@ -129,18 +140,27 @@
           <tbody>
             {% for block in row_blocks %}
               {%- comment -%} Parse ranges to power the calculator and unit toggle {%- endcomment -%}
-              {%- assign chest_parts = block.settings.chest | split: '–' -%}
-              {%- assign waist_parts = block.settings.waist | split: '–' -%}
-              {%- assign hips_parts  = block.settings.hips  | split: '–' -%}
+              {%- assign chest_range = block.settings.chest | replace: '—', '–' | replace: ' - ', '–' | replace: '-', '–' -%}
+              {%- assign waist_range = block.settings.waist | replace: '—', '–' | replace: ' - ', '–' | replace: '-', '–' -%}
+              {%- assign hips_range = block.settings.hips | replace: '—', '–' | replace: ' - ', '–' | replace: '-', '–' -%}
+              {%- assign chest_parts = chest_range | split: '–' -%}
+              {%- assign waist_parts = waist_range | split: '–' -%}
+              {%- assign hips_parts = hips_range | split: '–' -%}
+              {%- assign chest_min = chest_parts[0] | strip | plus: 0 -%}
+              {%- assign chest_max = chest_parts[1] | default: chest_parts[0] | strip | plus: 0 -%}
+              {%- assign waist_min = waist_parts[0] | strip | plus: 0 -%}
+              {%- assign waist_max = waist_parts[1] | default: waist_parts[0] | strip | plus: 0 -%}
+              {%- assign hips_min = hips_parts[0] | strip | plus: 0 -%}
+              {%- assign hips_max = hips_parts[1] | default: hips_parts[0] | strip | plus: 0 -%}
               <tr
                 {{ block.shopify_attributes }}
                 data-gender="{{ block.settings.gender | default: 'men' }}"
-                data-chest-min="{{ chest_parts[0] | strip | plus: 0 }}"
-                data-chest-max="{{ chest_parts[1] | strip | plus: 0 }}"
-                data-waist-min="{{ waist_parts[0] | strip | plus: 0 }}"
-                data-waist-max="{{ waist_parts[1] | strip | plus: 0 }}"
-                data-hips-min="{{ hips_parts[0] | strip | plus: 0 }}"
-                data-hips-max="{{ hips_parts[1] | strip | plus: 0 }}"
+                data-chest-min="{{ chest_min }}"
+                data-chest-max="{{ chest_max }}"
+                data-waist-min="{{ waist_min }}"
+                data-waist-max="{{ waist_max }}"
+                data-hips-min="{{ hips_min }}"
+                data-hips-max="{{ hips_max }}"
               >
                 <td>{{ block.settings.size_label }}</td>
                 <td>{{ block.settings.eu }}</td>
@@ -185,8 +205,8 @@
           </a>
         {% endif %}
 
-        {% if section.settings.support_secondary_label != blank and section.settings.support_secondary_link != blank %}
-          <a href="{{ section.settings.support_secondary_link }}" class="fit-guide__support-link"{% if section.settings.support_secondary_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+        {% if section.settings.support_secondary_label != blank and support_secondary_link != blank %}
+          <a href="{{ support_secondary_link }}" class="fit-guide__support-link"{% if section.settings.support_secondary_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
             {{ section.settings.support_secondary_label }}
           </a>
         {% endif %}
@@ -719,6 +739,9 @@
       const result = calc.querySelector('.fit-guide__calc-result');
       const tableSection = calc.closest('.fit-guide__size-table');
       const tableEl = tableSection && tableSection.querySelector('.fit-guide__table');
+      const supportEmail = tableSection && tableSection.dataset.supportEmail
+        ? tableSection.dataset.supportEmail
+        : 'info@penya.africa';
 
       if (!btn || !tableEl) return;
 
@@ -774,9 +797,9 @@
             });
             closest.classList.add('is-highlighted');
             const sizeName = closest.cells[0].textContent.trim();
-            result.textContent = 'Your measurements fall outside our standard ranges. The closest size is ' + sizeName + '. Contact us at info@penya.africa for a bespoke fit.';
+            result.textContent = 'Your measurements fall outside our standard ranges. The closest size is ' + sizeName + '. Contact us at ' + supportEmail + ' for a bespoke fit.';
           } else {
-            result.textContent = 'We could not find an exact match. Email us at info@penya.africa and we will advise you.';
+            result.textContent = 'We could not find an exact match. Email us at ' + supportEmail + ' and we will advise you.';
           }
           result.className = 'fit-guide__calc-result is-no-match';
         }

@@ -1,0 +1,17 @@
+{%- liquid
+  assign rendered_content = content | default: ''
+  assign support_email = settings.penya_support_email | default: 'info@penya.africa'
+  assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
+  assign support_whatsapp_display = settings.penya_support_whatsapp_display | default: '+49 1514 7416152'
+  assign support_mailto = 'mailto:' | append: support_email
+  assign support_tel = 'tel:+' | append: support_whatsapp_number
+  assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number
+
+  assign rendered_content = rendered_content | replace: 'mailto:info@penya.africa', support_mailto
+  assign rendered_content = rendered_content | replace: 'tel:+4915147416152', support_tel
+  assign rendered_content = rendered_content | replace: 'https://wa.me/4915147416152', support_whatsapp_url
+  assign rendered_content = rendered_content | replace: '+49 1514 7416152', support_whatsapp_display
+  assign rendered_content = rendered_content | replace: 'info@penya.africa', support_email
+
+  echo rendered_content
+-%}

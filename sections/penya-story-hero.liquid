@@ -10,10 +10,19 @@
 {% liquid
   assign hero_image = section.settings.hero_image
   assign hero_asset = section.settings.hero_image_asset | strip
-  assign hero_alt = section.settings.hero_image_alt | default: section.settings.heading
+  assign hero_alt = section.settings.hero_image_alt | default: section.settings.heading | default: 'Penya Collective story image'
+  assign hero_asset_image = blank
+  assign hero_asset_file = blank
 
   if hero_asset == blank
     assign hero_asset = 'blog-penya-collective.jpg'
+  endif
+
+  if hero_asset != blank
+    assign hero_asset_image = images[hero_asset]
+    if hero_asset_image == blank
+      assign hero_asset_file = files[hero_asset]
+    endif
   endif
 %}
 
@@ -32,7 +41,29 @@
             class: 'penya-story-hero__image',
             alt: hero_alt
         }}
-      {% else %}
+      {% elsif hero_asset_image != blank %}
+        {{
+          hero_asset_image
+          | image_url: width: 2000
+          | image_tag:
+            widths: '480, 720, 960, 1280, 1600, 2000',
+            sizes: '(min-width: 990px) 48vw, 100vw',
+            loading: 'eager',
+            fetchpriority: 'high',
+            class: 'penya-story-hero__image',
+            alt: hero_alt
+        }}
+      {% elsif hero_asset_file != blank %}
+        <img
+          src="{{ hero_asset_file | file_url }}"
+          alt="{{ hero_alt | escape }}"
+          class="penya-story-hero__image"
+          loading="eager"
+          fetchpriority="high"
+          width="{{ hero_asset_file.width | default: 1200 }}"
+          height="{{ hero_asset_file.height | default: 1440 }}"
+        >
+      {% elsif hero_asset != blank %}
         <img
           src="{{ hero_asset | asset_url }}"
           alt="{{ hero_alt | escape }}"

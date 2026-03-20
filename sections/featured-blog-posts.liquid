@@ -2,6 +2,13 @@
 
 {% liquid
   assign max_items = section.settings.post_limit
+  assign autoplay_enabled = false
+  assign autoplay_speed = section.settings.autoplay_speed | default: 5
+  assign carousel_ref = 'featuredBlog-' | append: section.id
+
+  if section.settings.layout_type == 'carousel' and section.settings.enable_autoplay
+    assign autoplay_enabled = true
+  endif
 %}
 
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
@@ -20,7 +27,22 @@
     {%- render 'gap-style', value: section.settings.gap -%}
   "
 >
-  {% content_for 'block', id: 'static-blog-title', type: '_featured-blog-posts-title' %}
+  <div class="featured-blog-posts__header">
+    {% content_for 'block', id: 'static-blog-title', type: '_featured-blog-posts-title' %}
+
+    {% if autoplay_enabled %}
+      <button
+        type="button"
+        class="featured-blog-posts__autoplay-toggle"
+        data-carousel-ref="{{ carousel_ref }}"
+        data-pause-label="Pause journal motion"
+        data-play-label="Resume journal motion"
+        aria-pressed="false"
+      >
+        Pause journal motion
+      </button>
+    {% endif %}
+  </div>
 
   {% if section.settings.blog != blank and section.settings.blog.articles_count > 0 %}
     {% paginate section.settings.blog.articles by max_items %}
@@ -53,14 +75,100 @@
     list_items: list_items,
     list_items_array: list_items_array,
     settings: section.settings,
-    carousel_ref: 'featuredBlog',
+    carousel_ref: carousel_ref,
     slide_count: list_items_array.size,
     content_type: 'articles',
     test_id: 'featured-blog-posts',
-    autoplay: true,
-    autoplay_speed: 5000
+    autoplay: autoplay_enabled,
+    autoplay_speed: autoplay_speed
   %}
 </div>
+
+{% stylesheet %}
+  .featured-blog-posts__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .featured-blog-posts__autoplay-toggle {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.14);
+    background: transparent;
+    color: var(--color-foreground);
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .featured-blog-posts__autoplay-toggle:hover,
+  .featured-blog-posts__autoplay-toggle:focus-visible {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background-color: rgb(var(--color-primary-rgb) / 0.06);
+  }
+
+  @media screen and (max-width: 749px) {
+    .featured-blog-posts__header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    function initialiseAutoplayToggle(toggle) {
+      if (toggle.dataset.initialised === 'true') return;
+
+      var carouselRef = toggle.getAttribute('data-carousel-ref');
+      var slideshow = document.querySelector('slideshow-component[ref="' + carouselRef + '"]');
+      if (!slideshow) return;
+
+      function updateLabel(paused) {
+        toggle.setAttribute('aria-pressed', paused ? 'true' : 'false');
+        toggle.textContent = paused ? toggle.dataset.playLabel : toggle.dataset.pauseLabel;
+      }
+
+      toggle.addEventListener('click', function () {
+        if (slideshow.hasAttribute('paused')) {
+          slideshow.play();
+          updateLabel(false);
+        } else {
+          slideshow.pause();
+          updateLabel(true);
+        }
+      });
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        slideshow.pause();
+        updateLabel(true);
+      } else {
+        updateLabel(slideshow.hasAttribute('paused'));
+      }
+
+      toggle.dataset.initialised = 'true';
+    }
+
+    function boot() {
+      document.querySelectorAll('.featured-blog-posts__autoplay-toggle').forEach(initialiseAutoplayToggle);
+    }
+
+    if (window.customElements && window.customElements.whenDefined) {
+      window.customElements.whenDefined('slideshow-component').then(boot);
+    } else {
+      boot();
+    }
+  })();
+{% endjavascript %}
 
 {% schema %}
 {
@@ -197,6 +305,24 @@
       "type": "header",
       "content": "t:content.carousel_navigation",
       "visible_if": "{{ section.settings.layout_type == 'carousel' or section.settings.carousel_on_mobile == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Autoplay desktop carousel",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_type == 'carousel' }}"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5,
+      "visible_if": "{{ section.settings.layout_type == 'carousel' and section.settings.enable_autoplay }}"
     },
     {
       "type": "select",

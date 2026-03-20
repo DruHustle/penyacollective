@@ -1,6 +1,12 @@
 
 
 {% assign block_settings = block.settings %}
+{% liquid
+  assign effective_klaviyo_list_id = block_settings.klaviyo_list_id
+  if effective_klaviyo_list_id == blank or effective_klaviyo_list_id == 'VT3cw8'
+    assign effective_klaviyo_list_id = settings.penya_klaviyo_list_id | default: 'VT3cw8'
+  endif
+%}
 <div
   class="email-signup-block size-style spacing-style"
   style="{% render 'size-style', settings: block_settings %}{% render 'spacing-style', settings: block_settings %}"
@@ -14,8 +20,8 @@
   {% assign form_id = block.id | prepend: 'EmailSignup-' %}
   {%- form 'customer', class: 'email-signup__form spacing-style' %}
     {% comment %}Klaviyo: hidden input carries list ID into JS without extra DOM queries{% endcomment %}
-    {% if block_settings.klaviyo_list_id != blank %}
-      <input type="hidden" class="klaviyo-list-id" value="{{ block_settings.klaviyo_list_id | escape }}">
+    {% if effective_klaviyo_list_id != blank %}
+      <input type="hidden" class="klaviyo-list-id" value="{{ effective_klaviyo_list_id | escape }}">
     {% endif %}
     <input
       name="contact[id]"
@@ -103,12 +109,13 @@
           {{ 'icon-checkmark.svg' | inline_asset_content }}
         </span>
         <p class="email-signup__message-text">{{ 'blocks.email_signup.success' | t }}</p>
+        <p class="email-signup__sync-message" hidden>We received your email and are finishing your newsletter sign-up.</p>
       </div>
     {%- endif -%}
   {% endform %}
 </div>
 
-{% if block_settings.klaviyo_list_id != blank %}
+{% if effective_klaviyo_list_id != blank %}
   <script>
     (function () {
       var emailInput = document.getElementById('EmailInput-{{ block.id }}');
@@ -117,30 +124,104 @@
       if (!form) return;
       var listIdInput = form.querySelector('.klaviyo-list-id');
       if (!listIdInput) return;
+      var successMessage = document.getElementById('Email-signup__message-success-{{ block.id }}');
+      var syncMessage = successMessage ? successMessage.querySelector('.email-signup__sync-message') : null;
+      var storageKey = 'penya-klaviyo-pending-{{ block.id }}';
+
+      function setSyncMessage(visible) {
+        if (!syncMessage) return;
+        syncMessage.hidden = !visible;
+      }
+
+      function savePending(payload) {
+        try {
+          sessionStorage.setItem(storageKey, JSON.stringify({ payload: payload, timestamp: Date.now() }));
+        } catch (_) {}
+      }
+
+      function clearPending() {
+        try {
+          sessionStorage.removeItem(storageKey);
+        } catch (_) {}
+      }
+
+      function getPending() {
+        try {
+          var raw = sessionStorage.getItem(storageKey);
+          if (!raw) return null;
+          var parsed = JSON.parse(raw);
+          if (!parsed || !parsed.payload) return null;
+          if (Date.now() - parsed.timestamp > 60 * 60 * 1000) {
+            clearPending();
+            return null;
+          }
+          return parsed.payload;
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function subscribeToKlaviyo(payload) {
+        return fetch(
+          'https://a.klaviyo.com/client/subscriptions/?company_id=' + payload.companyId,
+          {
+            method: 'POST',
+            keepalive: true,
+            headers: { 'Content-Type': 'application/json', 'revision': '2023-12-15' },
+            body: JSON.stringify({
+              data: {
+                type: 'subscription',
+                attributes: {
+                  profile: { data: { type: 'profile', attributes: { email: payload.email } } },
+                  list_id: payload.listId
+                }
+              }
+            })
+          }
+        ).then(function (response) {
+          if (!response.ok) {
+            throw new Error('Klaviyo subscription failed');
+          }
+          return response;
+        });
+      }
+
+      if (successMessage) {
+        var pendingPayload = getPending();
+        if (pendingPayload) {
+          subscribeToKlaviyo(pendingPayload)
+            .then(function () {
+              clearPending();
+              setSyncMessage(false);
+            })
+            .catch(function () {
+              setSyncMessage(true);
+            });
+        }
+      }
 
       form.addEventListener('submit', function () {
         var email = emailInput.value.trim();
         var listId = listIdInput.value;
         var companyId = {{ shop.metafields.klaviyo.company_id | json }};
         if (!email || !listId || !companyId) return;
+        var payload = {
+          email: email,
+          listId: listId,
+          companyId: companyId
+        };
 
-        // Fire-and-forget — never blocks the Shopify form submission
-        fetch(
-          'https://a.klaviyo.com/client/subscriptions/?company_id=' + companyId,
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'revision': '2023-12-15' },
-            body: JSON.stringify({
-              data: {
-                type: 'subscription',
-                attributes: {
-                  profile: { data: { type: 'profile', attributes: { email: email } } },
-                  list_id: listId
-                }
-              }
-            })
+        // Persist the intended subscription before navigation so the success
+        // state can retry if the background request gets interrupted.
+        savePending(payload);
+
+        subscribeToKlaviyo(payload)
+          .then(function () {
+            clearPending();
+            setSyncMessage(false);
           }
-        ).catch(function () {});
+          )
+          .catch(function () {});
       });
     })();
   </script>
@@ -409,6 +490,12 @@
 
   .email-signup__message-text {
     margin: 0;
+  }
+
+  .email-signup__sync-message {
+    margin: 0;
+    font-size: 0.875rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-70));
   }
 {% endstylesheet %}
 

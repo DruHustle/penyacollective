@@ -149,10 +149,25 @@ test.describe('Homepage', () => {
     await expect(panel).toHaveAttribute('aria-hidden', 'true');
   });
 
+  test('floating contact widget returns focus to trigger when dismissed outside', async ({ page }) => {
+    const trigger = page.locator('#penya-chat-trigger');
+
+    await trigger.click();
+    await page.locator('body').click({ position: { x: 20, y: 20 } });
+
+    await expect(trigger).toBeFocused();
+  });
+
   test('journal carousel renders as horizontal scroll container', async ({ page }) => {
     await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
     const carousel = page.locator('[data-testid="featured-blog-posts"] slideshow-component').first();
     await expect(carousel).toBeAttached();
+  });
+
+  test('journal carousel does not autoplay without explicit opt-in', async ({ page }) => {
+    await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
+    const carousel = page.locator('[data-testid="featured-blog-posts"] slideshow-component').first();
+    await expect(carousel).not.toHaveAttribute('autoplay', /.+/);
   });
 
   test('journal carousel contains at least 3 article cards', async ({ page }) => {

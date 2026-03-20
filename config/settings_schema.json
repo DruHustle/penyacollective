@@ -2284,5 +2284,47 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Penya Brand",
+    "settings": [
+      {
+        "type": "text",
+        "id": "penya_support_email",
+        "label": "Support email",
+        "default": "info@penya.africa"
+      },
+      {
+        "type": "text",
+        "id": "penya_support_whatsapp_display",
+        "label": "WhatsApp display number",
+        "default": "+49 1514 7416152"
+      },
+      {
+        "type": "text",
+        "id": "penya_support_whatsapp_number",
+        "label": "WhatsApp number for links",
+        "default": "4915147416152",
+        "info": "Digits only, with country code and no + sign."
+      },
+      {
+        "type": "text",
+        "id": "penya_support_whatsapp_greeting",
+        "label": "Default WhatsApp greeting",
+        "default": "Hi, I found you on the Penya Collective website and would love some help."
+      },
+      {
+        "type": "text",
+        "id": "penya_klaviyo_list_id",
+        "label": "Default Klaviyo list ID",
+        "default": "VT3cw8"
+      },
+      {
+        "type": "text",
+        "id": "penya_designer_story_eyebrow",
+        "label": "Designer story eyebrow",
+        "default": "Designer Story — Africa"
+      }
+    ]
   }
 ]
