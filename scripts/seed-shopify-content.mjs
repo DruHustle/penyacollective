@@ -12,6 +12,7 @@ function imageAttachment(filename) {
 const SHOP = process.env.SHOPIFY_STORE_DOMAIN;
 const TOKEN = process.env.SHOPIFY_ADMIN_API_TOKEN;
 const API_VERSION = process.env.SHOPIFY_API_VERSION || '2024-10';
+const FORCE_PUBLISH_EXISTING_CONTENT = process.env.SHOPIFY_SEED_FORCE_PUBLISH === 'true';
 
 if (!SHOP || !TOKEN) {
   console.error(
@@ -173,16 +174,33 @@ async function ensurePageMetafield(pageId, namespace, key, value) {
 }
 
 async function ensureArticle(blogId, article) {
+  const { published, ...articleFields } = article;
+
   const existing = await shopify(`/blogs/${blogId}/articles.json?handle=${encodeURIComponent(article.handle)}`);
   if (existing.articles && existing.articles.length > 0) {
     const current = existing.articles[0];
+    const articlePayload = {
+      id: current.id,
+      ...articleFields,
+    };
+
+    if (FORCE_PUBLISH_EXISTING_CONTENT && published) {
+      articlePayload.published_at = new Date().toISOString();
+    }
+
     const updated = await shopify(`/blogs/${blogId}/articles/${current.id}.json`, 'PUT', {
-      article,
+      article: articlePayload,
     });
     return updated.article;
   }
+
+  const articlePayload = {
+    ...articleFields,
+    ...(published ? { published_at: new Date().toISOString() } : {}),
+  };
+
   const created = await shopify(`/blogs/${blogId}/articles.json`, 'POST', {
-    article,
+    article: articlePayload,
   });
   return created.article;
 }
