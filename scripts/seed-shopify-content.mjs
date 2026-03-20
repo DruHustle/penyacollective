@@ -39,6 +39,43 @@ async function shopify(path, method = 'GET', body) {
   return res.json();
 }
 
+// ── GraphQL helper (used for operations not available on REST) ────────────────
+async function graphql(query, variables = {}) {
+  const res = await fetch(`https://${SHOP}/admin/api/${API_VERSION}/graphql.json`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Shopify-Access-Token': TOKEN,
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`Shopify GraphQL error ${res.status}: ${text}`);
+  }
+  const data = await res.json();
+  if (data.errors) throw new Error(`GraphQL errors: ${JSON.stringify(data.errors)}`);
+  return data.data;
+}
+
+// ── Policies ─────────────────────────────────────────────────────────────────
+// type: REFUND_POLICY | SHIPPING_POLICY | TERMS_OF_SERVICE
+// Shopify's shopPolicyUpdate mutation creates-or-replaces each policy body.
+async function ensurePolicy(type, body) {
+  const data = await graphql(
+    `mutation PolicyUpdate($shopPolicy: ShopPolicyInput!) {
+       shopPolicyUpdate(shopPolicy: $shopPolicy) {
+         shopPolicy { type url }
+         userErrors { field message }
+       }
+     }`,
+    { shopPolicy: { type, body } }
+  );
+  const { userErrors, shopPolicy } = data.shopPolicyUpdate;
+  if (userErrors.length) throw new Error(`Policy ${type} error: ${JSON.stringify(userErrors)}`);
+  return shopPolicy;
+}
+
 async function ensureCollection(handle, title, imageFilename, bodyHtml, templateSuffix) {
   const existing = await shopify(`/custom_collections.json?handle=${encodeURIComponent(handle)}`);
   const payload = {
@@ -414,6 +451,105 @@ const designerCollections = [
   },
 ];
 
+const policies = [
+  {
+    type: 'REFUND_POLICY',
+    body: `<h2>Returns &amp; Exchanges</h2>
+<p>We want you to love what you wear. If something isn't right, we're here to help.</p>
+
+<h3>Return Window</h3>
+<p>We accept returns within <strong>14 days of delivery</strong> for items that are unworn, unwashed, and in their original condition with all tags attached.</p>
+
+<h3>How to Start a Return</h3>
+<p>Email <a href="mailto:info@penya.africa">info@penya.africa</a> with your order number and the reason for your return. We will respond within one business day with return instructions.</p>
+
+<h3>Return Shipping</h3>
+<p>Return shipping costs are the responsibility of the customer unless the item is faulty or was sent incorrectly. We recommend using a tracked service as we cannot accept responsibility for items lost in transit.</p>
+
+<h3>Refunds</h3>
+<p>Once your return is received and inspected, we will process your refund to the original payment method within <strong>5–7 business days</strong>. You will receive a confirmation email when your refund has been issued.</p>
+
+<h3>Exchanges</h3>
+<p>We do not hold stock for exchanges. If you need a different size or style, please return the original item for a refund and place a new order.</p>
+
+<h3>Non-Returnable Items</h3>
+<ul>
+  <li>Custom or bespoke orders</li>
+  <li>Final-sale items</li>
+  <li>Items showing signs of wear, washing, or alteration</li>
+</ul>
+
+<h3>Faulty Items</h3>
+<p>If you receive a faulty or incorrectly sent item, please contact us at <a href="mailto:info@penya.africa">info@penya.africa</a> within 48 hours of delivery. We will arrange a free return and replacement or full refund at no cost to you.</p>
+
+<p>For any questions, our team is available at <a href="mailto:info@penya.africa">info@penya.africa</a> or on WhatsApp at <a href="https://wa.me/4915147416152">+49 1514 7416152</a>.</p>`,
+  },
+  {
+    type: 'SHIPPING_POLICY',
+    body: `<h2>Shipping Policy</h2>
+<p>We ship worldwide from our warehouse in Heidelberg, Germany. All orders are dispatched within <strong>1–2 business days</strong> of order confirmation.</p>
+
+<h3>Delivery Options &amp; Rates</h3>
+<ul>
+  <li><strong>Standard (3–5 business days)</strong> — €4.95, free on orders over €100</li>
+  <li><strong>Express (1–2 business days)</strong> — €9.95</li>
+</ul>
+<p>The above rates apply to European destinations. For international orders, the exact shipping rate for your destination is displayed at checkout before payment — there are no surprises. Delivery times for international orders vary by destination and are shown at checkout.</p>
+
+<h3>Tracking</h3>
+<p>You will receive a tracking link by email once your order has been dispatched. If you have not received a tracking update within 3 business days of your confirmation email, please contact us.</p>
+
+<h3>VAT &amp; Import Duties</h3>
+<p>All prices on our website are inclusive of 19% German VAT (MwSt). Customers within the European Union will not incur additional import charges.</p>
+<p>Customers outside the EU — including the United Kingdom, Switzerland, USA, and other countries — may be subject to local import duties and taxes upon delivery. These charges are determined by your country's customs authority and are the responsibility of the recipient. We are unable to predict or cover these costs.</p>
+
+<h3>About Our Fulfilment</h3>
+<p>Our pieces are sourced directly from artisan partners in Zimbabwe and held at our warehouse in Heidelberg, Germany. This model allows us to maintain tight quality control and deliver your order efficiently, wherever you are.</p>
+<p><strong>Warehouse address:</strong><br>
+Penya Collective<br>
+Steinhofweg 47<br>
+69118 Heidelberg, Germany<br>
+Tel: <a href="tel:+4915147416152">+49 1514 7416152</a></p>
+
+<p>For shipping enquiries, email <a href="mailto:info@penya.africa">info@penya.africa</a>.</p>`,
+  },
+  {
+    type: 'TERMS_OF_SERVICE',
+    body: `<h2>Terms and Conditions</h2>
+<p>These Terms and Conditions govern your use of the Penya Collective website and any purchase made through it. By accessing our website or placing an order, you agree to be bound by these terms. Please read them carefully before purchasing.</p>
+<p>Penya Collective operates from Heidelberg, Germany. For all enquiries: <a href="mailto:info@penya.africa">info@penya.africa</a>.</p>
+
+<h3>Products and Pricing</h3>
+<p>Prices are displayed in the currency available for your selected market. We reserve the right to amend prices at any time without prior notice. The price applied to your order is the price confirmed at the time of checkout.</p>
+<p><strong>Colour and texture disclaimer:</strong> We make every effort to represent our products accurately through photography. However, colours and textures may vary between your screen and the actual garment depending on display settings, lighting conditions, and the natural characteristics of the fabric. Variation of this nature is not considered a defect and does not entitle you to a return or refund.</p>
+<p><strong>Availability disclaimer:</strong> Penya Collective produces in small batches. We cannot guarantee that items shown on the website are available at all times. If an item you have ordered is unavailable, we will notify you promptly and provide a full refund.</p>
+
+<h3>Orders and Payment</h3>
+<p>Submitting an order constitutes an offer to purchase. We reserve the right to decline any order at our discretion. Your order is accepted, and a contract formed, only when we dispatch the item and send you a dispatch confirmation.</p>
+<p>Payment is required in full at checkout. We accept major credit and debit cards and other methods displayed at checkout. All transactions are processed securely via our payment provider.</p>
+
+<h3>Shipping</h3>
+<p>We ship worldwide. Standard and express shipping options are available. Full details including rates and delivery times are set out in our <a href="/policies/shipping-policy">Shipping Policy</a>.</p>
+
+<h3>Returns and Refunds</h3>
+<p>We accept returns within 14 days of delivery for unworn items in original condition with tags attached. Full details are set out in our <a href="/policies/refund-policy">Return Policy</a>.</p>
+
+<h3>Intellectual Property</h3>
+<p>All content on this website — including images, text, and design — is the property of Penya Collective or its content suppliers and is protected by applicable intellectual property laws. You may not reproduce, distribute, or create derivative works from any content on this site without our express written permission.</p>
+
+<h3>Limitation of Liability</h3>
+<p>To the fullest extent permitted by law, Penya Collective shall not be liable for any indirect, incidental, or consequential damages arising from your use of our website or products.</p>
+
+<h3>Governing Law</h3>
+<p>These terms are governed by the laws of the Federal Republic of Germany. Any disputes arising from these terms or any purchase made through our website shall be subject to the exclusive jurisdiction of the courts of Heidelberg, Germany.</p>
+
+<h3>Changes to These Terms</h3>
+<p>We may update these Terms and Conditions from time to time. Any changes will be posted on this page with an updated revision date. Continued use of our website after changes are posted constitutes your acceptance of the revised terms.</p>
+
+<p>Last updated: March 2026</p>`,
+  },
+];
+
 async function main() {
   const blog = await ensureBlog('journal', 'Journal');
 
@@ -445,6 +581,11 @@ async function main() {
   for (const article of articles) {
     const result = await ensureArticle(blog.id, article);
     console.log(`Article ready: ${result.title} → /blogs/journal/${result.handle}`);
+  }
+
+  for (const policy of policies) {
+    const result = await ensurePolicy(policy.type, policy.body);
+    console.log(`Policy ready: ${result.type} → ${result.url}`);
   }
 
   console.log('\nDone. All content seeded.');
