@@ -644,14 +644,26 @@
       });
     }
 
+    function convertMeasurementValue(value, toInches) {
+      const numeric = parseFloat(value);
+      if (Number.isNaN(numeric)) return value;
+      const factor = toInches ? 0.3937 : 2.54;
+      return String(Math.round(numeric * factor * 10) / 10);
+    }
+
     document.querySelectorAll('.fit-guide__unit-toggle').forEach(function (toggle) {
-      const table = toggle.closest('.fit-guide__size-table').querySelector('.fit-guide__table');
+      const section = toggle.closest('.fit-guide__size-table');
+      const table = section.querySelector('.fit-guide__table');
       const unitLabels = table.querySelectorAll('.fit-guide__unit-label');
-      const calcUnits = toggle.closest('.fit-guide__size-table').querySelectorAll('.fit-guide__calc-unit');
+      const calcUnits = section.querySelectorAll('.fit-guide__calc-unit');
 
       toggle.querySelectorAll('.fit-guide__unit-btn').forEach(function (btn) {
         btn.addEventListener('click', function () {
           const toInches = btn.dataset.unit === 'in';
+          const currentUnitInput = section.querySelector('.fit-guide__calc-input');
+          const currentlyInches = currentUnitInput && currentUnitInput.dataset.unit === 'in';
+          if (toInches === currentlyInches) return;
+
           toggle.querySelectorAll('.fit-guide__unit-btn').forEach(function (b) {
             b.classList.toggle('is-active', b === btn);
           });
@@ -666,26 +678,33 @@
             td.textContent = toInches ? convertRange(cm, true) : cm;
           });
           // Update calculator input placeholders and limits
-          const section = toggle.closest('.fit-guide__size-table');
           section.querySelectorAll('.fit-guide__calc-input').forEach(function (input) {
             // Cache original CM bounds on first toggle so they can always be restored.
             if (input.dataset.minCm === undefined) input.dataset.minCm = input.min;
             if (input.dataset.maxCm === undefined) input.dataset.maxCm = input.max;
 
+            if (input.value !== '') {
+              input.value = convertMeasurementValue(input.value, toInches);
+            }
+
             if (toInches) {
               input.dataset.unit = 'in';
               input.min = Math.round(parseFloat(input.dataset.minCm) * 0.3937 * 10) / 10;
               input.max = Math.round(parseFloat(input.dataset.maxCm) * 0.3937 * 10) / 10;
+              input.step = '0.1';
               input.placeholder = input.dataset.measure === 'chest' ? 'e.g. 35.4'
                 : input.dataset.measure === 'waist' ? 'e.g. 29.1'
                 : 'e.g. 38.6';
+              input.setAttribute('aria-label', input.dataset.measure + ' measurement in inches');
             } else {
               input.dataset.unit = 'cm';
               input.min = input.dataset.minCm;
               input.max = input.dataset.maxCm;
+              input.step = '1';
               input.placeholder = input.dataset.measure === 'chest' ? 'e.g. 90'
                 : input.dataset.measure === 'waist' ? 'e.g. 74'
                 : 'e.g. 98';
+              input.setAttribute('aria-label', input.dataset.measure + ' measurement in centimetres');
             }
           });
         });

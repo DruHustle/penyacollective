@@ -109,7 +109,7 @@
     {% endif %}
 
     <div class="featured-blog-posts-card__content layout-panel-flex--column">
-      <h4>{{ title }}</h4>
+      <div class="featured-blog-posts-card__title">{{ title }}</div>
       {{ details }}
       {{ description }}
     </div>
@@ -159,7 +159,11 @@
     --flex-wrap: wrap;
   }
 
-  .featured-blog-posts-card__content h4 {
+  .featured-blog-posts-card__title {
+    margin: 0;
+  }
+
+  .featured-blog-posts-card__title .text-block {
     margin: 0;
   }
 {% endstylesheet %}

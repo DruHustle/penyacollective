@@ -131,10 +131,21 @@
   data-show-filter="{{ show_country_filter }}"
   style="{{ form_style }}"
 >
-  {% assign localization_label = 'content.localization_region_and_language' | t %}
+  {% liquid
+    assign localization_label = 'content.localization_region_and_language' | t
+    assign localization_id_base = form_id | default: 'localization'
+    assign localization_id_base = localization_id_base | append: '-' | append: localization_style | handleize
+    assign localization_form_id = 'localization-form-' | append: localization_id_base
+    assign country_search_input_id = localization_id_base | append: '-country-filter'
+    assign country_results_id = localization_id_base | append: '-country-results'
+    assign country_label_id = localization_id_base | append: '-country-label'
+    assign language_label_id = localization_id_base | append: '-language-label'
+    assign no_results_message_id = localization_id_base | append: '-no-results'
+    assign language_select_id = localization_id_base | append: '-language-select'
+  %}
 
   {%- form 'localization',
-    id: 'LocalizationForm',
+    id: localization_form_id,
     class: 'localization-form',
     ref: 'form',
     return_to: back,
@@ -151,14 +162,14 @@
             </div>
             <input
               class="country-filter__input"
-              id="country-filter-input"
+              id="{{ country_search_input_id }}"
               type="search"
               name="country_filter"
               value=""
               placeholder="{{ 'placeholders.search' | t }}"
               role="combobox"
-              aria-owns="country-results"
-              aria-controls="country-results"
+              aria-owns="{{ country_results_id }}"
+              aria-controls="{{ country_results_id }}"
               aria-haspopup="listbox"
               aria-autocomplete="list"
               aria-label="{{ 'accessibility.find_country' | t }}"
@@ -171,7 +182,7 @@
             >
             <label
               class="field__label visually-hidden"
-              for="country-filter-input"
+              for="{{ country_search_input_id }}"
             >
               {{- 'content.search' | t -}}
             </label>
@@ -193,13 +204,13 @@
       <div class="country-selector-form__wrapper">
         <h2
           class="visually-hidden"
-          id="{{ localization_style }}-CountryLabel"
+          id="{{ country_label_id }}"
         >
           Country/Region
         </h2>
         {% if show_country_filter %}
           <div
-            id="sr-country-search-results-{{ form_id }}"
+            id="{{ localization_id_base }}-country-search-results"
             class="visually-hidden"
             aria-live="polite"
             ref="liveRegion"
@@ -207,7 +218,9 @@
         {% endif %}
         <div
           class="localization-form__list"
-          id="{{ localization_style }}-country-results"
+          id="{{ country_results_id }}"
+          role="listbox"
+          aria-labelledby="{{ country_label_id }}"
           ref="countryList"
         >
           {% if show_popular_countries %}
@@ -236,7 +249,7 @@
                   {% if aliases %}
                     data-aliases="{{ aliases }}"
                   {% endif %}
-                  id="{{ country.name }}"
+                  id="{{ localization_id_base }}-popular-country-{{ country.iso_code | downcase }}"
                   aria-label="{{ country.name }}"
                   role="option"
                   tabindex="-1"
@@ -264,14 +277,14 @@
             role="list"
             class="list-unstyled countries"
           >
-            <span
-              class="localization-form__list-item localization-form__list-item-disabled"
-              id="no-results-message"
+            <li
+              class="localization-form__list-item localization-form__list-item-disabled localization-form__list-item--no-results"
+              id="{{ no_results_message_id }}"
               ref="noResultsMessage"
               hidden
             >
               {{- 'content.no_results_found' | t -}}
-            </span>
+            </li>
             {%- for country in localization.available_countries -%}
               {% liquid
                 assign aliases = ''
@@ -291,7 +304,7 @@
                 {% if aliases %}
                   data-aliases="{{ aliases }}"
                 {% endif %}
-                id="{{ country.name }}"
+                id="{{ localization_id_base }}-country-{{ country.iso_code | downcase }}"
                 aria-label="{{ country.name }}"
                 role="option"
                 tabindex="-1"
@@ -329,7 +342,7 @@
       <div class="language-selector{% if show_country %} top-shadow{% else %} language-selector--collapse-space{% endif %}{% if show_country == false and localization_style == 'drawer' %} h5{% endif %}">
         <h2
           class="visually-hidden"
-          id="{{ localization_style }}-LanguageLabel"
+          id="{{ language_label_id }}"
         >
           {{ 'content.language' | t }}
         </h2>
@@ -337,7 +350,7 @@
           <span class="language-selector__label">{{ 'content.language' | t }}</span>
         {% endif %}
         <select
-          id="{{ localization_style }}Select"
+          id="{{ language_select_id }}"
           class="localization-form__select"
           name="language_code"
           aria-label="{{ 'content.language' | t }}"
@@ -517,7 +530,7 @@
     }
   }
 
-  .localization-form__list-item#no-results-message {
+  .localization-form__list-item--no-results {
     grid-template-columns: 1fr;
     text-align: center;
     color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));

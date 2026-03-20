@@ -113,6 +113,32 @@ test.describe('Homepage', () => {
     await expect(page.locator('[data-testid="localization-currency-code"]').first()).toBeVisible();
   });
 
+  test('floating contact widget opens and closes', async ({ page }) => {
+    const trigger = page.locator('#penya-chat-trigger');
+    const panel = page.locator('#penya-chat-panel');
+
+    await expect(trigger).toBeVisible();
+    await expect(panel).toHaveAttribute('aria-hidden', 'true');
+
+    await trigger.click();
+    await expect(panel).toHaveAttribute('aria-hidden', 'false');
+    await expect(panel.getByRole('link', { name: /chat on whatsapp/i })).toBeVisible();
+
+    await page.keyboard.press('Escape');
+    await expect(panel).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  test('floating contact widget closes when clicking outside', async ({ page }) => {
+    const trigger = page.locator('#penya-chat-trigger');
+    const panel = page.locator('#penya-chat-panel');
+
+    await trigger.click();
+    await expect(panel).toHaveAttribute('aria-hidden', 'false');
+
+    await page.locator('body').click({ position: { x: 20, y: 20 } });
+    await expect(panel).toHaveAttribute('aria-hidden', 'true');
+  });
+
   test('journal carousel renders as horizontal scroll container', async ({ page }) => {
     await page.waitForLoadState('networkidle', { timeout: 15_000 }).catch(() => {});
     const carousel = page.locator('[data-testid="featured-blog-posts"] slideshow-component').first();
@@ -386,6 +412,18 @@ test.describe('Fit Guide', () => {
     await cmBtn.evaluate(el => el.scrollIntoView({ block: 'center' }));
     await cmBtn.click();
     await expect(input).toHaveAttribute('min', originalMin);
+  });
+
+  test('unit toggle converts entered calculator values to inches', async ({ page }) => {
+    const sizeTable = page.locator('.fit-guide__size-table:visible').first();
+    const input = sizeTable.locator('.fit-guide__calc-input[data-measure="chest"]').first();
+    const inBtn = sizeTable.locator('.fit-guide__unit-btn[data-unit="in"]').first();
+
+    await input.fill('90');
+    await inBtn.evaluate((el) => el.scrollIntoView({ block: 'center' }));
+    await inBtn.click();
+
+    await expect(input).toHaveValue('35.4');
   });
 });
 
