@@ -1,0 +1,366 @@
+{%- comment -%}
+  Homepage recognition and proof section.
+
+  Dependency mapping:
+  - Section blocks: recognition cards with links to designer stories
+  - Homepage template: places the section after the designer grid to support the brand story
+{%- endcomment -%}
+
+<section class="penya-social-proof color-{{ section.settings.color_scheme }}" data-testid="penya-social-proof">
+  <div class="page-width penya-social-proof__inner">
+    <div class="penya-social-proof__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="penya-social-proof__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="penya-social-proof__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.copy != blank %}
+        <div class="penya-social-proof__copy rte">
+          {{ section.settings.copy }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.link_label != blank and section.settings.link != blank %}
+        <a href="{{ section.settings.link }}" class="penya-social-proof__cta">
+          {{ section.settings.link_label }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="penya-social-proof__cards">
+      {% for block in section.blocks %}
+        {% liquid
+          assign fallback_link = ''
+          case forloop.index
+            when 1
+              assign fallback_link = '/pages/designer-ivhu-tribe'
+            when 2
+              assign fallback_link = '/pages/designer-feli-nandi'
+            when 3
+              assign fallback_link = '/pages/designer-by-bakari'
+          endcase
+
+          assign block_link = block.settings.link | default: fallback_link
+        %}
+
+        <article class="penya-social-proof__card{% if forloop.first %} penya-social-proof__card--featured{% endif %}" {{ block.shopify_attributes }}>
+          {% if block.settings.label != blank %}
+            <p class="penya-social-proof__label">{{ block.settings.label }}</p>
+          {% endif %}
+
+          {% if block.settings.heading != blank %}
+            <h3 class="penya-social-proof__card-heading">{{ block.settings.heading }}</h3>
+          {% endif %}
+
+          {% if block.settings.copy != blank %}
+            <p class="penya-social-proof__card-copy">{{ block.settings.copy }}</p>
+          {% endif %}
+
+          <div class="penya-social-proof__card-footer">
+            {% if block.settings.attribution != blank %}
+              <p class="penya-social-proof__attribution">{{ block.settings.attribution }}</p>
+            {% endif %}
+
+            {% if block.settings.link_label != blank and block_link != blank %}
+              <a href="{{ block_link }}" class="penya-social-proof__card-link">
+                {{ block.settings.link_label }}
+              </a>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .penya-social-proof {
+    background:
+      linear-gradient(180deg, rgb(var(--color-background-rgb)) 0%, rgb(var(--color-foreground-rgb) / 0.02) 100%);
+  }
+
+  .penya-social-proof__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .penya-social-proof__intro {
+    max-width: 30rem;
+  }
+
+  .penya-social-proof__eyebrow {
+    margin: 0 0 0.8rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .penya-social-proof__heading {
+    margin: 0 0 1rem;
+    font-family: var(--font-heading--family);
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 0.98;
+    text-wrap: balance;
+    color: var(--color-foreground-heading);
+  }
+
+  .penya-social-proof__copy {
+    color: rgb(var(--color-foreground-rgb) / 0.78);
+    line-height: 1.75;
+  }
+
+  .penya-social-proof__cta,
+  .penya-social-proof__card-link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    font-family: var(--font-subheading--family);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding-bottom: 0.2rem;
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+
+  .penya-social-proof__cta {
+    display: inline-block;
+    margin-top: 1.5rem;
+  }
+
+  .penya-social-proof__cta:hover,
+  .penya-social-proof__card-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .penya-social-proof__cta:focus-visible,
+  .penya-social-proof__card-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-color: var(--color-primary);
+  }
+
+  .penya-social-proof__cards {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .penya-social-proof__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 15rem;
+    padding: 1.5rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.09);
+    background: rgb(var(--color-foreground-rgb) / 0.03);
+  }
+
+  .penya-social-proof__card--featured {
+    background:
+      linear-gradient(180deg, rgb(var(--color-primary-rgb) / 0.08) 0%, rgb(var(--color-foreground-rgb) / 0.04) 100%);
+  }
+
+  @supports selector(.penya-social-proof__cards:has(.penya-social-proof__card:nth-child(3))) {
+    .penya-social-proof__cards:has(.penya-social-proof__card:nth-child(3)) .penya-social-proof__card--featured {
+      grid-row: span 2;
+    }
+  }
+
+  .penya-social-proof__label {
+    margin: 0 0 0.8rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .penya-social-proof__card-heading {
+    margin: 0 0 0.8rem;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.2rem, 2.2vw, 1.65rem);
+    line-height: 1.18;
+    color: var(--color-foreground-heading);
+    text-wrap: balance;
+  }
+
+  .penya-social-proof__card-copy {
+    margin: 0 0 1.1rem;
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+    line-height: 1.72;
+  }
+
+  .penya-social-proof__card-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+  }
+
+  .penya-social-proof__attribution {
+    margin: 0;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / 0.62);
+  }
+
+  @media screen and (max-width: 989px) {
+    .penya-social-proof__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .penya-social-proof__cards {
+      grid-template-columns: 1fr;
+    }
+
+    .penya-social-proof__card--featured {
+      grid-row: auto;
+    }
+
+    .penya-social-proof__card {
+      min-height: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Penya social proof",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Recognition"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The collective is already travelling."
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Penya’s designers are earning attention well beyond home — through international runways, presidential moments, and audiences that continue to grow across markets.</p>"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Link label",
+      "default": "Meet the collective"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "proof",
+      "name": "Proof card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Global runway"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Ivhu Tribe represented Zimbabwe at World Fashion Week China 2024."
+        },
+        {
+          "type": "textarea",
+          "id": "copy",
+          "label": "Copy",
+          "default": "The label also appeared at the World Fashion Exhibition, signalling international appetite for craft-led Zimbabwean design."
+        },
+        {
+          "type": "text",
+          "id": "attribution",
+          "label": "Attribution",
+          "default": "Ivhu Tribe"
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "Read the story"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "Penya social proof",
+      "blocks": [
+        {
+          "type": "proof",
+          "settings": {
+            "label": "Global runway",
+            "heading": "Ivhu Tribe represented Zimbabwe at World Fashion Week China 2024.",
+            "copy": "The label also appeared at the World Fashion Exhibition, signalling international appetite for craft-led Zimbabwean design.",
+            "attribution": "Ivhu Tribe",
+            "link_label": "Read the story"
+          }
+        },
+        {
+          "type": "proof",
+          "settings": {
+            "label": "Presidential dressing",
+            "heading": "A Feli Nandi piece marked Namibia’s presidential inauguration.",
+            "copy": "A high-visibility cultural moment that underscored the weight and relevance of contemporary African craft.",
+            "attribution": "Feli Nandi",
+            "link_label": "Meet the designer"
+          }
+        },
+        {
+          "type": "proof",
+          "settings": {
+            "label": "International audience",
+            "heading": "By Bakari built orders across the UK, Canada, and Australia.",
+            "copy": "Digital-first growth proved that the demand for specific, confident African design is already global.",
+            "attribution": "By Bakari",
+            "link_label": "Explore the profile"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

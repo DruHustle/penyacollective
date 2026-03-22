@@ -381,6 +381,63 @@
         "padding-block-end": 80
       }
     },
+    "trust_band": {
+      "type": "penya-trust-band",
+      "blocks": {
+        "trust_returns": {
+          "type": "service",
+          "settings": {
+            "label": "Returns",
+            "heading": "14-day returns on eligible pieces",
+            "copy": "Unworn items can be returned within 14 days of delivery. Custom and final-sale pieces are excluded.",
+            "link_label": "View details",
+            "link": "/pages/shipping"
+          }
+        },
+        "trust_delivery": {
+          "type": "service",
+          "settings": {
+            "label": "Delivery",
+            "heading": "Catalog orders dispatch in 1–2 business days",
+            "copy": "We ship worldwide from Heidelberg and share tracking as soon as your piece leaves the warehouse.",
+            "link_label": "Shipping details",
+            "link": "/pages/shipping"
+          }
+        },
+        "trust_payments": {
+          "type": "service",
+          "settings": {
+            "label": "Payments",
+            "heading": "Secure checkout with major payment methods",
+            "copy": "Your final total, market currency, and available payment methods are confirmed before you pay.",
+            "link_label": "Payment FAQ",
+            "link": "/pages/faq"
+          }
+        },
+        "trust_clientcare": {
+          "type": "service",
+          "settings": {
+            "label": "Client care",
+            "heading": "Human support by email and WhatsApp",
+            "copy": "Need sizing, gifting, or bespoke help? Penya client care will guide you directly.",
+            "link_label": "Contact client care",
+            "link": "/pages/contact"
+          }
+        }
+      },
+      "block_order": [
+        "trust_returns",
+        "trust_delivery",
+        "trust_payments",
+        "trust_clientcare"
+      ],
+      "settings": {
+        "eyebrow": "Client care",
+        "heading": "Luxury should feel clear from the first click.",
+        "copy": "<p>Everything around the purchase is designed to feel calm, transparent, and personal — from eligible returns to direct sizing help.</p>",
+        "color_scheme": "scheme-1"
+      }
+    },
     "brand_pillars": {
       "type": "section",
       "blocks": {
@@ -757,15 +814,68 @@
         "padding-block-start": 80,
         "padding-block-end": 80
       }
+    },
+    "collective_social_proof": {
+      "type": "penya-social-proof",
+      "blocks": {
+        "proof_ivhu": {
+          "type": "proof",
+          "settings": {
+            "label": "Global runway",
+            "heading": "Ivhu Tribe represented Zimbabwe at World Fashion Week China 2024.",
+            "copy": "The label also appeared at the World Fashion Exhibition, signalling international appetite for craft-led Zimbabwean design.",
+            "attribution": "Ivhu Tribe",
+            "link_label": "Read the story",
+            "link": "shopify://pages/designer-ivhu-tribe"
+          }
+        },
+        "proof_feli": {
+          "type": "proof",
+          "settings": {
+            "label": "Presidential dressing",
+            "heading": "A Feli Nandi piece marked Namibia’s presidential inauguration.",
+            "copy": "A high-visibility cultural moment that underscored the weight and relevance of contemporary African craft.",
+            "attribution": "Feli Nandi",
+            "link_label": "Meet the designer",
+            "link": "shopify://pages/designer-feli-nandi"
+          }
+        },
+        "proof_bakari": {
+          "type": "proof",
+          "settings": {
+            "label": "International audience",
+            "heading": "By Bakari built orders across the UK, Canada, and Australia.",
+            "copy": "Digital-first growth proved that the demand for specific, confident African design is already global.",
+            "attribution": "By Bakari",
+            "link_label": "Explore the profile",
+            "link": "shopify://pages/designer-by-bakari"
+          }
+        }
+      },
+      "block_order": [
+        "proof_ivhu",
+        "proof_feli",
+        "proof_bakari"
+      ],
+      "settings": {
+        "eyebrow": "Recognition",
+        "heading": "The collective is already travelling.",
+        "copy": "<p>Penya’s designers are earning attention well beyond home — through international runways, presidential moments, and audiences that continue to grow across markets.</p>",
+        "link_label": "Meet the collective",
+        "link": "shopify://pages/designer",
+        "color_scheme": "scheme-2"
+      }
     }
   },
   "order": [
     "hero_penya",
     "brand_marquee",
     "mission_statement",
+    "trust_band",
     "featured_collections",
     "brand_pillars",
     "collective_designers",
+    "collective_social_proof",
     "journal_preview",
     "newsletter_signup"
   ]

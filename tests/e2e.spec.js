@@ -170,6 +170,37 @@ test.describe('Homepage', () => {
     await expect(page.getByText(/Shop (?:In-House|the House)/i)).toBeVisible();
   });
 
+  test('trust band surfaces core service assurances', async ({ page }) => {
+    const trustBand = page.locator('[data-testid="penya-trust-band"]');
+    await expect(trustBand).toBeVisible();
+    await expect(trustBand.locator('.penya-trust-band__item')).toHaveCount(4);
+    await expect(trustBand.getByText(/14-day returns/i)).toBeVisible();
+    await expect(trustBand.getByText(/1.?2 business days/i)).toBeVisible();
+
+    const trustItemLinks = trustBand.locator('.penya-trust-band__item-link');
+    await expect(trustItemLinks).toHaveCount(4);
+    await expect(trustItemLinks.nth(0)).toHaveAttribute('href', '/pages/shipping');
+    await expect(trustItemLinks.nth(1)).toHaveAttribute('href', '/pages/shipping');
+    await expect(trustItemLinks.nth(2)).toHaveAttribute('href', '/pages/faq');
+    await expect(trustItemLinks.nth(3)).toHaveAttribute('href', '/pages/contact');
+  });
+
+  test('social proof section highlights collective recognition', async ({ page }) => {
+    const proof = page.locator('[data-testid="penya-social-proof"]');
+    await expect(proof).toBeVisible();
+    await expect(proof.locator('.penya-social-proof__card')).toHaveCount(3);
+    await expect(proof.getByRole('link', { name: /meet the collective/i })).toHaveAttribute('href', '/pages/designer');
+
+    const profileLinks = proof.locator('.penya-social-proof__card-link');
+    const count = await profileLinks.count();
+    expect(count).toBeGreaterThanOrEqual(3);
+
+    for (let i = 0; i < count; i++) {
+      const href = await profileLinks.nth(i).getAttribute('href');
+      expect(href).toMatch(/^\/pages\/designer-/);
+    }
+  });
+
   test('header shows the localization currency control', async ({ page }) => {
     await expect(page.locator('[data-testid="localization-currency-code"]').first()).toBeVisible();
   });
