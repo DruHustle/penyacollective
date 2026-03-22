@@ -44,7 +44,11 @@ const pageHasArticleJsonLd = async (page) => {
   return false;
 };
 
-const goto = async (page, path) => {
+const RETRYABLE_STATUS_CODES = new Set([502, 503, 504]);
+
+const goto = async (page, path, options = {}) => {
+  const { maxAttempts = 3 } = options;
+
   // Klaviyo's onsite embed is a Shopify App Embed (served from cdn.shopify.com),
   // so URL blocking alone won't reach it, and a MutationObserver loses the race
   // when Klaviyo re-inserts its popup after removal.
@@ -69,8 +73,21 @@ const goto = async (page, path) => {
     } catch (_) {}
   });
 
-  const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
-  await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
+  let response = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
+    await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
+
+    if (!response || !RETRYABLE_STATUS_CODES.has(response.status())) {
+      return response;
+    }
+
+    if (attempt < maxAttempts) {
+      await page.waitForTimeout(attempt * 1_500);
+    }
+  }
+
   return response;
 };
 
