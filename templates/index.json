@@ -815,57 +815,6 @@
         "padding-block-end": 80
       }
     },
-    "collective_social_proof": {
-      "type": "penya-social-proof",
-      "blocks": {
-        "proof_ivhu": {
-          "type": "proof",
-          "settings": {
-            "label": "Global runway",
-            "heading": "Ivhu Tribe represented Zimbabwe at World Fashion Week China 2024.",
-            "copy": "The label also appeared at the World Fashion Exhibition, signalling international appetite for craft-led Zimbabwean design.",
-            "attribution": "Ivhu Tribe",
-            "link_label": "Read the story",
-            "link": "shopify://pages/designer-ivhu-tribe"
-          }
-        },
-        "proof_feli": {
-          "type": "proof",
-          "settings": {
-            "label": "Presidential dressing",
-            "heading": "A Feli Nandi piece marked Namibia’s presidential inauguration.",
-            "copy": "A high-visibility cultural moment that underscored the weight and relevance of contemporary African craft.",
-            "attribution": "Feli Nandi",
-            "link_label": "Meet the designer",
-            "link": "shopify://pages/designer-feli-nandi"
-          }
-        },
-        "proof_bakari": {
-          "type": "proof",
-          "settings": {
-            "label": "International audience",
-            "heading": "By Bakari built orders across the UK, Canada, and Australia.",
-            "copy": "Digital-first growth proved that the demand for specific, confident African design is already global.",
-            "attribution": "By Bakari",
-            "link_label": "Explore the profile",
-            "link": "shopify://pages/designer-by-bakari"
-          }
-        }
-      },
-      "block_order": [
-        "proof_ivhu",
-        "proof_feli",
-        "proof_bakari"
-      ],
-      "settings": {
-        "eyebrow": "Recognition",
-        "heading": "The collective is already travelling.",
-        "copy": "<p>Penya’s designers are earning attention well beyond home — through international runways, presidential moments, and audiences that continue to grow across markets.</p>",
-        "link_label": "Meet the collective",
-        "link": "shopify://pages/designer",
-        "color_scheme": "scheme-2"
-      }
-    }
   },
   "order": [
     "hero_penya",
@@ -875,7 +824,6 @@
     "featured_collections",
     "brand_pillars",
     "collective_designers",
-    "collective_social_proof",
     "journal_preview",
     "newsletter_signup"
   ]
