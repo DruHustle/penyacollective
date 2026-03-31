@@ -1,17 +1,49 @@
 {%- comment -%}
   Designer grid on the homepage.
 
-  Dependency mapping:
-  - Page data: pages[handle].title, pages[handle].url
-  - Metafield data: pages[handle].metafields.custom.hero_image_asset (filename in theme assets)
-  - Theme assets: fallback image filenames to ensure the grid never renders empty cards
+  Primary data source: Metaobjects
+    Shopify Admin → Content → Metaobjects → Designer
+    • Add entry       — new designer card appears on the homepage grid
+    • Set to Hidden    — hides the designer from the storefront
+    • Set to Published — shows the designer on the storefront
+    • Delete entry    — permanently removes the designer from the grid
+    • Drag to reorder — controls the left-to-right display order
+
+  Metaobject fields:
+    name         (single_line_text) — brand name displayed on the card
+    country      (single_line_text) — origin label shown above the name
+    hero_image   (file_reference)   — portrait/card image (upload via file picker)
+    page_handle  (single_line_text) — page slug, e.g. "designer-ivhu-tribe"
+
+  Image fallback chain (per card):
+    1. hero_image metaobject field (file_reference, uploaded in admin)
+    2. pages[page_handle].metafields.custom.hero_image_asset (legacy seed asset)
+
+  Hardcoded fallback: used only when the metaobject definition has not been
+  set up yet. Run scripts/setup-designer-metaobjects.mjs once to migrate to
+  the admin-managed approach.
+
+  NOTE: The section heading ("Six Designers. One Shared Light.") is static
+  branding copy. If the designer count changes significantly, update it here.
 {%- endcomment -%}
 
 {% liquid
-  assign designer_handles          = 'designer-ivhu-tribe|designer-a-tribe-called-zimbabwe|designer-feli-nandi|designer-haus-of-stone|designer-panashe|designer-by-bakari' | split: '|'
-  assign designer_fallback_titles  = 'Ivhu Tribe|A Tribe Called Zimbabwe|Feli Nandi Apparels|Haus of Stone|Panashe Designs|By Bakari' | split: '|'
-  assign designer_fallback_assets  = 'designer-ivhutribe.jpg|designer-atcz.jpg|designer-felinandi.jpg|designer-hausofstone.jpg|designer-panashe.jpg|designer-bybakari.jpg' | split: '|'
-  assign designer_countries        = 'Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe' | split: '|'
+  assign designers       = shop.metaobjects.designer.values
+  # shop.metaobjects.designer is non-blank whenever the definition exists,
+  # even when every entry is Hidden (values would be empty).
+  # This prevents the hardcoded fallback from appearing when all designers
+  # have been intentionally hidden via Admin.
+  assign use_metaobjects = false
+  if shop.metaobjects.designer
+    assign use_metaobjects = true
+  endif
+
+  unless use_metaobjects
+    assign designer_handles         = 'designer-ivhu-tribe|designer-a-tribe-called-zimbabwe|designer-feli-nandi|designer-haus-of-stone|designer-panashe|designer-by-bakari' | split: '|'
+    assign designer_fallback_titles = 'Ivhu Tribe|A Tribe Called Zimbabwe|Feli Nandi Apparels|Haus of Stone|Panashe Designs|By Bakari' | split: '|'
+    assign designer_fallback_assets = 'designer-ivhutribe.jpg|designer-atcz.jpg|designer-felinandi.jpg|designer-hausofstone.jpg|designer-panashe.jpg|designer-bybakari.jpg' | split: '|'
+    assign designer_countries       = 'Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe' | split: '|'
+  endunless
 %}
 
 <style>
@@ -108,44 +140,115 @@
   </div>
 
   <div class="penya-designers__grid">
-    {% for handle in designer_handles %}
-      {% assign index            = forloop.index0 %}
-      {% assign fallback_title   = designer_fallback_titles[index] %}
-      {% assign fallback_asset   = designer_fallback_assets[index] %}
-      {% assign country          = designer_countries[index] %}
-      {% assign designer_page    = pages[handle] %}
-      {% assign designer_title   = designer_page.title | default: fallback_title %}
-      {% assign designer_url     = designer_page.url | default: '/pages/' | append: handle %}
-      {% assign hero_asset       = designer_page.metafields.custom.hero_image_asset.value | default: fallback_asset %}
 
-      {%- comment -%} First 3 are in the visible viewport on desktop — load eagerly {%- endcomment -%}
-      {% if index < 3 %}
-        {% assign image_loading   = 'eager' %}
-        {% assign fetch_priority  = 'high' %}
-      {% else %}
-        {% assign image_loading   = 'lazy' %}
-        {% assign fetch_priority  = '' %}
-      {% endif %}
+    {% if use_metaobjects %}
 
-      <a
-        href="{{ designer_url }}"
-        class="penya-designers__card"
-        aria-label="Read the story of {{ designer_title }}"
-      >
-        <div class="penya-designers__card-image">
-          <img
-            src="{{ hero_asset | asset_url }}"
-            alt="{{ designer_title | escape }} — designer"
-            loading="{{ image_loading }}"
-            width="900"
-            height="1200"
-            {% if fetch_priority != '' %}fetchpriority="{{ fetch_priority }}"{% endif %}
-          >
-        </div>
-        <p class="penya-designers__card-country">{{ country }}</p>
-        <h3 class="penya-designers__card-name">{{ designer_title }}</h3>
-        <span class="penya-designers__card-cta">Read the Story</span>
-      </a>
-    {% endfor %}
+      {% for designer in designers %}
+        {% liquid
+          assign index          = forloop.index0
+          assign designer_name  = designer.name.value
+          assign country        = designer.country.value | default: 'Africa'
+          assign page_handle    = designer.page_handle.value
+          assign designer_url   = '/pages/' | append: page_handle
+          assign hero_image_obj = designer.hero_image.value
+
+          if index < 3
+            assign image_loading  = 'eager'
+            assign fetch_priority = 'high'
+          else
+            assign image_loading  = 'lazy'
+            assign fetch_priority = ''
+          endif
+
+          # Image fallback: metaobject file → page metafield asset
+          assign fallback_asset = blank
+          if hero_image_obj == blank and page_handle != blank
+            assign designer_page  = pages[page_handle]
+            assign fallback_asset = designer_page.metafields.custom.hero_image_asset.value
+          endif
+        %}
+
+        <a
+          href="{{ designer_url }}"
+          class="penya-designers__card"
+          aria-label="Read the story of {{ designer_name }}"
+        >
+          <div class="penya-designers__card-image">
+            {% if hero_image_obj != blank %}
+              {{
+                hero_image_obj
+                | image_url: width: 900
+                | image_tag:
+                  width: 900,
+                  height: 1200,
+                  widths: '450, 600, 900',
+                  sizes: '(max-width: 480px) 50vw, (max-width: 989px) 50vw, 33vw',
+                  loading: image_loading,
+                  fetchpriority: fetch_priority,
+                  alt: designer_name | append: ' — designer'
+              }}
+            {% elsif fallback_asset != blank %}
+              <img
+                src="{{ fallback_asset | asset_url }}"
+                alt="{{ designer_name | escape }} — designer"
+                loading="{{ image_loading }}"
+                width="900"
+                height="1200"
+                {% if fetch_priority != '' %}fetchpriority="{{ fetch_priority }}"{% endif %}
+              >
+            {% endif %}
+          </div>
+          <p class="penya-designers__card-country">{{ country }}</p>
+          <h3 class="penya-designers__card-name">{{ designer_name }}</h3>
+          <span class="penya-designers__card-cta">Read the Story</span>
+        </a>
+
+      {% endfor %}
+
+    {% else %}
+
+      {%- comment -%} Hardcoded fallback — active until metaobjects are configured {%- endcomment -%}
+      {% for handle in designer_handles %}
+        {% assign index           = forloop.index0 %}
+        {% assign fallback_title  = designer_fallback_titles[index] %}
+        {% assign fallback_asset  = designer_fallback_assets[index] %}
+        {% assign country         = designer_countries[index] %}
+        {% assign designer_page   = pages[handle] %}
+        {% assign designer_title  = designer_page.title | default: fallback_title %}
+        {% assign designer_url    = designer_page.url | default: '/pages/' | append: handle %}
+        {% assign hero_asset      = designer_page.metafields.custom.hero_image_asset.value | default: fallback_asset %}
+
+        {%- comment -%} First 3 are in the visible viewport on desktop — load eagerly {%- endcomment -%}
+        {% if index < 3 %}
+          {% assign image_loading  = 'eager' %}
+          {% assign fetch_priority = 'high' %}
+        {% else %}
+          {% assign image_loading  = 'lazy' %}
+          {% assign fetch_priority = '' %}
+        {% endif %}
+
+        <a
+          href="{{ designer_url }}"
+          class="penya-designers__card"
+          aria-label="Read the story of {{ designer_title }}"
+        >
+          <div class="penya-designers__card-image">
+            <img
+              src="{{ hero_asset | asset_url }}"
+              alt="{{ designer_title | escape }} — designer"
+              loading="{{ image_loading }}"
+              width="900"
+              height="1200"
+              {% if fetch_priority != '' %}fetchpriority="{{ fetch_priority }}"{% endif %}
+            >
+          </div>
+          <p class="penya-designers__card-country">{{ country }}</p>
+          <h3 class="penya-designers__card-name">{{ designer_title }}</h3>
+          <span class="penya-designers__card-cta">Read the Story</span>
+        </a>
+      {% endfor %}
+
+    {% endif %}
+
   </div>
 </div>
