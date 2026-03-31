@@ -2,7 +2,7 @@ import { readFileSync } from 'fs';
 
 const SHOP = process.env.SHOPIFY_STORE_DOMAIN;
 const TOKEN = process.env.SHOPIFY_ADMIN_API_TOKEN;
-const API_VERSION = process.env.SHOPIFY_API_VERSION || '2024-10';
+const API_VERSION = process.env.SHOPIFY_API_VERSION || '2025-04';
 const THEME_ID = process.env.SHOPIFY_THEME_ID || process.env.SHOPIFY_DEV_THEME_ID;
 const files = process.argv.slice(2);
 

@@ -11,7 +11,7 @@ function imageAttachment(filename) {
 
 const SHOP = process.env.SHOPIFY_STORE_DOMAIN;
 const TOKEN = process.env.SHOPIFY_ADMIN_API_TOKEN;
-const API_VERSION = process.env.SHOPIFY_API_VERSION || '2024-10';
+const API_VERSION = process.env.SHOPIFY_API_VERSION || '2025-04';
 const FORCE_PUBLISH_EXISTING_CONTENT = process.env.SHOPIFY_SEED_FORCE_PUBLISH === 'true';
 
 if (!SHOP || !TOKEN) {

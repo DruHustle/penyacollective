@@ -7,6 +7,7 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  SHOPIFY_API_VERSION: "2025-04"
 
 jobs:
   # ─── 1. Liquid linting ────────────────────────────────────────────────────
@@ -136,6 +137,7 @@ jobs:
       SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
       SHOPIFY_THEME_ID: ${{ secrets.SHOPIFY_THEME_ID }}
       SHOPIFY_ADMIN_API_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+      SHOPIFY_API_VERSION: ${{ env.SHOPIFY_API_VERSION }}
     steps:
       - uses: actions/checkout@v4
 
@@ -170,6 +172,7 @@ jobs:
         env:
           SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
           SHOPIFY_ADMIN_API_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+          SHOPIFY_API_VERSION: ${{ env.SHOPIFY_API_VERSION }}
 
       - name: Notify on successful deploy
         if: success()
