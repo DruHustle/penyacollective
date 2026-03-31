@@ -691,7 +691,7 @@
         "section_width": "page-width",
         "gap": 20,
         "color_scheme": "scheme-2",
-        "padding-block-start": 40,
+        "padding-block-start": 80,
         "padding-block-end": 80
       }
     },
@@ -811,8 +811,8 @@
         "custom_liquid": "{% render 'designer-grid' %}",
         "color_scheme": "scheme-2",
         "section_width": "page-width",
-        "padding-block-start": 80,
-        "padding-block-end": 80
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     },
     "designers_journal_divider": {
@@ -987,7 +987,7 @@
         "divider_div_5"
       ],
       "settings": {
-        "movement_direction": "reverse",
+        "movement_direction": "forward",
         "color_scheme": "scheme-1",
         "padding-block-start": 24,
         "padding-block-end": 24,
