@@ -44,7 +44,11 @@ const pageHasArticleJsonLd = async (page) => {
   return false;
 };
 
-const goto = async (page, path) => {
+const RETRYABLE_STATUS_CODES = new Set([502, 503, 504]);
+
+const goto = async (page, path, options = {}) => {
+  const { maxAttempts = 3 } = options;
+
   // Klaviyo's onsite embed is a Shopify App Embed (served from cdn.shopify.com),
   // so URL blocking alone won't reach it, and a MutationObserver loses the race
   // when Klaviyo re-inserts its popup after removal.
@@ -69,8 +73,21 @@ const goto = async (page, path) => {
     } catch (_) {}
   });
 
-  const response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
-  await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
+  let response = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    response = await page.goto(path, { waitUntil: 'commit', timeout: 60_000 });
+    await page.locator('body').waitFor({ state: 'attached', timeout: 60_000 });
+
+    if (!response || !RETRYABLE_STATUS_CODES.has(response.status())) {
+      return response;
+    }
+
+    if (attempt < maxAttempts) {
+      await page.waitForTimeout(attempt * 1_500);
+    }
+  }
+
   return response;
 };
 
@@ -168,6 +185,37 @@ test.describe('Homepage', () => {
 
   test('Shop In-House collections section is visible', async ({ page }) => {
     await expect(page.getByText(/Shop (?:In-House|the House)/i)).toBeVisible();
+  });
+
+  test('trust band surfaces core service assurances', async ({ page }) => {
+    const trustBand = page.locator('[data-testid="penya-trust-band"]');
+    await expect(trustBand).toBeVisible();
+    await expect(trustBand.locator('.penya-trust-band__item')).toHaveCount(4);
+    await expect(trustBand.getByText(/14-day returns/i)).toBeVisible();
+    await expect(trustBand.getByText(/1.?2 business days/i)).toBeVisible();
+
+    const trustItemLinks = trustBand.locator('.penya-trust-band__item-link');
+    await expect(trustItemLinks).toHaveCount(4);
+    await expect(trustItemLinks.nth(0)).toHaveAttribute('href', '/pages/shipping');
+    await expect(trustItemLinks.nth(1)).toHaveAttribute('href', '/pages/shipping');
+    await expect(trustItemLinks.nth(2)).toHaveAttribute('href', '/pages/faq');
+    await expect(trustItemLinks.nth(3)).toHaveAttribute('href', '/pages/contact');
+  });
+
+  test('social proof section highlights collective recognition', async ({ page }) => {
+    const proof = page.locator('[data-testid="penya-social-proof"]');
+    await expect(proof).toBeVisible();
+    await expect(proof.locator('.penya-social-proof__card')).toHaveCount(3);
+    await expect(proof.getByRole('link', { name: /meet the collective/i })).toHaveAttribute('href', '/pages/designer');
+
+    const profileLinks = proof.locator('.penya-social-proof__card-link');
+    const count = await profileLinks.count();
+    expect(count).toBeGreaterThanOrEqual(3);
+
+    for (let i = 0; i < count; i++) {
+      const href = await profileLinks.nth(i).getAttribute('href');
+      expect(href).toMatch(/^\/pages\/designer-/);
+    }
   });
 
   test('header shows the localization currency control', async ({ page }) => {

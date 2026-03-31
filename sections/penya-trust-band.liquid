@@ -1,0 +1,335 @@
+{%- comment -%}
+  Compact homepage trust band.
+
+  Dependency mapping:
+  - Theme settings: support email and WhatsApp details
+  - Section blocks: service cards for returns, delivery, payment, and client care
+{%- endcomment -%}
+
+{% liquid
+  assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
+  assign support_whatsapp_greeting = settings.penya_support_whatsapp_greeting | default: 'Hello Penya, I need help with sizing and ordering.'
+  assign support_whatsapp_message = support_whatsapp_greeting | url_encode
+  assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number | append: '?text=' | append: support_whatsapp_message
+%}
+
+<section class="penya-trust-band color-{{ section.settings.color_scheme }}" data-testid="penya-trust-band">
+  <div class="page-width penya-trust-band__inner">
+    <div class="penya-trust-band__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="penya-trust-band__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="penya-trust-band__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.settings.copy != blank %}
+        <div class="penya-trust-band__copy rte">
+          {{ section.settings.copy }}
+        </div>
+      {% endif %}
+
+      <div class="penya-trust-band__links">
+        <a href="/pages/shipping" class="penya-trust-band__text-link">Shipping & returns</a>
+        <a href="/pages/contact" class="penya-trust-band__text-link">Contact client care</a>
+        <a href="{{ support_whatsapp_url }}" class="penya-trust-band__text-link" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+      </div>
+    </div>
+
+    <div class="penya-trust-band__grid">
+      {% for block in section.blocks %}
+        {% liquid
+          assign block_link = block.settings.link
+          assign fallback_copy = block.settings.label | append: ' ' | append: block.settings.heading | downcase
+
+          if block_link == blank
+            if fallback_copy contains 'return'
+              assign block_link = '/pages/shipping'
+            elsif fallback_copy contains 'deliver' or fallback_copy contains 'dispatch' or fallback_copy contains 'shipping'
+              assign block_link = '/pages/shipping'
+            elsif fallback_copy contains 'payment'
+              assign block_link = '/pages/faq'
+            elsif fallback_copy contains 'client care' or fallback_copy contains 'support'
+              assign block_link = '/pages/contact'
+            endif
+          endif
+        %}
+
+        <article class="penya-trust-band__item" {{ block.shopify_attributes }}>
+          {% if block.settings.label != blank %}
+            <p class="penya-trust-band__item-label">{{ block.settings.label }}</p>
+          {% endif %}
+
+          {% if block.settings.heading != blank %}
+            <h3 class="penya-trust-band__item-heading">{{ block.settings.heading }}</h3>
+          {% endif %}
+
+          {% if block.settings.copy != blank %}
+            <p class="penya-trust-band__item-copy">{{ block.settings.copy }}</p>
+          {% endif %}
+
+          {% if block.settings.link_label != blank and block_link != blank %}
+            <a href="{{ block_link }}" class="penya-trust-band__item-link"{% if block.settings.open_in_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+              {{ block.settings.link_label }}
+            </a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .penya-trust-band {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at top left, rgb(var(--color-primary-rgb) / 0.08), transparent 30%),
+      linear-gradient(180deg, rgb(var(--color-background-rgb)) 0%, rgb(var(--color-foreground-rgb) / 0.025) 100%);
+  }
+
+  .penya-trust-band__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.45fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .penya-trust-band__intro {
+    max-width: 26rem;
+  }
+
+  .penya-trust-band__eyebrow {
+    margin: 0 0 0.85rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.75rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .penya-trust-band__heading {
+    margin: 0 0 0.9rem;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.9rem, 4vw, 3.2rem);
+    line-height: 1;
+    text-wrap: balance;
+    color: var(--color-foreground-heading);
+  }
+
+  .penya-trust-band__copy {
+    color: rgb(var(--color-foreground-rgb) / 0.78);
+    line-height: 1.75;
+  }
+
+  .penya-trust-band__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .penya-trust-band__text-link,
+  .penya-trust-band__item-link {
+    color: var(--color-foreground);
+    text-decoration: none;
+    font-family: var(--font-subheading--family);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
+    padding-bottom: 0.2rem;
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+
+  .penya-trust-band__text-link:hover,
+  .penya-trust-band__item-link:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .penya-trust-band__text-link:focus-visible,
+  .penya-trust-band__item-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 4px;
+    border-color: var(--color-primary);
+  }
+
+  .penya-trust-band__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .penya-trust-band__item {
+    min-height: 12.5rem;
+    padding: 1.4rem;
+    border: 1px solid rgb(var(--color-foreground-rgb) / 0.09);
+    background:
+      linear-gradient(180deg, rgb(var(--color-background-rgb) / 0.94) 0%, rgb(var(--color-foreground-rgb) / 0.035) 100%);
+    backdrop-filter: blur(8px);
+  }
+
+  .penya-trust-band__item-label {
+    margin: 0 0 0.7rem;
+    font-family: var(--font-subheading--family);
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  .penya-trust-band__item-heading {
+    margin: 0 0 0.7rem;
+    font-family: var(--font-heading--family);
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.25;
+    color: var(--color-foreground-heading);
+    text-wrap: balance;
+  }
+
+  .penya-trust-band__item-copy {
+    margin: 0 0 1rem;
+    color: rgb(var(--color-foreground-rgb) / 0.76);
+    line-height: 1.65;
+  }
+
+  @media screen and (max-width: 989px) {
+    .penya-trust-band__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .penya-trust-band__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .penya-trust-band__item {
+      min-height: auto;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Penya trust band",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Client care"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Luxury should feel clear from the first click."
+    },
+    {
+      "type": "richtext",
+      "id": "copy",
+      "label": "Copy",
+      "default": "<p>Everything around the purchase is designed to feel calm, transparent, and personal — from eligible returns to direct sizing help.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "service",
+      "name": "Service card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Returns"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "14-day returns on eligible pieces"
+        },
+        {
+          "type": "textarea",
+          "id": "copy",
+          "label": "Copy",
+          "default": "Unworn items can be returned within 14 days of delivery. Custom and final-sale pieces are excluded."
+        },
+        {
+          "type": "text",
+          "id": "link_label",
+          "label": "Link label",
+          "default": "View details"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_in_new_tab",
+          "label": "Open in new tab",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Penya trust band",
+      "blocks": [
+        {
+          "type": "service",
+          "settings": {
+            "label": "Returns",
+            "heading": "14-day returns on eligible pieces",
+            "copy": "Unworn items can be returned within 14 days of delivery. Custom and final-sale pieces are excluded.",
+            "link_label": "View details"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "label": "Delivery",
+            "heading": "Catalog orders dispatch in 1–2 business days",
+            "copy": "We ship worldwide from Heidelberg and share tracking as soon as your piece leaves the warehouse.",
+            "link_label": "Shipping details"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "label": "Payments",
+            "heading": "Secure checkout with major payment methods",
+            "copy": "Your final total, market currency, and available payment methods are confirmed before you pay.",
+            "link_label": "Payment FAQ"
+          }
+        },
+        {
+          "type": "service",
+          "settings": {
+            "label": "Client care",
+            "heading": "Human support by email and WhatsApp",
+            "copy": "Need sizing, gifting, or bespoke help? Penya client care will guide you directly.",
+            "link_label": "Contact client care"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
