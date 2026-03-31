@@ -143,6 +143,40 @@
     .penya-designers { padding-block: 60px; }
     .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   }
+
+  /* ── Designer section marquee divider ────────────────────────────── */
+  .penya-designers-divider {
+    /* Break out of the page-width container to span the full viewport */
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    overflow: hidden;
+    padding-block: 1.5rem;
+  }
+  .penya-designers-divider__track {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    white-space: nowrap;
+    width: max-content;
+    /* Scrolls left-to-right — opposite direction from the top brand marquee */
+    animation: penya-divider-forward 40s linear infinite;
+  }
+  @keyframes penya-divider-forward {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0%);   }
+  }
+  .penya-designers-divider__item {
+    font-family: var(--font-heading--family);
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+  }
+  .penya-designers-divider__sep {
+    opacity: 0.35;
+    font-size: 0.6rem;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .penya-designers-divider__track { animation: none; }
+  }
 </style>
 
 <div class="penya-designers">
@@ -263,6 +297,23 @@
 
     {% endif %}
 
+  </div>
+</div>
+
+<div class="penya-designers-divider color-scheme-1" aria-hidden="true">
+  <div class="penya-designers-divider__track">
+    {%- for i in (1..2) -%}
+      <span class="penya-designers-divider__item">The Collective</span>
+      <span class="penya-designers-divider__sep">◆</span>
+      <span class="penya-designers-divider__item">Start with the Story</span>
+      <span class="penya-designers-divider__sep">◆</span>
+      <span class="penya-designers-divider__item">Shop the Pieces</span>
+      <span class="penya-designers-divider__sep">◆</span>
+      <span class="penya-designers-divider__item">Craft Meets Culture</span>
+      <span class="penya-designers-divider__sep">◆</span>
+      <span class="penya-designers-divider__item">Stories Worth Wearing</span>
+      <span class="penya-designers-divider__sep">◆</span>
+    {%- endfor -%}
   </div>
 </div>
 
