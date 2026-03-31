@@ -23,8 +23,10 @@
   set up yet. Run scripts/setup-designer-metaobjects.mjs once to migrate to
   the admin-managed approach.
 
-  NOTE: The section heading ("Six Designers. One Shared Light.") is static
-  branding copy. If the designer count changes significantly, update it here.
+  When all designers are Hidden and metaobjects are active, this snippet
+  outputs nothing — the surrounding section collapses to zero height.
+
+  NOTE: The section heading is static branding copy editable directly in this file.
 {%- endcomment -%}
 
 {% liquid
@@ -46,7 +48,17 @@
   endunless
 %}
 
+{%- comment -%}
+  Only render when there is content to show.
+  When use_metaobjects is true but designers is empty (all Hidden), output
+  nothing so the surrounding section collapses cleanly.
+{%- endcomment -%}
+{% if use_metaobjects == false or designers.size > 0 %}
+
 <style>
+  .penya-designers {
+    padding-block: 80px;
+  }
   .penya-designers__header {
     margin-bottom: 2rem;
   }
@@ -127,7 +139,8 @@
   @media (max-width: 989px) {
     .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   }
-  @media (max-width: 480px) {
+  @media (max-width: 749px) {
+    .penya-designers { padding-block: 60px; }
     .penya-designers__grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   }
 </style>
@@ -135,7 +148,7 @@
 <div class="penya-designers">
   <div class="penya-designers__header">
     <p class="penya-designers__eyebrow">Meet the Collective</p>
-    <h2 class="penya-designers__heading">Six Designers. One Shared Light.</h2>
+    <h2 class="penya-designers__heading">The Collective. One Shared Light.</h2>
     <p class="penya-designers__subtext">Each designer brings a distinct language of heritage, craft, and modern African style. Start with the story, then shop the pieces.</p>
   </div>
 
@@ -252,3 +265,5 @@
 
   </div>
 </div>
+
+{% endif %}
