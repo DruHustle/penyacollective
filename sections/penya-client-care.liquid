@@ -11,7 +11,6 @@
   assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
   assign support_whatsapp_display = settings.penya_support_whatsapp_display | default: '+49 1514 7416152'
   assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number
-  assign support_mailto = 'mailto:' | append: support_email
 
   assign primary_link = section.settings.primary_link
   assign secondary_link = section.settings.secondary_link
@@ -20,7 +19,7 @@
   assign whatsapp_text = section.settings.whatsapp_text
 
   if primary_link == blank or primary_link == 'mailto:info@penya.africa'
-    assign primary_link = support_mailto
+    assign primary_link = '/pages/contact'
   endif
 
   if secondary_link == blank or secondary_link == 'https://wa.me/4915147416152'
@@ -80,9 +79,28 @@
 
     <div class="penya-client-care__cards">
       {% if email_address != blank %}
+        {%- liquid
+          assign email_parts = email_address | split: '@'
+          assign email_local = email_parts[0]
+          assign email_domain = email_parts[1]
+        -%}
         <article class="penya-client-care__card">
           <p class="penya-client-care__card-label">{{ section.settings.email_label }}</p>
-          <a href="mailto:{{ email_address }}" class="penya-client-care__card-link">{{ email_address }}</a>
+          <a href="/pages/contact"
+             class="penya-client-care__card-link penya-email-link"
+             data-u="{{ email_local | escape }}"
+             data-d="{{ email_domain | escape }}"
+          >
+            <noscript>Use the contact form</noscript>
+          </a>
+          <script>
+            (function () {
+              var a = document.currentScript.previousElementSibling;
+              var e = a.dataset.u + '\u0040' + a.dataset.d;
+              a.href = 'mailto:' + e;
+              a.textContent = e;
+            })();
+          </script>
           {% if section.settings.email_note != blank %}
             <p class="penya-client-care__card-copy">{{ section.settings.email_note }}</p>
           {% endif %}

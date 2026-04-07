@@ -222,8 +222,8 @@ const articles = [
     author: "Penya Collective",
     tags: "Journal,Heritage,Sustainability,Craftsmanship",
     image: { attachment: imageAttachment("blog-penya-collective.jpg"), filename: "penya-collective-zimbabwe-heritage-fashion.jpg" },
-    summary_html: "Born in Harare, built on heritage. We are a fashion house rooted in Zimbabwean artistry, sustainable values, and a deep commitment to the hands that make our work possible.",
-    body_html: "<p>Penya Collective was born from a belief that luxury and integrity are not opposites. Founded in Harare, we are a fashion house that draws its language from the soil, the craft, and the culture of Zimbabwe — and designs for those who want to wear meaning as much as beauty.</p><h3>Rooted in Heritage</h3><p>Zimbabwe has a rich visual and material tradition: woven textiles, intricate beadwork, bold pattern-making, and a design sensibility that is both grounded and luminous. Penya Collective exists to honour that tradition — not as a museum piece, but as a living, evolving practice. Every collection is informed by the codes and craft of our heritage, reinterpreted for the contemporary wardrobe.</p><h3>Working With Zimbabwean Artists & Designers</h3><p>We do not work in isolation. Penya Collective collaborates directly with skilled Zimbabwean artisans, makers, and designers — people whose hands and knowledge carry generations of craft. Our supply chain is built on relationship, not extraction. We believe that fashion at its best is a collective act, and every piece we produce reflects that spirit of collaboration and mutual respect.</p><h3>Sustainable by Design</h3><p>We produce in small batches — intentionally limited quantities that reduce excess, minimise waste, and ensure every piece receives the attention it deserves. Our materials are chosen with care: premium natural fibres including hemp, organic cotton, and responsibly sourced blends that offer durability, breathability, and a lower environmental footprint. We design for permanence. The most sustainable garment is the one you keep wearing.</p><h3>Timeless Over Trend</h3><p>Fast fashion relies on obsolescence. We reject that model entirely. Our silhouettes and craftsmanship are designed to remain relevant across seasons and years — pieces that grow with you, that hold their shape and their story over time. This is what radiant luxury means to us: not excess, but excellence. Not noise, but depth.</p><h3>A House Still Growing</h3><p>We are transparent about where we are still developing. Our work to improve supply chain documentation, expand certified material sourcing, and reduce our shipping footprint is ongoing. We welcome accountability from our community and are committed to improving with every collection.</p>",
+    summary_html: "Born between Harare and Heidelberg, built on heritage. We are a creative arts label and cultural platform rooted in Zimbabwean artistry, co-founded to make African creatives shine on the world stage.",
+    body_html: "<p>Penya was born from a belief that African creativity deserves a global stage. Co-founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg, and Courtney Matende, former Miss Gweru and journalist based in Zimbabwe — Penya is a creative arts label and cultural platform that draws its language from the soil, the craft, and the culture of Zimbabwe, and amplifies those who carry it forward.</p><h3>Rooted in Heritage</h3><p>Zimbabwe has a rich visual and material tradition: woven textiles, intricate beadwork, bold pattern-making, and a design sensibility that is both grounded and luminous. Penya Collective exists to honour that tradition — not as a museum piece, but as a living, evolving practice. Every collection is informed by the codes and craft of our heritage, reinterpreted for the contemporary wardrobe.</p><h3>Working With Zimbabwean Artists & Designers</h3><p>We do not work in isolation. Penya Collective collaborates directly with skilled Zimbabwean artisans, makers, and designers — people whose hands and knowledge carry generations of craft. Our supply chain is built on relationship, not extraction. We believe that fashion at its best is a collective act, and every piece we produce reflects that spirit of collaboration and mutual respect.</p><h3>Sustainable by Design</h3><p>We produce in small batches — intentionally limited quantities that reduce excess, minimise waste, and ensure every piece receives the attention it deserves. Our materials are chosen with care: premium natural fibres including hemp, organic cotton, and responsibly sourced blends that offer durability, breathability, and a lower environmental footprint. We design for permanence. The most sustainable garment is the one you keep wearing.</p><h3>Timeless Over Trend</h3><p>Fast fashion relies on obsolescence. We reject that model entirely. Our silhouettes and craftsmanship are designed to remain relevant across seasons and years — pieces that grow with you, that hold their shape and their story over time. This is what radiant luxury means to us: not excess, but excellence. Not noise, but depth.</p><h3>A House Still Growing</h3><p>We are transparent about where we are still developing. Our work to improve supply chain documentation, expand certified material sourcing, and reduce our shipping footprint is ongoing. We welcome accountability from our community and are committed to improving with every collection.</p>",
     published: true,
   },
   {
@@ -303,7 +303,7 @@ const pages = [
     handle: 'about',
     title: 'The Story of Penya Collective',
     templateSuffix: 'about',
-    bodyHtml: 'Born in the heart of Harare, Penya Collective is a premium fashion house dedicated to the art of radiance.',
+    bodyHtml: 'Penya is a creative arts label and cultural platform — born between Harare and Heidelberg, built to make African creatives shine.',
   },
   {
     handle: 'sustainability',
@@ -479,7 +479,7 @@ const policies = [
 <p>We accept returns within <strong>14 days of delivery</strong> for items that are unworn, unwashed, and in their original condition with all tags attached.</p>
 
 <h3>How to Start a Return</h3>
-<p>Email <a href="mailto:info@penya.africa">info@penya.africa</a> with your order number and the reason for your return. We will respond within one business day with return instructions.</p>
+<p><a href="/pages/contact">Contact us via our contact form</a> with your order number and the reason for your return. We will respond within one business day with return instructions.</p>
 
 <h3>Return Shipping</h3>
 <p>Return shipping costs are the responsibility of the customer unless the item is faulty or was sent incorrectly. We recommend using a tracked service as we cannot accept responsibility for items lost in transit.</p>
@@ -498,9 +498,9 @@ const policies = [
 </ul>
 
 <h3>Faulty Items</h3>
-<p>If you receive a faulty or incorrectly sent item, please contact us at <a href="mailto:info@penya.africa">info@penya.africa</a> within 48 hours of delivery. We will arrange a free return and replacement or full refund at no cost to you.</p>
+<p>If you receive a faulty or incorrectly sent item, please <a href="/pages/contact">contact us</a> within 48 hours of delivery. We will arrange a free return and replacement or full refund at no cost to you.</p>
 
-<p>For any questions, our team is available at <a href="mailto:info@penya.africa">info@penya.africa</a> or on WhatsApp at <a href="https://wa.me/4915147416152">+49 1514 7416152</a>.</p>`,
+<p>For any questions, <a href="/pages/contact">use our contact form</a> or message us on WhatsApp at <a href="https://wa.me/4915147416152">+49 1514 7416152</a>.</p>`,
   },
   {
     type: 'SHIPPING_POLICY',
@@ -529,13 +529,13 @@ Steinhofweg 47<br>
 69118 Heidelberg, Germany<br>
 Tel: <a href="tel:+4915147416152">+49 1514 7416152</a></p>
 
-<p>For shipping enquiries, email <a href="mailto:info@penya.africa">info@penya.africa</a>.</p>`,
+<p>For shipping enquiries, <a href="/pages/contact">use our contact form</a>.</p>`,
   },
   {
     type: 'TERMS_OF_SERVICE',
     body: `<h2>Terms and Conditions</h2>
 <p>These Terms and Conditions govern your use of the Penya Collective website and any purchase made through it. By accessing our website or placing an order, you agree to be bound by these terms. Please read them carefully before purchasing.</p>
-<p>Penya Collective operates from Heidelberg, Germany. For all enquiries: <a href="mailto:info@penya.africa">info@penya.africa</a>.</p>
+<p>Penya Collective operates from Heidelberg, Germany. For all enquiries, use our <a href="/pages/contact">contact page</a>.</p>
 
 <h3>Products and Pricing</h3>
 <p>Prices are displayed in the currency available for your selected market. We reserve the right to amend prices at any time without prior notice. The price applied to your order is the price confirmed at the time of checkout.</p>
@@ -564,7 +564,7 @@ Tel: <a href="tel:+4915147416152">+49 1514 7416152</a></p>
 <h3>Changes to These Terms</h3>
 <p>We may update these Terms and Conditions from time to time. Any changes will be posted on this page with an updated revision date. Continued use of our website after changes are posted constitutes your acceptance of the revised terms.</p>
 
-<p>Last updated: March 2026</p>`,
+<p>Last updated: April 2026</p>`,
   },
 ];
 

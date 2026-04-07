@@ -86,7 +86,7 @@
       endif
     elsif image_resource == blank
       assign fallback_groups = 'blog-penya-collective.jpg|blog-hemp.jpg|blog-ivhu.jpg|blog-penya-collective.jpg' | split: '|'
-      assign fallback_alts = 'Penya Collective Journal|Sustainability in Focus: Hemp Fabrics|Ivhu Tribe — Partner Spotlight|Penya Collective Journal' | split: '|'
+      assign fallback_alts = 'Penya Collective Journal|Sustainability in Focus: Hemp Fabrics|Penya Collective — Creative Spotlight|Penya Collective Journal' | split: '|'
       assign block_parts = parent_block_id | split: '-'
       assign content_index = block_parts.last | default: 0
       assign fallback_index = content_index | modulo: fallback_groups.size

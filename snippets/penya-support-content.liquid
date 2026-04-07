@@ -11,7 +11,8 @@
   assign rendered_content = rendered_content | replace: 'tel:+4915147416152', support_tel
   assign rendered_content = rendered_content | replace: 'https://wa.me/4915147416152', support_whatsapp_url
   assign rendered_content = rendered_content | replace: '+49 1514 7416152', support_whatsapp_display
-  assign rendered_content = rendered_content | replace: 'info@penya.africa', support_email
+  assign encoded_display = support_email | replace: '@', '&#64;' | replace: '.', '&#46;'
+  assign rendered_content = rendered_content | replace: 'info@penya.africa', encoded_display
 
   echo rendered_content
 -%}
