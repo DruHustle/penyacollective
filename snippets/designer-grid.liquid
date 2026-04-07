@@ -41,10 +41,10 @@
   endif
 
   unless use_metaobjects
-    assign designer_handles         = 'designer-ivhu-tribe|designer-a-tribe-called-zimbabwe|designer-feli-nandi|designer-haus-of-stone|designer-panashe|designer-by-bakari' | split: '|'
-    assign designer_fallback_titles = 'Ivhu Tribe|A Tribe Called Zimbabwe|Feli Nandi Apparels|Haus of Stone|Panashe Designs|By Bakari' | split: '|'
-    assign designer_fallback_assets = 'designer-ivhutribe.jpg|designer-atcz.jpg|designer-felinandi.jpg|designer-hausofstone.jpg|designer-panashe.jpg|designer-bybakari.jpg' | split: '|'
-    assign designer_countries       = 'Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe|Zimbabwe' | split: '|'
+    assign designer_handles         = '' | split: '|'
+    assign designer_fallback_titles = '' | split: '|'
+    assign designer_fallback_assets = '' | split: '|'
+    assign designer_countries       = '' | split: '|'
   endunless
 %}
 
@@ -53,7 +53,14 @@
   When use_metaobjects is true but designers is empty (all Hidden), output
   nothing so the surrounding section collapses cleanly.
 {%- endcomment -%}
-{% if use_metaobjects == false or designers.size > 0 %}
+{% assign should_render = false %}
+{% if use_metaobjects and designers.size > 0 %}
+  {% assign should_render = true %}
+{% endif %}
+{% if use_metaobjects == false and designer_handles.size > 0 %}
+  {% assign should_render = true %}
+{% endif %}
+{% if should_render %}
 
 <style>
   .penya-designers {
@@ -181,9 +188,9 @@
 
 <div class="penya-designers">
   <div class="penya-designers__header">
-    <p class="penya-designers__eyebrow">Meet the Collective</p>
+    <p class="penya-designers__eyebrow">Meet the Creatives</p>
     <h2 class="penya-designers__heading">The Collective. One Shared Light.</h2>
-    <p class="penya-designers__subtext">Each designer brings a distinct language of heritage, craft, and modern African style. Start with the story, then shop the pieces.</p>
+    <p class="penya-designers__subtext">Each creative brings a distinct language of heritage, art, and culture. Start with the story, then discover their work.</p>
   </div>
 
   <div class="penya-designers__grid">
@@ -218,7 +225,7 @@
         <a
           href="{{ designer_url }}"
           class="penya-designers__card"
-          aria-label="Read the story of {{ designer_name }}"
+          aria-label="Discover the work of {{ designer_name }}"
         >
           <div class="penya-designers__card-image">
             {% if hero_image_obj != blank %}
@@ -305,13 +312,13 @@
     {%- for i in (1..2) -%}
       <span class="penya-designers-divider__item">The Collective</span>
       <span class="penya-designers-divider__sep">◆</span>
-      <span class="penya-designers-divider__item">Start with the Story</span>
+      <span class="penya-designers-divider__item">Their Stories</span>
       <span class="penya-designers-divider__sep">◆</span>
-      <span class="penya-designers-divider__item">Shop the Pieces</span>
+      <span class="penya-designers-divider__item">African Creativity</span>
       <span class="penya-designers-divider__sep">◆</span>
-      <span class="penya-designers-divider__item">Craft Meets Culture</span>
+      <span class="penya-designers-divider__item">Culture Meets Art</span>
       <span class="penya-designers-divider__sep">◆</span>
-      <span class="penya-designers-divider__item">Stories Worth Wearing</span>
+      <span class="penya-designers-divider__item">Stories Worth Telling</span>
       <span class="penya-designers-divider__sep">◆</span>
     {%- endfor -%}
   </div>

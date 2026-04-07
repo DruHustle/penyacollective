@@ -1,6 +1,6 @@
 # Penya Collective — Shopify Theme
 
-Custom Shopify storefront for **Penya Collective**, a Harare-born luxury fashion house. Built on the Shopify Heritage theme (v3.4.0) with bespoke section configurations, brand content, and a CI/CD pipeline for automated deployment.
+Custom Shopify storefront for **Penya Collective**, a creative arts label and cultural platform born between Harare and Heidelberg. Built on the Shopify Heritage theme (v3.4.0) with bespoke section configurations, brand content, and a CI/CD pipeline for automated deployment.
 
 ---
 
@@ -298,5 +298,7 @@ All brand assets live in `/assets/`:
 - [ ] Configure **Social links** in the footer (Instagram, TikTok, Pinterest already set)
 - [ ] Connect **Mailchimp** or enable Shopify Email marketing
 - [ ] Set up **GitHub Secrets** for automated CI/CD deployment
+- [ ] Run `node scripts/setup-designer-metaobjects.mjs` to create the **Designer** metaobject definition — required for the creatives grid on the homepage to render
+- [ ] Add creatives via Shopify Admin → Content → Metaobjects → Designer
 - [ ] Add products and collections to the store
 - [ ] Review and publish the theme from Shopify Admin → Online Store → Themes

@@ -56,7 +56,7 @@
   {% endif %}
 
   {% if row_blocks.size > 0 %}
-    <div class="fit-guide__size-table" data-support-email="{{ support_email | escape }}">
+    <div class="fit-guide__size-table" data-support-email="{{ support_email | replace: '@', '&#64;' }}">
       {% if section.settings.table_heading != blank %}
         <h3 class="fit-guide__table-heading">{{ section.settings.table_heading }}</h3>
       {% endif %}
@@ -741,7 +741,7 @@
       const tableEl = tableSection && tableSection.querySelector('.fit-guide__table');
       const supportEmail = tableSection && tableSection.dataset.supportEmail
         ? tableSection.dataset.supportEmail
-        : 'info@penya.africa';
+        : ['info', 'penya.africa'].join('\u0040');
 
       if (!btn || !tableEl) return;
 

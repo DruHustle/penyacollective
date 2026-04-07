@@ -39,7 +39,7 @@
         "hero_tagline": {
           "type": "text",
           "settings": {
-            "text": "<p>Rooted in Heritage. Designed to Shine.</p>",
+            "text": "<p>Rooted in Heritage. Built to Shine.</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -141,7 +141,7 @@
         "marquee_text_2": {
           "type": "text",
           "settings": {
-            "text": "<p>Designed to Shine</p>",
+            "text": "<p>Built to Shine</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -172,7 +172,7 @@
         "marquee_text_3": {
           "type": "text",
           "settings": {
-            "text": "<p>Zimbabwean Artistry</p>",
+            "text": "<p>African Creativity</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -203,7 +203,7 @@
         "marquee_text_4": {
           "type": "text",
           "settings": {
-            "text": "<p>Premium Craftsmanship</p>",
+            "text": "<p>Cultural Exchange</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -234,7 +234,7 @@
         "marquee_text_5": {
           "type": "text",
           "settings": {
-            "text": "<p>Radiant Luxury</p>",
+            "text": "<p>Stories Worth Telling</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -289,7 +289,7 @@
         "mission_eyebrow": {
           "type": "text",
           "settings": {
-            "text": "<p>Rooted in Harare</p>",
+            "text": "<p>Born Between Harare &amp; Heidelberg</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "center",
@@ -313,7 +313,7 @@
         "mission_text": {
           "type": "text",
           "settings": {
-            "text": "<p>Penya is a curated stage for designers whose work carries heritage, craft, and an unmistakable point of view.</p>",
+            "text": "<p>Penya is a creative arts label and cultural platform — a curated stage for artists and creatives whose work carries heritage, culture, and an unmistakable point of view.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
@@ -444,7 +444,7 @@
         "pillar_heritage": {
           "type": "text",
           "settings": {
-            "text": "<p>Heritage</p><h3>Rooted in Zimbabwe</h3><p>Our name, Penya, derives from the Shona word <em>kupenya</em> — to shine, to glow, to be polished. Every piece honours the craft traditions of Harare and carries that light forward.</p>",
+            "text": "<p>Culture</p><h3>Rooted in Zimbabwe</h3><p>Our name, Penya, derives from the Shona word <em>kupenya</em> — to shine, to glow, to break through into the light. Every creative on this platform carries that light forward.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -468,7 +468,7 @@
         "pillar_craft": {
           "type": "text",
           "settings": {
-            "text": "<p>Craftsmanship</p><h3>Made with Intention</h3><p>Collaborating with Zimbabwean artisans and skilled tailors, we produce garments in small runs — each one hand-finished to a standard that is uncompromising and unmistakably ours.</p>",
+            "text": "<p>The Platform</p><h3>Made for Creatives</h3><p>We give artists and creatives the infrastructure, the audience, and the reach they deserve — without flattening what makes their work distinct. The platform is the canvas. The creatives paint it.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -492,7 +492,7 @@
         "pillar_sustainability": {
           "type": "text",
           "settings": {
-            "text": "<p>Sustainability</p><h3>A Considered Practice</h3><p>We prioritise premium, long-lasting materials, fair wages, and low-impact production. Luxury, to us, means building something worth keeping — for years, not seasons.</p>",
+            "text": "<p>Cultural Exchange</p><h3>Two Continents, One Mandate</h3><p>Built across Harare and Heidelberg by Andrew Gotora and Courtney Matende. Two continents. One mandate: to make African creatives shine on the world stage.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -701,7 +701,7 @@
         "newsletter_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Wear the Glow First.</h2>",
+            "text": "<h2>Be Part of the Glow.</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -725,7 +725,7 @@
         "newsletter_text": {
           "type": "text",
           "settings": {
-            "text": "<p>New arrivals, behind-the-scenes stories, and exclusive access — straight to your inbox.</p>",
+            "text": "<p>New creatives, behind-the-scenes stories, and exclusive access — straight to your inbox.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",

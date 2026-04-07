@@ -16,12 +16,12 @@
         "hero_image_alt": "Penya Collective editorial portrait in monochrome",
         "eyebrow": "Our Story",
         "heading": "Every Glow Has a Story.",
-        "copy": "<p>Born in Harare. Built to make every designer in Africa shine.</p>",
-        "button_label": "Meet the Collective",
+        "copy": "<p>Born between Harare and Heidelberg. Built to make every creative in Africa shine.</p>",
+        "button_label": "Meet the Creatives",
         "button_link": "/",
-        "note_one": "Founded in Harare",
-        "note_two": "Collective-first",
-        "note_three": "Small-batch craftsmanship",
+        "note_one": "Co-founded across two continents",
+        "note_two": "Creatives-first",
+        "note_three": "Cultural exchange platform",
         "color_scheme": "scheme-2"
       }
     },
@@ -31,7 +31,7 @@
         "concept": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Name</h3><p>Our name comes from the Shona word <em>kupenya</em> — to shine, to glow, to be polished. But Penya was never built around a single glow. It was built to amplify many. We are a collective: a curated stage for designers across Africa and its diaspora, each with a distinct voice, a rooted story, and something the world needs to see.</p>",
+            "text": "<h3>The Name</h3><p>Our name comes from the Shona word <em>kupenya</em> — to shine, to glow, to break through into the light. Penya was never built around a single glow. It was built to amplify many. We are a creative arts label and cultural platform: a curated stage for artists, designers, and makers across Africa and its diaspora — each with a distinct voice, a rooted story, and something the world needs to see.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -55,7 +55,7 @@
         "vision": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Mission</h3><p>Africa has always produced extraordinary designers. What it has not always had is the infrastructure to make them fully visible. That is the gap Penya exists to close. We do not dictate an aesthetic — we build a platform. We provide the stage, the curation, and the reach. The designers bring everything else.</p>",
+            "text": "<h3>The Mission</h3><p>Africa has always produced extraordinary artists and creatives. What it has not always had is the infrastructure to make them fully visible to the world. That is the gap Penya exists to close. We are not a gallery, not a boutique, not a marketplace — we are a label. We carry the stories, amplify the voices, and build the bridges between African creative excellence and global audiences. The creatives bring everything else.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -79,7 +79,7 @@
         "collective": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Designers</h3><p>Every designer in the Penya Collective carries something that cannot be replicated — not just an aesthetic, but a worldview. Jasper Mandizera of Ivhu Tribe sees fashion as soil and memory. Danayi Chapfika of Haus of Stone sees it as architecture. Feli Nandi hears it as music. Chipo Hwami of Panashe wears it as armour. Bakari Sibanda builds it as a bridge between worlds. We do not flatten those differences. We amplify them. Each story matters to us — not as a marketing angle, but as the whole point.</p>",
+            "text": "<h3>The Founders</h3><p>Penya was co-founded by Andrew Gotora, an engineer based in Heidelberg, Germany, and Courtney Matende, a journalist and former model based in Zimbabwe. Andrew is an Afrika Kommt fellow and the founder of Diaspora Unlocked — a platform connecting Zimbabwean farmers, businesses, and entrepreneurs to international opportunities and investors. Courtney is a former Miss Gweru and a journalist who has spent her career telling African stories with depth and care. Together, they built Penya with a simple mandate: to make African creatives shine.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -103,7 +103,7 @@
         "promise": {
           "type": "text",
           "settings": {
-            "text": "<h3>Our Responsibility</h3><p>To be Penya is to be intentional — about materials, about people, about the world we leave behind. We produce in small batches from fabrics chosen for durability and conscience: natural fibres that breathe, last, and do less harm. We pay fair wages to every artisan in our supply chain. We design for longevity, not seasons — because the most responsible garment is the one you wear for a decade. That is the exchange we ask you to make with us.</p>",
+            "text": "<h3>Our Commitment</h3><p>To be Penya is to be intentional — about who we platform, why we platform them, and how their stories reach the world. We believe African creativity is not a niche. It is a force. Our role is to provide the infrastructure, the reach, and the trust that allows artists and creatives to focus on what they do best: making work that matters. Every creative on Penya was chosen because their work carries something irreplaceable.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -189,7 +189,7 @@
         "pillars_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>The Pillars of Penya</h2>",
+            "text": "<h2>What Penya Stands For</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -249,7 +249,7 @@
         "pillar_1": {
           "type": "text",
           "settings": {
-            "text": "<h3>01 — Heritage</h3><p>Zimbabwe is a land of profound craftsmanship and living stories. We are stewards of that legacy — weaving ancestral narratives into the fabric of contemporary luxury without reducing either.</p>",
+            "text": "<h3>01 — Culture</h3><p>Zimbabwe is a land of living stories, ancestral craftsmanship, and creative brilliance that has always deserved a global stage. We are stewards of that legacy — not as a museum, but as a launchpad for the artists who carry it forward.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -273,7 +273,7 @@
         "pillar_2": {
           "type": "text",
           "settings": {
-            "text": "<h3>02 — The Collective</h3><p>Six designers. Six distinct voices. One stage. We do not define what African fashion should look like — we give space for each designer's answer to that question. Their stories are the collection.</p>",
+            "text": "<h3>02 — The Platform</h3><p>Penya is not a single brand. It is a stage. We give artists and creatives the infrastructure, the visibility, and the audience they deserve — without flattening what makes each of them distinct. Their stories are the platform.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -297,7 +297,7 @@
         "pillar_3": {
           "type": "text",
           "settings": {
-            "text": "<h3>03 — Craftsmanship</h3><p>Every garment is produced in small runs, hand-finished with precision, and made to outlast the season it was designed in. We collaborate with skilled artisans who share our standard for excellence.</p>",
+            "text": "<h3>03 — The Founders</h3><p>Penya was co-founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg, and Courtney Matende, former Miss Gweru and journalist based in Zimbabwe. Built across two continents, driven by one shared belief: African creativity deserves a global audience.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -321,7 +321,7 @@
         "pillar_4": {
           "type": "text",
           "settings": {
-            "text": "<h3>04 — Sustainability</h3><p>We care where things come from and what they leave behind. Natural fibres, small-batch production, fair wages, and packaging without excess. Luxury that does not cost the world its future.</p>",
+            "text": "<h3>04 — Cultural Exchange</h3><p>We believe creativity is the most powerful form of cultural exchange. When the world engages with African art, fashion, and craft, it does not just discover a product — it enters a conversation. That conversation is what Penya was built to start.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -383,7 +383,7 @@
         "cta_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Find the Piece That Carries Your Story.</h2>",
+            "text": "<h2>Find the Creative That Speaks to You.</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -407,7 +407,7 @@
         "cta_text": {
           "type": "text",
           "settings": {
-            "text": "<p>Every designer here woke up one day and decided their culture was worth fighting for. Their work is proof. Find the piece that carries their light — and yours.</p>",
+            "text": "<p>Every artist and creative on this platform woke up one day and decided their culture was worth fighting for. Their work is proof. Find the piece that carries their light — and yours.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
