@@ -63,7 +63,7 @@
         "hero_button": {
           "type": "button",
           "settings": {
-            "label": "Shop the Collection",
+            "label": "Support the Creatives",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
             "style_class": "button",
@@ -313,7 +313,7 @@
         "mission_text": {
           "type": "text",
           "settings": {
-            "text": "<p>Penya is a creative arts label and cultural platform — a curated stage for artists and creatives whose work carries heritage, culture, and an unmistakable point of view.</p>",
+            "text": "<p>Penya is a creative arts label and cultural platform. Every piece you buy directly supports an African creative. That is the exchange — and it is the whole point.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
@@ -433,8 +433,8 @@
       ],
       "settings": {
         "eyebrow": "Client care",
-        "heading": "Luxury should feel clear from the first click.",
-        "copy": "<p>Everything around the purchase is designed to feel calm, transparent, and personal — from eligible returns to direct sizing help.</p>",
+        "heading": "Supporting a creative should feel clear from the first click.",
+        "copy": "<p>Every purchase goes directly to supporting an African creative. Everything around that transaction is designed to feel calm, transparent, and personal.</p>",
         "color_scheme": "scheme-1"
       }
     },
@@ -553,7 +553,7 @@
         "collections_eyebrow": {
           "type": "text",
           "settings": {
-            "text": "<p>Penya Collective</p>",
+            "text": "<p>Support Their Work</p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -577,7 +577,7 @@
         "collections_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Shop the House</h2>",
+            "text": "<h2>Own the Work</h2>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",
@@ -633,7 +633,7 @@
         "static-blog-title": {
           "type": "_featured-blog-posts-title",
           "settings": {
-            "text": "<p>Journal</p><h2>Behind the Scenes</h2>",
+            "text": "<p>Journal</p><h2>The Stories Behind the Work</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -701,7 +701,7 @@
         "newsletter_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Be Part of the Glow.</h2>",
+            "text": "<h2>Support New Work First.</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -725,7 +725,7 @@
         "newsletter_text": {
           "type": "text",
           "settings": {
-            "text": "<p>New creatives, behind-the-scenes stories, and exclusive access — straight to your inbox.</p>",
+            "text": "<p>New work, creative stories, and early access to support the artists before anyone else — straight to your inbox.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
