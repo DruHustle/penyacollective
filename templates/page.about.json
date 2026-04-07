@@ -383,7 +383,7 @@
         "cta_heading": {
           "type": "text",
           "settings": {
-            "text": "<h2>Find the Creative That Speaks to You.</h2>",
+            "text": "<h2>Find the Work That Speaks to You.</h2>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "center",
@@ -407,7 +407,7 @@
         "cta_text": {
           "type": "text",
           "settings": {
-            "text": "<p>Every artist and creative on this platform woke up one day and decided their culture was worth fighting for. Their work is proof. Find the piece that carries their light — and yours.</p>",
+            "text": "<p>Every artist and creative on this platform woke up one day and decided their culture was worth fighting for. Their work is proof. When you buy a piece, you are not just acquiring an object — you are supporting a practice, a story, and a creative who chose to shine. Find the work that carries their light — and yours.</p>",
             "width": "100%",
             "max_width": "narrow",
             "alignment": "center",
@@ -431,7 +431,7 @@
         "cta_button": {
           "type": "button",
           "settings": {
-            "label": "Shop All Collections",
+            "label": "Support the Creatives",
             "link": "shopify://collections/all",
             "open_in_new_tab": false,
             "style_class": "button",

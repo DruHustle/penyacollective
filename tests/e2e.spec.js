@@ -179,7 +179,7 @@ test.describe('Homepage', () => {
   });
 
   test('newsletter section has updated copy', async ({ page }) => {
-    await expect(page.getByText(/Be Part of the Glow/i)).toBeVisible();
+    await expect(page.getByText(/Support New Work First/i)).toBeVisible();
   });
 
   test('Shop In-House collections section is visible', async ({ page }) => {
