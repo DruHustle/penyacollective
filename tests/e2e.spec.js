@@ -357,8 +357,11 @@ test.describe('Journal', () => {
       const backLink = journalPage.getByRole('link', { name: /← Journal/i });
       await expect(backLink).toBeVisible();
 
-      await expect(journalPage.getByText(/Stay in the Glow/i)).toBeVisible();
-      await expect(journalPage.locator('input[type="email"]').last()).toBeVisible();
+      const newsletterSection = journalPage.locator('.section').filter({
+        has: journalPage.getByText(/Stay in the Glow/i),
+      }).first();
+      await expect(newsletterSection.getByText(/Stay in the Glow/i)).toBeVisible();
+      await expect(newsletterSection.locator('.email-signup__form input[name="contact[email]"]').first()).toBeVisible();
 
       const content = journalPage.locator('.blog-post-content').first();
       await expect(content).toBeVisible();
