@@ -139,7 +139,7 @@ test.describe('Homepage', () => {
 
   test('primary hero CTA is visible and works', async ({ page }) => {
     const hero = page.locator('.hero-section, [class*="hero"]').first();
-    const cta = hero.getByRole('link', { name: /support the creatives|shop the collection/i });
+    const cta = hero.getByRole('link', { name: /explore the collection|support the creatives|shop the collection/i });
     await expect(cta).toBeVisible();
     const response = await page.request.get(await cta.getAttribute('href'));
     expect(response.status()).toBe(200);
