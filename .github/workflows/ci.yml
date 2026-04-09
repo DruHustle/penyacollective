@@ -97,10 +97,21 @@ jobs:
 
           echo "⚠️  E2E secrets missing outside main — preview-theme tests will be skipped"
 
+      - name: Install Shopify CLI
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
+        run: npm install -g @shopify/cli@latest
+
+      - name: Validate preview theme access
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
+        env:
+          SHOPIFY_THEME_ID_TO_CHECK: ${{ secrets.SHOPIFY_DEV_THEME_ID }}
+          SHOPIFY_THEME_SECRET_NAME: SHOPIFY_DEV_THEME_ID
+          SHOPIFY_THEME_LABEL: preview theme
+        run: bash scripts/check-shopify-theme-access.sh
+
       - name: Push to dev/preview theme
         if: steps.e2e_secrets.outputs.secrets_ok == 'true'
         run: |
-          npm install -g @shopify/cli@latest
           shopify theme push \
             --store "$SHOPIFY_STORE_DOMAIN" \
             --theme "$SHOPIFY_DEV_THEME_ID" \
@@ -154,6 +165,13 @@ jobs:
 
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest
+
+      - name: Validate live theme access
+        env:
+          SHOPIFY_THEME_ID_TO_CHECK: ${{ secrets.SHOPIFY_THEME_ID }}
+          SHOPIFY_THEME_SECRET_NAME: SHOPIFY_THEME_ID
+          SHOPIFY_THEME_LABEL: live theme
+        run: bash scripts/check-shopify-theme-access.sh
 
       - name: Push to live theme
         run: |
