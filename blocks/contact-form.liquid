@@ -5,6 +5,7 @@
 {% endcapture %}
 
 <div
+  id="penya-contact-form"
   class="
     contact-form
     spacing-style size-style
@@ -17,12 +18,14 @@
   {{ block.shopify_attributes }}
 >
   {% assign form_id = block.id | default: section.id | prepend: 'ContactForm-' %}
-  {%- form 'contact', id: form_id, class: 'contact-form__form' -%}
+  {%- form 'contact', id: form_id, class: 'contact-form__form', data-testid: 'contact-form' -%}
     <input
       name="contact[id]"
       type="hidden"
       value="{{ form_id }}"
     >
+
+    {% render 'penya-form-guard', form_id: form_id %}
 
     {%- if form.errors and form.id == form_id -%}
       <div

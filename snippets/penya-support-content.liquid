@@ -6,8 +6,10 @@
   assign support_mailto = 'mailto:' | append: support_email
   assign support_tel = 'tel:+' | append: support_whatsapp_number
   assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number
+  assign support_contact_url = '/pages/contact#penya-contact-form'
 
-  assign rendered_content = rendered_content | replace: 'mailto:info@penya.africa', support_mailto
+  assign rendered_content = rendered_content | replace: support_mailto, support_contact_url
+  assign rendered_content = rendered_content | replace: 'mailto:info@penya.africa', support_contact_url
   assign rendered_content = rendered_content | replace: 'tel:+4915147416152', support_tel
   assign rendered_content = rendered_content | replace: 'https://wa.me/4915147416152', support_whatsapp_url
   assign rendered_content = rendered_content | replace: '+49 1514 7416152', support_whatsapp_display

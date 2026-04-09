@@ -7,14 +7,12 @@
 {%- endcomment -%}
 
 {% liquid
-  assign support_email = settings.penya_support_email | default: 'info@penya.africa'
   assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
   assign support_whatsapp_display = settings.penya_support_whatsapp_display | default: '+49 1514 7416152'
   assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number
 
   assign primary_link = section.settings.primary_link
   assign secondary_link = section.settings.secondary_link
-  assign email_address = section.settings.email_address
   assign whatsapp_url = section.settings.whatsapp_url
   assign whatsapp_text = section.settings.whatsapp_text
 
@@ -22,12 +20,13 @@
     assign primary_link = '/pages/contact'
   endif
 
-  if secondary_link == blank or secondary_link == 'https://wa.me/4915147416152'
-    assign secondary_link = support_whatsapp_url
+  assign contact_form_link = primary_link
+  if contact_form_link == '/pages/contact'
+    assign contact_form_link = '/pages/contact#penya-contact-form'
   endif
 
-  if email_address == blank or email_address == 'info@penya.africa'
-    assign email_address = support_email
+  if secondary_link == blank or secondary_link == 'https://wa.me/4915147416152'
+    assign secondary_link = support_whatsapp_url
   endif
 
   if whatsapp_url == blank or whatsapp_url == 'https://wa.me/4915147416152'
@@ -78,35 +77,15 @@
     </div>
 
     <div class="penya-client-care__cards">
-      {% if email_address != blank %}
-        {%- liquid
-          assign email_parts = email_address | split: '@'
-          assign email_local = email_parts[0]
-          assign email_domain = email_parts[1]
-          assign email_accessible_label = section.settings.email_label | default: 'Email'
-
-          unless email_accessible_label | downcase contains 'client care'
-            assign email_accessible_label = email_accessible_label | append: ' client care'
-          endunless
-        -%}
+      {% if section.settings.email_label != blank %}
         <article class="penya-client-care__card">
           <p class="penya-client-care__card-label">{{ section.settings.email_label }}</p>
-          <a href="/pages/contact"
+          <a href="{{ contact_form_link }}"
              class="penya-client-care__card-link penya-email-link"
-             aria-label="{{ email_accessible_label | escape }}"
-             data-u="{{ email_local | escape }}"
-             data-d="{{ email_domain | escape }}"
+             aria-label="Use the contact form"
           >
-            <noscript>Use the contact form</noscript>
+            Use the contact form
           </a>
-          <script>
-            (function () {
-              var a = document.currentScript.previousElementSibling;
-              var e = a.dataset.u + '\u0040' + a.dataset.d;
-              a.href = 'mailto:' + e;
-              a.textContent = e;
-            })();
-          </script>
           {% if section.settings.email_note != blank %}
             <p class="penya-client-care__card-copy">{{ section.settings.email_note }}</p>
           {% endif %}

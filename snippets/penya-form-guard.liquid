@@ -1,0 +1,88 @@
+{%- liquid
+  assign guard_form_id = form_id | default: ''
+  assign guard_min_submit_ms = min_submit_ms | default: 3500
+-%}
+
+{%- if guard_form_id != blank -%}
+  <div class="penya-form-guard__trap" aria-hidden="true">
+    <label for="{{ guard_form_id }}-website">Leave this field blank</label>
+    <input
+      type="text"
+      id="{{ guard_form_id }}-website"
+      name="contact[website]"
+      value=""
+      tabindex="-1"
+      autocomplete="off"
+      data-penya-form-trap
+    >
+  </div>
+
+  <input
+    type="hidden"
+    name="contact[penya_started_at]"
+    value=""
+    data-penya-form-started-at
+  >
+
+  <p class="penya-form-guard__error" data-penya-form-guard-error hidden></p>
+
+  <script>
+    (function () {
+      var form = document.getElementById({{ guard_form_id | json }});
+      if (!form || form.dataset.penyaFormGuardInit === '1') return;
+
+      form.dataset.penyaFormGuardInit = '1';
+
+      var minSubmitMs = {{ guard_min_submit_ms | json }};
+      var startedAt = Date.now();
+      var trap = form.querySelector('[data-penya-form-trap]');
+      var startedAtField = form.querySelector('[data-penya-form-started-at]');
+      var error = form.querySelector('[data-penya-form-guard-error]');
+
+      if (startedAtField) {
+        startedAtField.value = String(startedAt);
+      }
+
+      form.addEventListener('submit', function (event) {
+        var trapFilled = trap && trap.value.trim() !== '';
+        var elapsed = Date.now() - startedAt;
+
+        if (!trapFilled && elapsed >= minSubmitMs) {
+          if (error) {
+            error.hidden = true;
+            error.textContent = '';
+          }
+          return;
+        }
+
+        event.preventDefault();
+
+        if (!error) return;
+
+        error.hidden = false;
+        error.textContent = trapFilled
+          ? 'We could not send that form. Please refresh and try again.'
+          : 'Please wait a few seconds before submitting the form.';
+      });
+    })();
+  </script>
+
+  <style>
+    .penya-form-guard__trap {
+      position: absolute;
+      left: -9999px;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .penya-form-guard__error {
+      margin: 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #c0392b;
+    }
+  </style>
+{%- endif -%}
