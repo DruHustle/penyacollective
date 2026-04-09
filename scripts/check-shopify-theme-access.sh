@@ -45,10 +45,11 @@ set +e
 theme_list_output="$(shopify theme list --store "$SHOPIFY_STORE_DOMAIN" --no-color 2>&1)"
 status=$?
 set -e
+normalized_output="$(printf '%s' "$theme_list_output" | tr '\r\n' ' ')"
 
 if [ "$status" -ne 0 ]; then
-  if printf '%s' "$theme_list_output" | grep -qi 'Invalid API key or access token'; then
-    echo "::error::Shopify CLI authentication failed. Check SHOPIFY_CLI_THEME_TOKEN and SHOPIFY_STORE_DOMAIN. The token must belong to this exact store."
+  if printf '%s' "$normalized_output" | grep -Eqi 'Invalid API key|unrecognized login|wrong[[:space:]]+password|status[" ]*:[ ]*401|Error[[:space:]]*\(Code:[[:space:]]*401\)|401 undefined'; then
+    echo "::error::Shopify CLI authentication failed for $SHOPIFY_STORE_DOMAIN while checking the ${theme_label}. Verify SHOPIFY_CLI_THEME_TOKEN and SHOPIFY_STORE_DOMAIN. The token must belong to this exact store and the domain must be the raw *.myshopify.com value."
   else
     echo "::error::Shopify CLI could not verify access to $SHOPIFY_STORE_DOMAIN while checking the ${theme_label}."
   fi
