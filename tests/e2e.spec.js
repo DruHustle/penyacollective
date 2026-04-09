@@ -139,7 +139,7 @@ test.describe('Homepage', () => {
 
   test('primary hero CTA is visible and works', async ({ page }) => {
     const hero = page.locator('.hero-section, [class*="hero"]').first();
-    const cta = hero.getByRole('link', { name: /support the creatives|shop the collection/i });
+    const cta = hero.getByRole('link', { name: /explore the collection|support the creatives|shop the collection/i });
     await expect(cta).toBeVisible();
     const response = await page.request.get(await cta.getAttribute('href'));
     expect(response.status()).toBe(200);
@@ -180,7 +180,7 @@ test.describe('Homepage', () => {
   });
 
   test('newsletter section has updated copy', async ({ page }) => {
-    await expect(page.getByText(/Support New Work First/i)).toBeVisible();
+    await expect(page.getByText(/Stay in the Glow/i)).toBeVisible();
   });
 
   test('featured collections section is visible', async ({ page }) => {
@@ -189,19 +189,21 @@ test.describe('Homepage', () => {
     await expect(section.locator('.resource-list__item')).toHaveCount(3);
   });
 
-  test('trust band surfaces core service assurances', async ({ page }) => {
+  test('trust band surfaces minimal client care links', async ({ page }) => {
     const trustBand = page.locator('[data-testid="penya-trust-band"]');
     await expect(trustBand).toBeVisible();
-    await expect(trustBand.locator('.penya-trust-band__item')).toHaveCount(4);
-    await expect(trustBand.getByText(/14-day returns/i)).toBeVisible();
-    await expect(trustBand.getByText(/1.?2 business days/i)).toBeVisible();
+    await expect(trustBand.getByText(/Client care, kept simple/i)).toBeVisible();
 
-    const trustItemLinks = trustBand.locator('.penya-trust-band__item-link');
-    await expect(trustItemLinks).toHaveCount(4);
-    await expect(trustItemLinks.nth(0)).toHaveAttribute('href', '/pages/shipping');
-    await expect(trustItemLinks.nth(1)).toHaveAttribute('href', '/pages/shipping');
-    await expect(trustItemLinks.nth(2)).toHaveAttribute('href', '/pages/faq');
-    await expect(trustItemLinks.nth(3)).toHaveAttribute('href', '/pages/contact');
+    const trustLinks = trustBand.locator('.penya-trust-band__service-link');
+    await expect(trustLinks).toHaveCount(4);
+    await expect(trustBand.getByRole('link', { name: /returns/i })).toBeVisible();
+    await expect(trustBand.getByRole('link', { name: /delivery/i })).toBeVisible();
+    await expect(trustBand.getByRole('link', { name: /payments/i })).toBeVisible();
+    await expect(trustBand.getByRole('link', { name: /client care/i })).toBeVisible();
+    await expect(trustLinks.nth(0)).toHaveAttribute('href', '/pages/shipping');
+    await expect(trustLinks.nth(1)).toHaveAttribute('href', '/pages/shipping');
+    await expect(trustLinks.nth(2)).toHaveAttribute('href', '/pages/faq');
+    await expect(trustLinks.nth(3)).toHaveAttribute('href', '/pages/contact');
   });
 
   test('header shows the localization currency control', async ({ page }) => {
@@ -411,7 +413,9 @@ test.describe('Pages', () => {
   test('Contact page surfaces direct support paths', async ({ page }) => {
     await goto(page, '/pages/contact');
     const clientCare = page.locator('.penya-client-care');
-    await expect(clientCare.getByRole('link', { name: /email client care/i })).toBeVisible();
+    const emailLink = clientCare.locator('.penya-email-link').first();
+    await expect(emailLink).toHaveCount(1);
+    await expect(emailLink).toHaveAttribute('href', /mailto:info@penya\.africa|\/pages\/contact/);
     await expect(clientCare.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
     await expect(clientCare.getByRole('link', { name: /fit guide/i })).toBeVisible();
   });

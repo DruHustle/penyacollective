@@ -83,11 +83,17 @@
           assign email_parts = email_address | split: '@'
           assign email_local = email_parts[0]
           assign email_domain = email_parts[1]
+          assign email_accessible_label = section.settings.email_label | default: 'Email'
+
+          unless email_accessible_label | downcase contains 'client care'
+            assign email_accessible_label = email_accessible_label | append: ' client care'
+          endunless
         -%}
         <article class="penya-client-care__card">
           <p class="penya-client-care__card-label">{{ section.settings.email_label }}</p>
           <a href="/pages/contact"
              class="penya-client-care__card-link penya-email-link"
+             aria-label="{{ email_accessible_label | escape }}"
              data-u="{{ email_local | escape }}"
              data-d="{{ email_domain | escape }}"
           >

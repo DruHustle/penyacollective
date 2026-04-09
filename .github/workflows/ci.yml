@@ -84,13 +84,11 @@ jobs:
 
           if [ "$missing" -eq 0 ]; then
             echo "secrets_ok=true" >> "$GITHUB_OUTPUT"
-            echo "SECRETS_OK=true" >> "$GITHUB_ENV"
             echo "All preview-theme E2E secrets present ✅"
             exit 0
           fi
 
           echo "secrets_ok=false" >> "$GITHUB_OUTPUT"
-          echo "SECRETS_OK=false" >> "$GITHUB_ENV"
 
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             echo "❌ Required E2E secrets are missing on main — refusing to skip the quality gate"
@@ -99,10 +97,21 @@ jobs:
 
           echo "⚠️  E2E secrets missing outside main — preview-theme tests will be skipped"
 
+      - name: Install Shopify CLI
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
+        run: npm install -g @shopify/cli@latest
+
+      - name: Validate preview theme access
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
+        env:
+          SHOPIFY_THEME_ID_TO_CHECK: ${{ secrets.SHOPIFY_DEV_THEME_ID }}
+          SHOPIFY_THEME_SECRET_NAME: SHOPIFY_DEV_THEME_ID
+          SHOPIFY_THEME_LABEL: preview theme
+        run: bash scripts/check-shopify-theme-access.sh
+
       - name: Push to dev/preview theme
-        if: env.SECRETS_OK == 'true'
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
         run: |
-          npm install -g @shopify/cli@latest
           shopify theme push \
             --store "$SHOPIFY_STORE_DOMAIN" \
             --theme "$SHOPIFY_DEV_THEME_ID" \
@@ -111,7 +120,7 @@ jobs:
             --no-color
 
       - name: Run Playwright tests
-        if: env.SECRETS_OK == 'true'
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
         timeout-minutes: 15
         env:
           E2E_BASE_URL: "https://${{ secrets.SHOPIFY_STORE_DOMAIN }}"
@@ -156,6 +165,13 @@ jobs:
 
       - name: Install Shopify CLI
         run: npm install -g @shopify/cli@latest
+
+      - name: Validate live theme access
+        env:
+          SHOPIFY_THEME_ID_TO_CHECK: ${{ secrets.SHOPIFY_THEME_ID }}
+          SHOPIFY_THEME_SECRET_NAME: SHOPIFY_THEME_ID
+          SHOPIFY_THEME_LABEL: live theme
+        run: bash scripts/check-shopify-theme-access.sh
 
       - name: Push to live theme
         run: |

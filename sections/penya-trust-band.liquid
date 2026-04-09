@@ -1,17 +1,9 @@
 {%- comment -%}
-  Compact homepage trust band.
+  Minimal homepage client care links.
 
   Dependency mapping:
-  - Theme settings: support email and WhatsApp details
-  - Section blocks: service cards for returns, delivery, payment, and client care
+  - Section blocks: service links for returns, delivery, payment, and client care
 {%- endcomment -%}
-
-{% liquid
-  assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
-  assign support_whatsapp_greeting = settings.penya_support_whatsapp_greeting | default: 'Hello Penya, I need help with sizing and ordering.'
-  assign support_whatsapp_message = support_whatsapp_greeting | url_encode
-  assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number | append: '?text=' | append: support_whatsapp_message
-%}
 
 <section class="penya-trust-band color-{{ section.settings.color_scheme }}" data-testid="penya-trust-band">
   <div class="page-width penya-trust-band__inner">
@@ -29,19 +21,14 @@
           {{ section.settings.copy }}
         </div>
       {% endif %}
-
-      <div class="penya-trust-band__links">
-        <a href="/pages/shipping" class="penya-trust-band__text-link">Shipping & returns</a>
-        <a href="/pages/contact" class="penya-trust-band__text-link">Contact client care</a>
-        <a href="{{ support_whatsapp_url }}" class="penya-trust-band__text-link" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
-      </div>
     </div>
 
-    <div class="penya-trust-band__grid">
+    <nav class="penya-trust-band__service-links" aria-label="Client care links">
       {% for block in section.blocks %}
         {% liquid
           assign block_link = block.settings.link
           assign fallback_copy = block.settings.label | append: ' ' | append: block.settings.heading | downcase
+          assign link_text = block.settings.label | default: block.settings.link_label | default: block.settings.heading
 
           if block_link == blank
             if fallback_copy contains 'return'
@@ -56,27 +43,18 @@
           endif
         %}
 
-        <article class="penya-trust-band__item" {{ block.shopify_attributes }}>
-          {% if block.settings.label != blank %}
-            <p class="penya-trust-band__item-label">{{ block.settings.label }}</p>
-          {% endif %}
-
-          {% if block.settings.heading != blank %}
-            <h3 class="penya-trust-band__item-heading">{{ block.settings.heading }}</h3>
-          {% endif %}
-
-          {% if block.settings.copy != blank %}
-            <p class="penya-trust-band__item-copy">{{ block.settings.copy }}</p>
-          {% endif %}
-
-          {% if block.settings.link_label != blank and block_link != blank %}
-            <a href="{{ block_link }}" class="penya-trust-band__item-link"{% if block.settings.open_in_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
-              {{ block.settings.link_label }}
-            </a>
-          {% endif %}
-        </article>
+        {% if link_text != blank and block_link != blank %}
+          <a
+            href="{{ block_link }}"
+            class="penya-trust-band__service-link"
+            {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+            {{ block.shopify_attributes }}
+          >
+            <span class="penya-trust-band__service-link-text">{{ link_text }}</span>
+          </a>
+        {% endif %}
       {% endfor %}
-    </div>
+    </nav>
   </div>
 </section>
 
@@ -85,24 +63,24 @@
     position: relative;
     overflow: hidden;
     background:
-      radial-gradient(circle at top left, rgb(var(--color-primary-rgb) / 0.08), transparent 30%),
-      linear-gradient(180deg, rgb(var(--color-background-rgb)) 0%, rgb(var(--color-foreground-rgb) / 0.025) 100%);
+      linear-gradient(180deg, rgb(var(--color-background-rgb)) 0%, rgb(var(--color-foreground-rgb) / 0.02) 100%);
+    border-block: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
   }
 
   .penya-trust-band__inner {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.45fr);
-    gap: clamp(1.5rem, 4vw, 3rem);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(1.25rem, 3vw, 2.5rem);
     align-items: start;
-    padding-block: clamp(2.5rem, 5vw, 4.5rem);
+    padding-block: clamp(1.75rem, 4vw, 3rem);
   }
 
   .penya-trust-band__intro {
-    max-width: 26rem;
+    max-width: 30rem;
   }
 
   .penya-trust-band__eyebrow {
-    margin: 0 0 0.85rem;
+    margin: 0 0 0.65rem;
     font-family: var(--font-subheading--family);
     font-size: 0.75rem;
     letter-spacing: 0.16em;
@@ -111,89 +89,63 @@
   }
 
   .penya-trust-band__heading {
-    margin: 0 0 0.9rem;
+    margin: 0 0 0.75rem;
     font-family: var(--font-heading--family);
-    font-size: clamp(1.9rem, 4vw, 3.2rem);
-    line-height: 1;
+    font-size: clamp(1.5rem, 3vw, 2.35rem);
+    line-height: 1.05;
     text-wrap: balance;
     color: var(--color-foreground-heading);
   }
 
   .penya-trust-band__copy {
     color: rgb(var(--color-foreground-rgb) / 0.78);
-    line-height: 1.75;
+    line-height: 1.65;
   }
 
-  .penya-trust-band__links {
+  .penya-trust-band__service-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.2rem 1.5rem;
+    align-content: start;
+  }
+
+  .penya-trust-band__service-link {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.85rem 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .penya-trust-band__text-link,
-  .penya-trust-band__item-link {
+    align-items: center;
+    justify-content: space-between;
     color: var(--color-foreground);
     text-decoration: none;
     font-family: var(--font-subheading--family);
-    font-size: 0.78rem;
-    letter-spacing: 0.12em;
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.25);
-    padding-bottom: 0.2rem;
-    transition: color 0.18s ease, border-color 0.18s ease;
+    border-bottom: 1px solid rgb(var(--color-foreground-rgb) / 0.16);
+    padding: 0.9rem 0;
+    transition: color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
   }
 
-  .penya-trust-band__text-link:hover,
-  .penya-trust-band__item-link:hover {
+  .penya-trust-band__service-link::after {
+    content: '->';
+    font-size: 0.85rem;
+    opacity: 0.55;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+
+  .penya-trust-band__service-link:hover {
     color: var(--color-primary);
     border-color: var(--color-primary);
+    transform: translateX(2px);
   }
 
-  .penya-trust-band__text-link:focus-visible,
-  .penya-trust-band__item-link:focus-visible {
+  .penya-trust-band__service-link:hover::after {
+    transform: translateX(2px);
+    opacity: 1;
+  }
+
+  .penya-trust-band__service-link:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 4px;
     border-color: var(--color-primary);
-  }
-
-  .penya-trust-band__grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .penya-trust-band__item {
-    min-height: 12.5rem;
-    padding: 1.4rem;
-    border: 1px solid rgb(var(--color-foreground-rgb) / 0.09);
-    background:
-      linear-gradient(180deg, rgb(var(--color-background-rgb) / 0.94) 0%, rgb(var(--color-foreground-rgb) / 0.035) 100%);
-    backdrop-filter: blur(8px);
-  }
-
-  .penya-trust-band__item-label {
-    margin: 0 0 0.7rem;
-    font-family: var(--font-subheading--family);
-    font-size: 0.72rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-
-  .penya-trust-band__item-heading {
-    margin: 0 0 0.7rem;
-    font-family: var(--font-heading--family);
-    font-size: clamp(1.05rem, 2vw, 1.3rem);
-    line-height: 1.25;
-    color: var(--color-foreground-heading);
-    text-wrap: balance;
-  }
-
-  .penya-trust-band__item-copy {
-    margin: 0 0 1rem;
-    color: rgb(var(--color-foreground-rgb) / 0.76);
-    line-height: 1.65;
   }
 
   @media screen and (max-width: 989px) {
@@ -203,12 +155,8 @@
   }
 
   @media screen and (max-width: 749px) {
-    .penya-trust-band__grid {
+    .penya-trust-band__service-links {
       grid-template-columns: 1fr;
-    }
-
-    .penya-trust-band__item {
-      min-height: auto;
     }
   }
 {% endstylesheet %}
@@ -229,13 +177,13 @@
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Luxury should feel clear from the first click."
+      "default": "Client care, kept simple."
     },
     {
       "type": "richtext",
       "id": "copy",
       "label": "Copy",
-      "default": "<p>Everything around the purchase is designed to feel calm, transparent, and personal — from eligible returns to direct sizing help.</p>"
+      "default": "<p>Returns, delivery, payments, and direct support — clearly linked.</p>"
     },
     {
       "type": "color_scheme",
@@ -247,7 +195,7 @@
   "blocks": [
     {
       "type": "service",
-      "name": "Service card",
+      "name": "Service link",
       "settings": [
         {
           "type": "text",
