@@ -84,13 +84,11 @@ jobs:
 
           if [ "$missing" -eq 0 ]; then
             echo "secrets_ok=true" >> "$GITHUB_OUTPUT"
-            echo "SECRETS_OK=true" >> "$GITHUB_ENV"
             echo "All preview-theme E2E secrets present ✅"
             exit 0
           fi
 
           echo "secrets_ok=false" >> "$GITHUB_OUTPUT"
-          echo "SECRETS_OK=false" >> "$GITHUB_ENV"
 
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             echo "❌ Required E2E secrets are missing on main — refusing to skip the quality gate"
@@ -100,7 +98,7 @@ jobs:
           echo "⚠️  E2E secrets missing outside main — preview-theme tests will be skipped"
 
       - name: Push to dev/preview theme
-        if: env.SECRETS_OK == 'true'
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
         run: |
           npm install -g @shopify/cli@latest
           shopify theme push \
@@ -111,7 +109,7 @@ jobs:
             --no-color
 
       - name: Run Playwright tests
-        if: env.SECRETS_OK == 'true'
+        if: steps.e2e_secrets.outputs.secrets_ok == 'true'
         timeout-minutes: 15
         env:
           E2E_BASE_URL: "https://${{ secrets.SHOPIFY_STORE_DOMAIN }}"
