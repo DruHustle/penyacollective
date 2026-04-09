@@ -413,7 +413,9 @@ test.describe('Pages', () => {
   test('Contact page surfaces direct support paths', async ({ page }) => {
     await goto(page, '/pages/contact');
     const clientCare = page.locator('.penya-client-care');
-    await expect(clientCare.getByRole('link', { name: /email client care/i })).toBeVisible();
+    const emailLink = clientCare.locator('.penya-email-link').first();
+    await expect(emailLink).toHaveCount(1);
+    await expect(emailLink).toHaveAttribute('href', /mailto:info@penya\.africa|\/pages\/contact/);
     await expect(clientCare.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
     await expect(clientCare.getByRole('link', { name: /fit guide/i })).toBeVisible();
   });
