@@ -79,7 +79,7 @@
         "collective": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Founders</h3><p>Penya was co-founded by Andrew Gotora, an engineer based in Heidelberg, Germany, and Courtney Matende, a former beauty pageant queen and media and journalism practitioner based in Zimbabwe. Andrew is an Afrika Kommt fellow and the founder of Diaspora Unlocked — a platform connecting Zimbabwean farmers, businesses, and entrepreneurs to international opportunities and investors. Courtney is a former beauty pageant queen and media and journalism practitioner who has spent her career telling African stories with depth and care. Together, they built Penya with a simple mandate: to make African creatives shine.</p>",
+            "text": "<h3>The Founder</h3><p>Penya was founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg, Germany. Andrew is also the founder of Diaspora Unlocked — a platform connecting Zimbabwean farmers, businesses, and entrepreneurs to international opportunities and investors. He built Penya with a simple mandate: to make African creatives shine.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -297,7 +297,7 @@
         "pillar_3": {
           "type": "text",
           "settings": {
-            "text": "<h3>03 — The Founders</h3><p>Penya was co-founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg, and Courtney Matende, a former beauty pageant queen and media and journalism practitioner based in Zimbabwe. Built across two continents, driven by one shared belief: African creativity deserves a global audience.</p>",
+            "text": "<h3>03 — The Founder</h3><p>Penya was founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg. Driven by one shared belief: African creativity deserves a global audience.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
