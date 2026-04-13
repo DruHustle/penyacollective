@@ -79,7 +79,7 @@
         "collective": {
           "type": "text",
           "settings": {
-            "text": "<h3>The Founder</h3><p>Penya was founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg, Germany. Andrew is also the founder of Diaspora Unlocked — a platform connecting Zimbabwean farmers, businesses, and entrepreneurs to international opportunities and investors. He built Penya with a simple mandate: to make African creatives shine.</p>",
+            "text": "<h3>The Founder</h3><p>Penya was founded by Andrew Gotora — an engineer, Afrika Kommt fellow, and lifelong art enthusiast rooted in Harare, now based in Heidelberg, Germany. Growing up surrounded by Zimbabwe's rich creative culture, Andrew developed a deep appreciation for African artistry and the stories embedded in it. He built Penya with a single mandate: to give African creatives the global stage their work deserves. Andrew is also the founder of Diaspora Unlocked — a platform connecting Zimbabwean farmers, businesses, and entrepreneurs to international opportunities and investors.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
@@ -297,7 +297,7 @@
         "pillar_3": {
           "type": "text",
           "settings": {
-            "text": "<h3>03 — The Founder</h3><p>Penya was founded by Andrew Gotora, an engineer and Afrika Kommt fellow based in Heidelberg. Driven by one shared belief: African creativity deserves a global audience.</p>",
+            "text": "<h3>03 — The Founder</h3><p>Penya was founded by Andrew Gotora, an engineer and Afrika Kommt fellow rooted in Harare, now based in Heidelberg. A lifelong art enthusiast, Andrew built Penya on one conviction: African creativity deserves a global audience.</p>",
             "width": "100%",
             "max_width": "normal",
             "alignment": "left",
