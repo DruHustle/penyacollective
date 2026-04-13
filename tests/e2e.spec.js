@@ -415,9 +415,10 @@ test.describe('Pages', () => {
     const clientCare = page.locator('.penya-client-care');
     const emailLink = clientCare.locator('.penya-email-link').first();
     await expect(emailLink).toHaveCount(1);
-    await expect(emailLink).toHaveAttribute('href', /mailto:info@penya\.africa|\/pages\/contact/);
+    await expect(emailLink).toHaveAttribute('href', /\/pages\/contact#penya-contact-form|#penya-contact-form/);
     await expect(clientCare.getByRole('link', { name: /whatsapp us/i })).toBeVisible();
     await expect(clientCare.getByRole('link', { name: /fit guide/i })).toBeVisible();
+    await expect(page.locator('[data-testid="contact-form"]').first()).toBeVisible();
   });
 
   test('FAQ page has accordion items', async ({ page }) => {

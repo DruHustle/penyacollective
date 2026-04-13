@@ -7,7 +7,6 @@
 {%- endcomment -%}
 
 {% liquid
-  assign support_email = settings.penya_support_email | default: 'info@penya.africa'
   assign support_whatsapp_number = settings.penya_support_whatsapp_number | default: '4915147416152'
   assign support_whatsapp_url = 'https://wa.me/' | append: support_whatsapp_number
   assign support_secondary_link = section.settings.support_secondary_link
@@ -56,7 +55,7 @@
   {% endif %}
 
   {% if row_blocks.size > 0 %}
-    <div class="fit-guide__size-table" data-support-email="{{ support_email | replace: '@', '&#64;' }}">
+    <div class="fit-guide__size-table">
       {% if section.settings.table_heading != blank %}
         <h3 class="fit-guide__table-heading">{{ section.settings.table_heading }}</h3>
       {% endif %}
